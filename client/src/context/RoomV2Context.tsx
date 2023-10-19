@@ -52,8 +52,6 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     },
   });
 
-  console.log(room);
-
   return (
     <RoomV2Context.Provider value={{ room, isLoading }}>
       {children}

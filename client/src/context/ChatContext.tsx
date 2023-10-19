@@ -54,6 +54,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const toggleChat = () => {
     chatDispatch(toggleChatAction(!chat.isChatOpen));
   };
+
   useEffect(() => {
     ws.on("add-message", addMessage);
     ws.on("get-messages", addHistory);
