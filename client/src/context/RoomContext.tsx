@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Peer, MediaConnection } from "peerjs";
 import { ws } from "../services/ws";
-import { peersReducer, PeerState } from "../reducers/peerReducer";
+import { peersReducer, PeerState } from "../reducers/peersReducer";
 import {
   addPeerStreamAction,
   addPeerNameAction,
@@ -53,10 +53,6 @@ export const RoomProvider: React.FunctionComponent<RoomContextProps> = ({
   const [peers, dispatch] = useReducer(peersReducer, {});
   const [screenSharingId, setScreenSharingId] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
-
-  const enterRoom = ({ roomId }: { roomId: "string" }) => {
-    navigate(`/room/${roomId}`);
-  };
 
   const getUsers = ({
     participants,
@@ -139,8 +135,6 @@ export const RoomProvider: React.FunctionComponent<RoomContextProps> = ({
       console.error(error);
     }
 
-    ws.on("room-created", enterRoom);
-    ws.on("get-users", getUsers);
     ws.on("user-disconnected", removePeer);
     ws.on("user-started-sharing", (peerId) => setScreenSharingId(peerId));
     ws.on("user-stopped-sharing", () => {

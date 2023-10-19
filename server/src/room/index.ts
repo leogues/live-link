@@ -1,12 +1,16 @@
 import { User } from '.prisma/client'
 import { Socket } from 'socket.io'
 
-const rooms: Record<string, Record<string, IUser>> = {}
+const rooms: Record<string, Record<string, IPeer>> = {}
 const chats: Record<string, IMessage[]> = {}
 interface IUser {
   id: string
   name: string
   lastname?: string | null
+}
+
+interface IPeer {
+  user: IUser
   isMuted: boolean
   isSharingScreen: boolean
 }
@@ -32,19 +36,23 @@ export const roomHandler = (socket: Socket) => {
 
     //socket.emit('get-messages', chats[roomId])
 
-    const user: IUser = {
-      id: sessionUser.id,
-      name: sessionUser.name,
-      lastname: sessionUser.lastName,
+    const peer: IPeer = {
+      user: {
+        id: sessionUser.id,
+        name: sessionUser.name,
+        lastname: sessionUser.lastName,
+      },
       isMuted: false,
       isSharingScreen: false,
     }
 
-    rooms[roomId][user.id] = user
+    rooms[roomId][sessionUser.id] = peer
+
+    console.log(rooms[roomId])
 
     socket.join(roomId)
 
-    socket.to(roomId).emit('user-joined', user)
+    socket.to(roomId).emit('user-joined', peer)
 
     socket.emit('get-users', {
       roomId,
@@ -52,16 +60,18 @@ export const roomHandler = (socket: Socket) => {
     })
 
     socket.on('disconnect', () => {
-      console.log('user left the room: ', user.id, ' ', user.name)
-      leaveRoom({ roomId, userId: user.id })
+      console.log('user left the room: ', peer.user.id, ' ', peer.user.name)
+      leaveRoom({ roomId, userId: peer.user.id })
     })
   }
 
-  const leaveRoom = ({ roomId, userId }: IRoomParams) => {
-    if (rooms[roomId] && rooms[roomId][userId]) {
-      delete rooms[roomId][userId]
+  const leaveRoom = ({ roomId }: IRoomParams) => {
+    const user = socket.request.user
+
+    if (rooms[roomId] && rooms[roomId][user.id]) {
+      delete rooms[roomId][user.id]
     }
-    socket.to(roomId).emit('user-disconnected', userId)
+    socket.to(roomId).emit('user-disconnected', user.id)
   }
 
   const startSharing = ({ userId, roomId }: IRoomParams) => {

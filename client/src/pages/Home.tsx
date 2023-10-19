@@ -1,7 +1,6 @@
 import { Header } from "../components/Header";
 import { useContext, useRef } from "react";
 import { UserV2Context } from "../context/UserV2Context";
-import VectorIcon from "../assets/Vector.svg";
 import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../components/common/Input";

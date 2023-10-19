@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { createContext } from "react";
 import api from "../services/api";
 
-interface User {
+export interface IUser {
   id: string;
   name: string;
   lastName: string;
@@ -11,7 +11,7 @@ interface User {
 }
 
 interface UserV2Value {
-  user?: User;
+  user?: IUser;
   isLoading: boolean;
 }
 
@@ -30,7 +30,7 @@ export const UserV2Context = createContext<UserV2Value>({
 });
 
 export const UserV2Provider: React.FC<UserProviderProps> = ({ children }) => {
-  const { data: user, isLoading } = useQuery<User, AxiosError>({
+  const { data: user, isLoading } = useQuery<IUser, AxiosError>({
     queryKey: ["userData"],
     queryFn: async () => {
       const response = await api.get("/user");
