@@ -54,14 +54,6 @@ export const RoomProvider: React.FunctionComponent<RoomContextProps> = ({
   const [screenSharingId, setScreenSharingId] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
 
-  const getUsers = ({
-    participants,
-  }: {
-    participants: Record<string, IPeer>;
-  }) => {
-    dispatch(addAllPeersAction(participants));
-  };
-
   const removePeer = (peerId: string) => {
     dispatch(removePeerStreamAction(peerId));
 
@@ -135,7 +127,6 @@ export const RoomProvider: React.FunctionComponent<RoomContextProps> = ({
       console.error(error);
     }
 
-    ws.on("user-disconnected", removePeer);
     ws.on("user-started-sharing", (peerId) => setScreenSharingId(peerId));
     ws.on("user-stopped-sharing", () => {
       console.log("stop");
@@ -145,8 +136,6 @@ export const RoomProvider: React.FunctionComponent<RoomContextProps> = ({
 
     return () => {
       ws.off("room-created");
-      ws.off("get-users");
-      ws.off("user-disconnected");
       ws.off("user-started-sharing");
       ws.off("user-stopped-sharing");
       ws.off("user-joined");

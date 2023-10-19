@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import api from "../services/api";
-import { ws } from "../services/ws";
 import { IUser } from "./UserV2Context";
 
 interface StreamValue {}

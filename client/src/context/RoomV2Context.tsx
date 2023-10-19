@@ -6,7 +6,12 @@ import { AxiosError } from "axios";
 import api from "../services/api";
 import { ws } from "../services/ws";
 import { PeerState, peersReducer } from "../reducers/peersReducer";
-import { addAllPeersAction } from "../reducers/peersActions";
+import {
+  addAllPeersAction,
+  addPeerAction,
+  removePeerAction,
+} from "../reducers/peersActions";
+import { IPeer } from "../types/peer";
 
 interface Room {
   id: string;
@@ -17,6 +22,7 @@ interface Room {
 
 interface RoomV2Value {
   room?: Room;
+  peers: PeerState;
   isLoading: boolean;
 }
 
@@ -31,6 +37,7 @@ export const RoomV2Context = createContext<RoomV2Value>({
     createdAt: "",
     userId: "",
   },
+  peers: {},
   isLoading: false,
 });
 
@@ -56,18 +63,30 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     dispatchPeers(addAllPeersAction(participants));
   };
 
+  const addPeer = (peer: IPeer) => {
+    dispatchPeers(addPeerAction(peer));
+  };
+
+  const removePeer = (userId: string) => {
+    dispatchPeers(removePeerAction(userId));
+  };
+
   useEffect(() => {
     ws.on("get-users", getUsers);
+    ws.on("user-joined", addPeer);
+    ws.on("user-disconnected", removePeer);
 
     return () => {
       ws.off("get-users");
+      ws.off("user-joined");
+      ws.off("user-disconnected");
     };
   }, []);
 
   console.log(peers);
 
   return (
-    <RoomV2Context.Provider value={{ room, isLoading }}>
+    <RoomV2Context.Provider value={{ room, peers, isLoading }}>
       {children}
     </RoomV2Context.Provider>
   );

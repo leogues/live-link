@@ -1,14 +1,12 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import "./index.css";
 import { queryClient } from "./services/queryClient.ts";
 
 import { ThemeProvider } from "./context/ThemeContext.tsx";
-import { ChatProvider } from "./context/ChatContext.tsx";
-import { RoomProvider } from "./context/RoomContext.tsx";
-import { UserProvider } from "./context/UserContext.tsx";
+
 import { UserV2Provider } from "./context/UserV2Context.tsx";
 
 import { Home } from "./pages/Home.tsx";

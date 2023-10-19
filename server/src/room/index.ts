@@ -7,6 +7,7 @@ interface IUser {
   id: string
   name: string
   lastname?: string | null
+  picture: string | null
 }
 
 interface IPeer {
@@ -41,6 +42,7 @@ export const roomHandler = (socket: Socket) => {
         id: sessionUser.id,
         name: sessionUser.name,
         lastname: sessionUser.lastName,
+        picture: sessionUser.picture,
       },
       isMuted: false,
       isSharingScreen: false,
@@ -66,6 +68,7 @@ export const roomHandler = (socket: Socket) => {
   }
 
   const leaveRoom = ({ roomId }: IRoomParams) => {
+    console.log(socket.request.user.name)
     const user = socket.request.user
 
     if (rooms[roomId] && rooms[roomId][user.id]) {
@@ -94,6 +97,7 @@ export const roomHandler = (socket: Socket) => {
   }
 
   socket.on('join-room', joinRoom)
+  socket.on('leave-room', leaveRoom)
   socket.on('start-sharing', startSharing)
   socket.on('stop-sharing', stopSharing)
   socket.on('send-message', addMessage)

@@ -11,7 +11,7 @@ import videoCamIcon from "../assets/videoCam.png";
 import { Profile } from "../components/Profile";
 
 export const Room = () => {
-  const { room } = useContext(RoomV2Context);
+  const { room, peers } = useContext(RoomV2Context);
   const { user } = useContext(UserV2Context);
   const { toggleChat } = useContext(ChatContext);
 
@@ -24,6 +24,7 @@ export const Room = () => {
       });
 
       return () => {
+        console.log("leave-room", room.id);
         ws.emit("leave-room", { roomId: room.id });
       };
     }
@@ -56,7 +57,14 @@ export const Room = () => {
           </div>
         </div>
       </div>
-      <div className="flex grow"></div>
+      <div className="flex grow">
+        {Object.values(peers).map((peer) => (
+          <div key={peer.user?.id}>
+            <div>{peer.user?.name}</div>
+            <img src={peer.user?.picture} alt="" />
+          </div>
+        ))}
+      </div>
 
       <div className="fixed bottom-0 flex h-28 w-full items-center justify-center gap-2 border-t-2 p-6 dark:border-0 dark:bg-darkBlue-900">
         <ChatButton onClick={toggleChat} />

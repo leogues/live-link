@@ -1,4 +1,4 @@
-import { IUser } from "../context/UserV2Context";
+import { IPeer } from "../types/peer";
 import { PeerState } from "./peersReducer";
 
 export const ADD_PEER = "ADD_PEER" as const;
@@ -7,9 +7,9 @@ export const ADD_PEER_STREAM = "ADD_PEER_STREAM" as const;
 export const REMOVE_PEER_STREAM = "REMOVE_PEER_STREAM" as const;
 export const ADD_ALL_PEERS = "ADD_ALL_PEERS" as const;
 
-export const addPeerAction = (user: IUser) => ({
+export const addPeerAction = (peer: IPeer) => ({
   type: ADD_PEER,
-  payload: { user },
+  payload: { peer },
 });
 
 export const removePeerAction = (userId: string) => ({
@@ -27,7 +27,7 @@ export const removePeerStreamAction = (userId: string) => ({
   payload: { userId },
 });
 
-export const addAllPeersAction = (users: Record<string, PeerState>) => ({
+export const addAllPeersAction = (peers: Record<string, PeerState>) => ({
   type: ADD_ALL_PEERS,
-  payload: { users },
+  payload: { peers },
 });

@@ -1,4 +1,5 @@
 import { IUser } from "../context/UserV2Context";
+import { IPeer } from "../types/peer";
 import {
   ADD_PEER,
   REMOVE_PEER,
@@ -7,12 +8,20 @@ import {
   ADD_ALL_PEERS,
 } from "./peersActions";
 
-export type PeerState = Record<string, { user?: IUser; stream?: MediaStream }>;
+export type PeerState = Record<
+  string,
+  {
+    user?: IUser;
+    stream?: MediaStream;
+    isMuted?: boolean;
+    isSharingScreen?: boolean;
+  }
+>;
 
 export type PeerAction =
   | {
       type: typeof ADD_PEER;
-      payload: { user: IUser };
+      payload: { peer: IPeer };
     }
   | {
       type: typeof REMOVE_PEER;
@@ -29,7 +38,7 @@ export type PeerAction =
   | {
       type: typeof ADD_ALL_PEERS;
       payload: {
-        users: Record<string, PeerState>;
+        peers: Record<string, PeerState>;
       };
     };
 
@@ -38,8 +47,11 @@ export const peersReducer = (state: PeerState, action: PeerAction) => {
     case ADD_PEER:
       return {
         ...state,
-        [action.payload.user.id]: {
-          user: action.payload.user,
+        [action.payload.peer.user.id]: action.payload.peer as {
+          user?: IUser;
+          stream?: MediaStream;
+          isMuted?: boolean;
+          isSharingScreen?: boolean;
         },
       };
 
@@ -65,7 +77,7 @@ export const peersReducer = (state: PeerState, action: PeerAction) => {
         },
       };
     case ADD_ALL_PEERS:
-      return { ...state, ...action.payload.users };
+      return { ...state, ...action.payload.peers };
 
     default:
       return { ...state };
