@@ -75,6 +75,7 @@ export const roomHandler = (socket: Socket) => {
       delete rooms[roomId][user.id]
     }
     socket.to(roomId).emit('user-disconnected', user.id)
+    socket.leave(roomId)
   }
 
   const startSharing = ({ userId, roomId }: IRoomParams) => {

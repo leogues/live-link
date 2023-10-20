@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { ChatButton } from "../components/ChatButton";
 
 import { ws } from "../services/ws";
 import { ChatContext } from "../context/ChatContext";
@@ -9,9 +8,12 @@ import { formatDate } from "../Utils/DateUtils";
 
 import videoCamIcon from "../assets/videoCam.png";
 import { Profile } from "../components/Profile";
+import { StreamProvider } from "../context/StreamContext";
+import { StreamArea } from "../components/stream/StreamArea";
+import { ChatButton } from "../components/ChatButton";
 
 export const Room = () => {
-  const { room, peers } = useContext(RoomV2Context);
+  const { room } = useContext(RoomV2Context);
   const { user } = useContext(UserV2Context);
   const { toggleChat } = useContext(ChatContext);
 
@@ -32,7 +34,7 @@ export const Room = () => {
 
   return (
     <div className="flex min-h-screen flex-col font-medium ">
-      <div className="flex items-center text-white dark:bg-darkBlue-900">
+      <header className="flex items-center text-white dark:bg-darkBlue-900">
         <div className="min-w-max border-r border-opacity-60 p-4 px-8 dark:border-[#23212194]">
           <img className="block h-16 w-16" src={videoCamIcon} />
         </div>
@@ -56,18 +58,21 @@ export const Room = () => {
             )}
           </div>
         </div>
-      </div>
-      <div className="flex grow">
-        {Object.values(peers).map((peer) => (
-          <div key={peer.user?.id}>
-            <div>{peer.user?.name}</div>
-            <img src={peer.user?.picture} alt="" />
-          </div>
-        ))}
-      </div>
+      </header>
+      <div className="flex grow ">
+        {/* Left */}
+        <div className="flex grow flex-col">
+          <StreamArea />
+          <div className="h-8 w-full"></div>
 
-      <div className="fixed bottom-0 flex h-28 w-full items-center justify-center gap-2 border-t-2 p-6 dark:border-0 dark:bg-darkBlue-900">
-        <ChatButton onClick={toggleChat} />
+          {/* <div className="fixed bottom-0 flex h-28 w-full items-center justify-center gap-2 border-t-2 p-6 dark:border-0 dark:bg-darkBlue-900">
+          <ChatButton onClick={toggleChat} />
+        </div> */}
+        </div>
+        {/* Right */}
+        <div className="basis-80">
+          <span> test</span>
+        </div>
       </div>
     </div>
   );

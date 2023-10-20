@@ -16,6 +16,6 @@ declare module 'express' {
 
 declare module 'http' {
   interface IncomingMessage {
-    user?: User
+    user?: IUser
   }
 }

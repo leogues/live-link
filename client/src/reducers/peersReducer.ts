@@ -60,6 +60,8 @@ export const peersReducer = (state: PeerState, action: PeerAction) => {
       return rest;
 
     case ADD_PEER_STREAM:
+      console.log("set stream:", action.payload.userId);
+
       return {
         ...state,
         [action.payload.userId]: {

@@ -9,5 +9,7 @@ export const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
     }
   }, [stream]);
 
-  return <video ref={videoRef} autoPlay muted={true} />;
+  return (
+    <video className="h-full w-full object-cover" ref={videoRef} autoPlay />
+  );
 };

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import api from "../services/api";
 import { ws } from "../services/ws";
-import { PeerState, peersReducer } from "../reducers/peersReducer";
+import { PeerAction, PeerState, peersReducer } from "../reducers/peersReducer";
 import {
   addAllPeersAction,
   addPeerAction,
@@ -23,6 +23,8 @@ interface Room {
 interface RoomV2Value {
   room?: Room;
   peers: PeerState;
+  addPeer: (peer: IPeer) => void;
+  dispatchPeers: React.Dispatch<PeerAction>;
   isLoading: boolean;
 }
 
@@ -38,6 +40,8 @@ export const RoomV2Context = createContext<RoomV2Value>({
     userId: "",
   },
   peers: {},
+  addPeer: (peer: IPeer) => {},
+  dispatchPeers: (value: PeerAction) => {},
   isLoading: false,
 });
 
@@ -64,21 +68,22 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   };
 
   const addPeer = (peer: IPeer) => {
+    console.log("add", peer);
+
     dispatchPeers(addPeerAction(peer));
   };
 
   const removePeer = (userId: string) => {
+    console.log("removed", userId);
     dispatchPeers(removePeerAction(userId));
   };
 
   useEffect(() => {
     ws.on("get-users", getUsers);
-    ws.on("user-joined", addPeer);
     ws.on("user-disconnected", removePeer);
 
     return () => {
       ws.off("get-users");
-      ws.off("user-joined");
       ws.off("user-disconnected");
     };
   }, []);
@@ -86,7 +91,9 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   console.log(peers);
 
   return (
-    <RoomV2Context.Provider value={{ room, peers, isLoading }}>
+    <RoomV2Context.Provider
+      value={{ room, peers, dispatchPeers, addPeer, isLoading }}
+    >
       {children}
     </RoomV2Context.Provider>
   );
