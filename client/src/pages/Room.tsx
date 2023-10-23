@@ -33,7 +33,7 @@ export const Room = () => {
   }, [room]);
 
   return (
-    <div className="flex min-h-screen flex-col font-medium ">
+    <div className="flex h-screen flex-col font-medium ">
       <header className="flex items-center text-white dark:bg-darkBlue-900">
         <div className="min-w-max border-r border-opacity-60 p-4 px-8 dark:border-[#23212194]">
           <img className="block h-16 w-16" src={videoCamIcon} />

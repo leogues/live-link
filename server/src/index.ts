@@ -8,7 +8,8 @@ require('dotenv').config()
 import http from 'http'
 import { Server } from 'socket.io'
 import cors from 'cors'
-import { roomHandler } from './room'
+import { roomHandler } from './websocket/room'
+import { webrtcCallHandler } from './websocket/webrtcCall'
 import { frontendUrl, routes } from './routes'
 
 const port = 8080
@@ -62,6 +63,7 @@ socket.on('connection', (socket) => {
   console.log('user is connected')
 
   roomHandler(socket)
+  webrtcCallHandler(socket)
 
   socket.on('disconnect', () => {
     console.log('user is disconnected')

@@ -3,6 +3,8 @@ import { Socket } from 'socket.io'
 
 const rooms: Record<string, Record<string, IPeer>> = {}
 const chats: Record<string, IMessage[]> = {}
+export const userSocketMap: Record<string, string> = {}
+
 interface IUser {
   id: string
   name: string
@@ -30,11 +32,12 @@ interface IMessage {
 }
 
 export const roomHandler = (socket: Socket) => {
-  const joinRoom = ({ roomId }: IJoinRoomParams) => {
+  const joinRoom = async ({ roomId }: IJoinRoomParams) => {
     const sessionUser = socket.request.user as User
 
     if (!rooms[roomId]) rooms[roomId] = {}
 
+    userSocketMap[sessionUser.id] = socket.id
     //socket.emit('get-messages', chats[roomId])
 
     const peer: IPeer = {
@@ -49,8 +52,6 @@ export const roomHandler = (socket: Socket) => {
     }
 
     rooms[roomId][sessionUser.id] = peer
-
-    console.log(rooms[roomId])
 
     socket.join(roomId)
 
@@ -74,8 +75,11 @@ export const roomHandler = (socket: Socket) => {
     if (rooms[roomId] && rooms[roomId][user.id]) {
       delete rooms[roomId][user.id]
     }
+    if (userSocketMap[user.id]) {
+      delete userSocketMap[user.id]
+    }
+
     socket.to(roomId).emit('user-disconnected', user.id)
-    socket.leave(roomId)
   }
 
   const startSharing = ({ userId, roomId }: IRoomParams) => {

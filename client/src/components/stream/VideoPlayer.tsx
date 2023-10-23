@@ -10,6 +10,10 @@ export const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
   }, [stream]);
 
   return (
-    <video className="h-full w-full object-cover" ref={videoRef} autoPlay />
+    <video
+      className="max-h-full max-w-full object-cover"
+      ref={videoRef}
+      autoPlay
+    />
   );
 };

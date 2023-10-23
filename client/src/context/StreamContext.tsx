@@ -1,54 +1,78 @@
 import Peer from "peerjs";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { UserV2Context } from "./UserV2Context";
 import { ws } from "../services/ws";
 import { addPeerStreamAction } from "../reducers/peersActions";
 import { RoomV2Context } from "./RoomV2Context";
 import { IPeer } from "../types/peer";
 
-interface StreamValue {
-  stream?: MediaStream;
-}
-
 interface getMediaProps {
   type: "user-media" | "display-media";
-  audio?: boolean;
-  video?: boolean;
+  constraints: MediaStreamConstraints;
+}
+
+interface sendMessageProps {
+  messageType: "offer" | "answer" | "candidate";
+  payload: RTCIceCandidate | RTCSessionDescriptionInit;
+  remotePeerId: string;
+}
+
+interface MessageCallbackProps extends sendMessageProps {
+  peerConn: RTCPeerConnection;
+}
+
+interface createPeerConnectionProps {
+  remotePeerId: string;
 }
 
 interface StreamContextProps {
   children: React.ReactNode;
 }
 
+interface StreamValue {
+  localStream?: MediaStream;
+}
+
 export const StreamContext = createContext<StreamValue>({
-  stream: new MediaStream(),
+  localStream: new MediaStream(),
 });
+
+// const peerConfig = {
+//   'iceServers': [{
+//     'urls': 'stun:stun.l.google.com:19302'
+//   }]
+// };
+
+const peerConfig = {
+  iceServers: [
+    {
+      urls: "stun:stun.l.google.com:19302",
+    },
+  ],
+};
 
 export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   children,
 }) => {
-  const { user } = useContext(UserV2Context);
-  const { peers, addPeer, dispatchPeers } = useContext(RoomV2Context);
-  const [stream, setStream] = useState<MediaStream>();
+  const { peers, dispatchPeers } = useContext(RoomV2Context);
+  const [localStream, setLocalStream] = useState<MediaStream>();
+  const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
+  const [storedIceCandidates, setStoredIceCandidates] = useState(new Map());
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [isWebcamOn, setIsWebCamOn] = useState<boolean>(true);
   const [isStreamScreen, setIsStreamScreen] = useState<boolean>(false);
-  const [me, setMe] = useState<Peer>();
 
-  const setMedia = async ({ type, audio, video }: getMediaProps) => {
+  const grabMediaStream = async ({ type, constraints }: getMediaProps) => {
     const acceptedMedia = {
-      "user-media": (audio: boolean = true, video: boolean = false) => {
+      "user-media": (constraints: MediaStreamConstraints) => {
         try {
-          return navigator.mediaDevices.getUserMedia({
-            audio,
-            video,
-          });
+          return navigator.mediaDevices.getUserMedia(constraints);
         } catch (error) {
           console.error(error);
         }
       },
-      "display-media": (audio: boolean = false) => {
-        return navigator.mediaDevices.getDisplayMedia({ audio });
+      "display-media": (constraints: MediaStreamConstraints) => {
+        return navigator.mediaDevices.getDisplayMedia(constraints);
       },
     };
 
@@ -56,67 +80,211 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
     if (!functionMedia) return;
 
-    const media = await functionMedia(audio, video);
+    const media = await functionMedia(constraints);
 
     if (!media) return;
-    setStream(media);
+    setLocalStream(media);
+  };
+
+  function sendMessage({
+    messageType,
+    payload,
+    remotePeerId,
+  }: sendMessageProps) {
+    //console.log("Client sending message: ", payload);
+    ws.emit(messageType, { payload, remotePeerId });
+  }
+
+  const createAnswer = async (
+    peerConn: RTCPeerConnection,
+    remotePeerId: string,
+  ) => {
+    const sessionDescription = await peerConn.createAnswer();
+
+    console.log("local session created:", sessionDescription);
+
+    await peerConn.setLocalDescription(sessionDescription);
+
+    sendMessage({
+      messageType: "answer",
+      payload: sessionDescription,
+      remotePeerId,
+    });
+  };
+
+  const createPeerOffer = async (
+    peerConn: RTCPeerConnection,
+    remotePeerId: string,
+  ) => {
+    try {
+      localStream?.getTracks().forEach((track) => {
+        peerConn.addTrack(track, localStream);
+      });
+
+      const sessionDescription = await peerConn.createOffer();
+      await peerConn.setLocalDescription(sessionDescription);
+      console.log("sending local desc:", peerConn.localDescription);
+      sendMessage({
+        messageType: "offer",
+        payload: sessionDescription,
+        remotePeerId,
+      });
+    } catch (error) {
+      console.log("createPeerOffer error:", error);
+    }
+  };
+
+  const signalingMessageCallback = async ({
+    messageType,
+    payload,
+    remotePeerId,
+  }: sendMessageProps) => {
+    let peerConn: RTCPeerConnection | undefined;
+
+    const acceptedMessageType = {
+      ["offer"]: async ({
+        payload,
+        remotePeerId,
+        peerConn,
+      }: MessageCallbackProps) => {
+        console.log(
+          "Got offer. Sending answer to peer. remotePeerId:",
+          remotePeerId,
+        );
+
+        const remoteDescription = new RTCSessionDescription(
+          payload as RTCSessionDescriptionInit,
+        );
+
+        await peerConn.setRemoteDescription(remoteDescription);
+
+        createAnswer(peerConn, remotePeerId);
+      },
+      ["answer"]: ({ payload, peerConn }: MessageCallbackProps) => {
+        console.log("Got answer.");
+
+        const remoteDescription = new RTCSessionDescription(
+          payload as RTCSessionDescriptionInit,
+        );
+
+        peerConn.setRemoteDescription(remoteDescription);
+      },
+      ["candidate"]: ({
+        payload,
+        remotePeerId,
+        peerConn,
+      }: MessageCallbackProps) => {
+        const iceCandidate = new RTCIceCandidate(payload as RTCIceCandidate);
+
+        if (!storedIceCandidates.has(remotePeerId)) {
+          storedIceCandidates.set(remotePeerId, []);
+        }
+
+        storedIceCandidates.get(remotePeerId).push(iceCandidate);
+
+        if (peerConn && peerConn.remoteDescription) {
+          peerConn.addIceCandidate(iceCandidate);
+        }
+      },
+    };
+
+    !peerConnections.current[remotePeerId]
+      ? (peerConn = await createPeerConnection({ remotePeerId }))
+      : (peerConn = peerConnections.current[remotePeerId]);
+
+    if (!peerConn) {
+      console.log("peerConn don't exist in peerConnections");
+      return;
+    }
+
+    const functionMessageResponse = await acceptedMessageType[messageType];
+
+    if (!functionMessageResponse) return;
+
+    functionMessageResponse({ messageType, payload, remotePeerId, peerConn });
+  };
+
+  const createPeerConnection = async ({
+    remotePeerId,
+  }: createPeerConnectionProps) => {
+    try {
+      const peerConn = new RTCPeerConnection(peerConfig);
+
+      peerConn.onicecandidate = (event) => {
+        if (event.candidate) {
+          sendMessage({
+            messageType: "candidate",
+            payload: event.candidate,
+            remotePeerId,
+          });
+        } else {
+          console.log("End of candidates.");
+        }
+      };
+
+      peerConn.onicegatheringstatechange = (event) => {
+        console.log("onicegatheringstatechange:", event);
+      };
+
+      peerConn.ontrack = (event) => {
+        console.log("ontrack:", event);
+        const stream = event.streams[0];
+
+        console.log("addStream", stream, "to", remotePeerId);
+        dispatchPeers(addPeerStreamAction(remotePeerId, stream));
+      };
+
+      return peerConn;
+    } catch (error) {
+      console.log("createPeerConnection error", error);
+    }
+  };
+
+  const peerJoined = async (peer: IPeer) => {
+    if (!localStream) return;
+
+    const remotePeerId = peer.user.id;
+
+    if (!remotePeerId) return;
+
+    const peerConn = await createPeerConnection({
+      remotePeerId,
+    });
+
+    if (!peerConn) return;
+
+    peerConnections.current = {
+      ...peerConnections.current,
+      [remotePeerId]: peerConn,
+    };
+
+    console.log({ peerConnections: peerConnections.current });
+
+    createPeerOffer(peerConn, peer.user.id);
   };
 
   useEffect(() => {
-    if (!user) return;
-
-    const peer = new Peer(user.id, {
-      host: "localhost",
-      port: 9001,
-      path: "/myapp",
-      debug: 1,
+    grabMediaStream({
+      type: "user-media",
+      constraints: { audio: isMuted, video: isWebcamOn },
     });
-
-    setMe(peer);
-    setMedia({ type: "user-media", audio: isMuted, video: isWebcamOn });
-    return () => {
-      me?.disconnect();
-      console.log("Desmontou");
-    };
-  }, [user]);
+  }, []);
 
   useEffect(() => {
-    if (!me) return;
-    if (!stream) return;
-
-    ws.on("user-joined", (peer: IPeer) => {
-      addPeer(peer);
-      const call = me.call(peer.user.id, stream, {
-        metadata: { userName: peer.user.name },
-      });
-
-      console.log(call);
-
-      call.on("stream", (peerStream) => {
-        dispatchPeers(addPeerStreamAction(peer.user.id, peerStream));
-      });
-    });
-
-    me.on("call", (call) => {
-      const { userName } = call.metadata;
-
-      console.log(userName);
-
-      call.answer(stream);
-      call.on("stream", (peerStream) => {
-        dispatchPeers(addPeerStreamAction(call.peer, peerStream));
-      });
-    });
-
+    ws.on("candidate", signalingMessageCallback);
+    ws.on("answer", signalingMessageCallback);
+    ws.on("offer", signalingMessageCallback);
+    ws.on("user-joined", peerJoined);
     return () => {
+      ws.off("candidate");
+      ws.off("answer");
+      ws.off("offer");
       ws.off("user-joined");
     };
-  }, [me, stream]);
-
-  console.log(stream);
+  }, [localStream]);
 
   return (
-    <StreamContext.Provider value={{ stream }}>
+    <StreamContext.Provider value={{ localStream }}>
       {children}
     </StreamContext.Provider>
   );
