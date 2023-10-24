@@ -1,5 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
+Peer;
 
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -12,6 +13,7 @@ import {
   removePeerAction,
 } from "../reducers/peersActions";
 import { IPeer } from "../types/peer";
+import Peer from "peerjs";
 
 interface Room {
   id: string;

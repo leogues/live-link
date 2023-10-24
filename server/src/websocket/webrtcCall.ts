@@ -8,6 +8,7 @@ interface peerMessageProps {
 
 export const webrtcCallHandler = (socket: Socket) => {
   const peerCandidate = ({ payload, remotePeerId }: peerMessageProps) => {
+    console.log(payload)
     const remotePeerSocketId = userSocketMap[remotePeerId]
     const localPeerId = socket.request.user.id
 
@@ -24,6 +25,8 @@ export const webrtcCallHandler = (socket: Socket) => {
   }
 
   const peerAnswer = ({ payload, remotePeerId }: peerMessageProps) => {
+    console.log(payload)
+
     const remotePeerSocketId = userSocketMap[remotePeerId]
     const localPeerId = socket.request.user.id
 
@@ -40,6 +43,8 @@ export const webrtcCallHandler = (socket: Socket) => {
   }
 
   const peerOffer = ({ payload, remotePeerId }: peerMessageProps) => {
+    console.log(payload)
+
     const remotePeerSocketId = userSocketMap[remotePeerId]
     const localPeerId = socket.request.user.id
     if (!remotePeerSocketId) {

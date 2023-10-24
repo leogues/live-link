@@ -32,6 +32,8 @@ export const Room = () => {
     }
   }, [room]);
 
+  console.log("re-render");
+
   return (
     <div className="flex h-screen flex-col font-medium ">
       <header className="flex items-center text-white dark:bg-darkBlue-900">

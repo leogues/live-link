@@ -40,6 +40,8 @@ export const roomHandler = (socket: Socket) => {
     userSocketMap[sessionUser.id] = socket.id
     //socket.emit('get-messages', chats[roomId])
 
+    console.log('User:', sessionUser.name, 'Join:', roomId)
+
     const peer: IPeer = {
       user: {
         id: sessionUser.id,
@@ -56,6 +58,7 @@ export const roomHandler = (socket: Socket) => {
     socket.join(roomId)
 
     socket.to(roomId).emit('user-joined', peer)
+    socket.to(roomId).emit('call-new-user', peer)
 
     socket.emit('get-users', {
       roomId,
@@ -69,7 +72,6 @@ export const roomHandler = (socket: Socket) => {
   }
 
   const leaveRoom = ({ roomId }: IRoomParams) => {
-    console.log(socket.request.user.name)
     const user = socket.request.user
 
     if (rooms[roomId] && rooms[roomId][user.id]) {
