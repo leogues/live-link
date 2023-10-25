@@ -2,12 +2,14 @@ import { Socket } from 'socket.io'
 import { userSocketMap } from './room'
 
 interface peerMessageProps {
+  messageType: string
   payload: RTCIceCandidate | RTCSessionDescriptionInit
   remotePeerId: string
 }
 
 export const webrtcCallHandler = (socket: Socket) => {
   const signalMessagesIntermediary = ({
+    messageType,
     payload,
     remotePeerId,
   }: peerMessageProps) => {
@@ -20,8 +22,8 @@ export const webrtcCallHandler = (socket: Socket) => {
       return
     }
 
-    socket.to(remotePeerSocketId).emit('candidate', {
-      messageType: 'candidate',
+    socket.to(remotePeerSocketId).emit(messageType, {
+      messageType: messageType,
       payload,
       remotePeerId: localPeerId,
     })

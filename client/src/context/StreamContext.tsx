@@ -4,7 +4,7 @@ import { ws } from "../services/ws";
 import { addPeerStreamAction } from "../reducers/peersActions";
 import { RoomV2Context } from "./RoomV2Context";
 import { IPeer } from "../types/peer";
-import { Peers } from "../services/MultiPeerManager";
+import { IPeers, Peers } from "../services/MultiPeerManager";
 
 interface getMediaProps {
   type: "user-media" | "display-media";
@@ -42,7 +42,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 }) => {
   //const { peers, dispatchPeers } = useContext(RoomV2Context);
   const [localStream, setLocalStream] = useState<MediaStream>();
-  const peers = useRef<any>();
+  const multiPeersManager = useRef<IPeers | null>(null);
   const [isMicOn, setIsMuted] = useState<boolean>(true);
   const [isWebcamOn, setIsWebCamOn] = useState<boolean>(true);
   const [isStreamScreen, setIsStreamScreen] = useState<boolean>(false);
@@ -74,7 +74,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   const peerJoined = async (peer: IPeer) => {
     console.log("joined:", peer.user.id);
 
-    peers.current.startCall({
+    multiPeersManager.current?.startCall({
       remotePeerId: peer.user.id,
       stream: localStream,
     });
@@ -83,29 +83,31 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   const endCall = (peerId: string) => {
     console.log("end call:", peerId);
 
-    peers.current.close(peerId);
+    multiPeersManager.current?.close(peerId);
   };
 
   useEffect(() => {
+    console.log("render Stream");
+    multiPeersManager.current = Peers();
+
     grabMediaStream({
       type: "user-media",
       constraints: { audio: isMicOn, video: isWebcamOn },
     });
 
-    peers.current = Peers();
-
     ws.on("call-new-user", peerJoined);
     ws.on("end-call", endCall);
     return () => {
-      peers.current.closeAll();
-      peers.current = null;
       ws.off("call-new-user");
       ws.off("end-call");
+      multiPeersManager.current?.destroy();
+      multiPeersManager.current = null;
     };
   }, []);
 
   useEffect(() => {
-    peers.current.addStream(localStream);
+    if (!localStream) return;
+    multiPeersManager.current?.addStream(localStream);
   }, [localStream]);
 
   return (

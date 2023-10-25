@@ -16,7 +16,6 @@ export interface IPeer {
 
 interface IState extends PeerProps {
   isInitiator: boolean;
-  _isFirstNegotiatio: boolean;
 
   _localStream: MediaStream | null;
   _remoteStream: MediaStream | null;
@@ -24,6 +23,8 @@ interface IState extends PeerProps {
 
   _peerConn?: RTCPeerConnection | null;
   _pendingIceCandidates: RTCIceCandidate[];
+  _batchedNegotiation: boolean;
+  _isFirstNegotiatio: boolean;
 
   _queuedNegotiation: boolean;
   _isNegotiating: boolean;
@@ -58,7 +59,6 @@ const peerConfig = {
 export const Peer = (options: PeerProps) => {
   const state: IState = {
     isInitiator: options.isInitiator || false,
-    _isFirstNegotiatio: true,
     remotePeerId: options.remotePeerId,
 
     _peerConn: null,
@@ -68,12 +68,15 @@ export const Peer = (options: PeerProps) => {
     _remoteStream: null,
     _senderMap: new Map(),
 
+    _isFirstNegotiatio: true,
     _isNegotiating: false,
     _queuedNegotiation: false,
+    _batchedNegotiation: false,
+
     isDestroyed: false,
     isDestroying: false,
 
-    enabledDebug: options.enabledDebug || false,
+    enabledDebug: options.enabledDebug || true,
   };
 
   const eventListeners: Record<string, Function[]> = {};
@@ -84,7 +87,6 @@ export const Peer = (options: PeerProps) => {
     destroy(errCode(err, "ERR_PEERCONNECTION_CONSTRUCTOR"));
     return;
   }
-  state._peerConn.getReceivers;
 
   if (state.isInitiator) {
     state._peerConn.createDataChannel("stream");
@@ -142,6 +144,7 @@ export const Peer = (options: PeerProps) => {
       sender = state._peerConn?.addTrack(track, stream);
       submap.set(stream, sender);
       state._senderMap.set(track, submap);
+      console.log("add track chamou needsNegotiation");
       _needsNegotiation();
     } else if (sender.removed) {
       throw errCode(
@@ -221,6 +224,7 @@ export const Peer = (options: PeerProps) => {
       ["renegotiate"]: ({}: sendMessageProps) => {
         _logs("need renegotiate");
         if (state.isInitiator) {
+          console.log("signalCallback chamou needsNegotiation");
           _needsNegotiation();
         }
       },
@@ -241,6 +245,7 @@ export const Peer = (options: PeerProps) => {
   };
 
   function destroy(cb?: any) {
+    console.log("destroy peer");
     if (state.isDestroyed || state.isDestroying) return;
     state.isDestroying = true;
 
@@ -261,6 +266,7 @@ export const Peer = (options: PeerProps) => {
         state._peerConn.ondatachannel = null;
       }
       state._peerConn = null;
+      if (!cb) return;
 
       cb();
     });
@@ -307,33 +313,57 @@ export const Peer = (options: PeerProps) => {
         new Error("cannot negotiate after peer is destroyed"),
         "ERR_DESTROYED",
       );
-
-    if (state.isInitiator) {
+    // if (state.isInitiator || !state._isFirstNegotiatio) {
+    //   if (state.isInitiator) {
+    //     if (state._isNegotiating) {
+    //       state._queuedNegotiation = true;
+    //       _logs("already negotiating, queueing");
+    //     } else {
+    //       _logs("start negotiation");
+    //       _createSessionDescription({ messageType: "offer" });
+    //     }
+    //   } else {
+    //     if (state._isNegotiating) {
+    //       state._queuedNegotiation = true;
+    //       _logs("already negotiating, queueing");
+    //     } else {
+    //       _logs("requesting negotiation from initiator");
+    //       _sendMessage({
+    //         messageType: "renegotiate",
+    //         payload: { type: "renegotiate" },
+    //       });
+    //     }
+    //   }
+    // }
+    if (state.isInitiator || !state._isFirstNegotiatio) {
       if (state._isNegotiating) {
         state._queuedNegotiation = true;
         _logs("already negotiating, queueing");
       } else {
-        _logs("start negotiation");
-        _createSessionDescription({ messageType: "offer" });
-      }
-    } else {
-      if (state._isNegotiating) {
-        state._queuedNegotiation = true;
-        _logs("already negotiating, queueing");
-      } else {
-        _logs("requesting negotiation from initiator");
-        _sendMessage({
-          messageType: "renegotiate",
-          payload: { type: "renegotiate" },
-        });
+        if (state.isInitiator) {
+          _logs("start negotiation");
+          _createSessionDescription({ messageType: "offer" });
+        } else {
+          _logs("requesting negotiation from initiator");
+          _sendMessage({
+            messageType: "renegotiate",
+            payload: { type: "renegotiate" },
+          });
+        }
       }
     }
+
+    state._isFirstNegotiatio = false;
     state._isNegotiating = true;
   }
 
   function _sendMessage({ messageType, payload }: sendMessageProps) {
-    _logs("Client sending message: ", payload);
-    ws.emit(messageType, { payload, remotePeerId: state.remotePeerId });
+    //_logs("Client sending message: ", payload);
+    ws.emit(messageType, {
+      messageType,
+      payload,
+      remotePeerId: state.remotePeerId,
+    });
   }
 
   function _logs(...rest: any[]) {
@@ -342,7 +372,7 @@ export const Peer = (options: PeerProps) => {
   }
 
   function _onIceCandidate(event: RTCPeerConnectionIceEvent) {
-    _logs("send iceCandidate");
+    //_logs("send iceCandidate");
     if (event.candidate) {
       _sendMessage({
         messageType: "candidate",
@@ -362,6 +392,7 @@ export const Peer = (options: PeerProps) => {
       if (state._queuedNegotiation) {
         _logs("flushing negotiation queue");
         state._queuedNegotiation = false;
+        console.log("onSignal chamou _needsNegotiation");
         _needsNegotiation();
       } else {
         _logs("negotiated");
