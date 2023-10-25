@@ -17,36 +17,34 @@ import { RoomV2Provider } from "./context/RoomV2Context.tsx";
 import { StreamProvider } from "./context/StreamContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ThemeProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <ThemeProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
 
-            <Route
-              path="/"
-              element={
-                <UserV2Provider>
-                  <Home />
-                </UserV2Provider>
-              }
-            />
-            <Route
-              path="/room/:id"
-              element={
-                <UserV2Provider>
-                  <RoomV2Provider>
-                    <StreamProvider>
-                      <Room />
-                    </StreamProvider>
-                  </RoomV2Provider>
-                </UserV2Provider>
-              }
-            />
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </StrictMode>,
+          <Route
+            path="/"
+            element={
+              <UserV2Provider>
+                <Home />
+              </UserV2Provider>
+            }
+          />
+          <Route
+            path="/room/:id"
+            element={
+              <UserV2Provider>
+                <RoomV2Provider>
+                  <StreamProvider>
+                    <Room />
+                  </StreamProvider>
+                </RoomV2Provider>
+              </UserV2Provider>
+            }
+          />
+        </Routes>
+      </ThemeProvider>
+    </BrowserRouter>
+  </QueryClientProvider>,
 );

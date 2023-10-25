@@ -12,6 +12,8 @@ interface signalMessagesCallbackProps {
   remotePeerId: string;
 }
 
+type eventFunction = Function | undefined;
+
 export interface IPeers {
   startCall: ({
     remotePeerId,
@@ -23,6 +25,8 @@ export interface IPeers {
   close: (remotePeerId: string) => void;
   destroy: () => void;
   addStream: (stream?: MediaStream) => void;
+  off: (event: string) => void;
+  on: (event: string, listener?: Function) => void;
 }
 
 export const Peers = () => {
@@ -31,7 +35,17 @@ export const Peers = () => {
     localStream: null,
   };
 
-  console.log("init multiPeer");
+  const eventListeners: Record<string, Function[]> = {};
+
+  let _onStream: eventFunction = ({
+    stream,
+    remotePeerId,
+  }: {
+    stream: MediaStream;
+    remotePeerId: string;
+  }) => {
+    _emitEvent("stream", { stream, remotePeerId });
+  };
 
   const startCall = ({
     remotePeerId,
@@ -52,6 +66,8 @@ export const Peers = () => {
     });
 
     if (peer) {
+      peer.on("stream", _onStream);
+
       state.peerConnections[remotePeerId] = peer;
     }
   };
@@ -78,6 +94,8 @@ export const Peers = () => {
 
       if (!peer) return;
 
+      peer.on("stream", _onStream);
+
       state.peerConnections[remotePeerId] = peer;
     }
 
@@ -101,22 +119,45 @@ export const Peers = () => {
     ws.off("candidate");
     ws.off("answer");
     ws.off("offer");
+
+    _onStream = undefined;
     console.log("close", state.peerConnections);
 
     Object.values(state.peerConnections)
       .filter((peerConn) => peerConn !== undefined)
       .forEach((peerConn) => {
-        console.log(peerConn);
+        peerConn.off("stream");
         peerConn?.destroy();
       });
     state.peerConnections = {};
   };
+
+  function on(event: string, listener?: Function) {
+    if (!listener) return;
+    if (!eventListeners[event]) {
+      eventListeners[event] = [];
+    }
+    eventListeners[event].push(listener);
+  }
+
+  function _emitEvent(event: string, data: any) {
+    const listeners = eventListeners[event] || [];
+    listeners.forEach((listener) => {
+      listener(data);
+    });
+  }
+
+  function off(event: string) {
+    eventListeners[event] = [];
+  }
 
   ws.on("renegotiate", _signalMessageCallback);
   ws.on("candidate", _signalMessageCallback);
   ws.on("answer", _signalMessageCallback);
   ws.on("offer", _signalMessageCallback);
   return {
+    on,
+    off,
     startCall,
     close,
     destroy,

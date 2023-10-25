@@ -40,7 +40,7 @@ export const StreamContext = createContext<StreamValue>({
 export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   children,
 }) => {
-  //const { peers, dispatchPeers } = useContext(RoomV2Context);
+  const { peers, dispatchPeers } = useContext(RoomV2Context);
   const [localStream, setLocalStream] = useState<MediaStream>();
   const multiPeersManager = useRef<IPeers | null>(null);
   const [isMicOn, setIsMuted] = useState<boolean>(true);
@@ -71,6 +71,16 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     setLocalStream(media);
   };
 
+  const addStream = ({
+    stream,
+    remotePeerId,
+  }: {
+    stream: MediaStream;
+    remotePeerId: string;
+  }) => {
+    dispatchPeers(addPeerStreamAction(remotePeerId, stream));
+  };
+
   const peerJoined = async (peer: IPeer) => {
     console.log("joined:", peer.user.id);
 
@@ -95,9 +105,11 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
       constraints: { audio: isMicOn, video: isWebcamOn },
     });
 
+    multiPeersManager.current?.on("stream", addStream);
     ws.on("call-new-user", peerJoined);
     ws.on("end-call", endCall);
     return () => {
+      multiPeersManager.current?.off("stream");
       ws.off("call-new-user");
       ws.off("end-call");
       multiPeersManager.current?.destroy();
