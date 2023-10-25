@@ -1,7 +1,7 @@
 interface PeerProps {
   isInitiator?: boolean;
   remotePeerId: string;
-  stream?: MediaStream;
+  stream?: MediaStream | null;
   enabledDebug?: boolean;
 }
 
@@ -11,6 +11,7 @@ export interface IPeer {
     messageType,
     payload,
   }: sendMessageProps) => Promise<void>;
+  destroy: (cb?: any) => void;
 }
 
 interface IState extends PeerProps {
@@ -72,8 +73,10 @@ export const Peer = (options: PeerProps) => {
     isDestroyed: false,
     isDestroying: false,
 
-    enabledDebug: options.enabledDebug || true,
+    enabledDebug: options.enabledDebug || false,
   };
+
+  const eventListeners: Record<string, Function[]> = {};
 
   try {
     state._peerConn = new RTCPeerConnection(peerConfig);
@@ -81,6 +84,7 @@ export const Peer = (options: PeerProps) => {
     destroy(errCode(err, "ERR_PEERCONNECTION_CONSTRUCTOR"));
     return;
   }
+  state._peerConn.getReceivers;
 
   if (state.isInitiator) {
     state._peerConn.createDataChannel("stream");
@@ -99,6 +103,10 @@ export const Peer = (options: PeerProps) => {
 
   state._peerConn.onsignalingstatechange = () => {
     _onSignalingStateChange();
+  };
+
+  state._peerConn.ontrack = (event) => {
+    _onTrack(event);
   };
 
   function addStream({ stream }: { stream: MediaStream }) {
@@ -185,7 +193,6 @@ export const Peer = (options: PeerProps) => {
     payload,
   }: sendMessageProps) => {
     if (!state._peerConn) return;
-    console.log(messageType, payload);
     const acceptedMessageType = {
       ["offer"]: async ({ messageType, payload }: sendMessageProps) => {
         _logs("_init _processSessionDescription", messageType);
@@ -212,6 +219,7 @@ export const Peer = (options: PeerProps) => {
         }
       },
       ["renegotiate"]: ({}: sendMessageProps) => {
+        _logs("need renegotiate");
         if (state.isInitiator) {
           _needsNegotiation();
         }
@@ -334,14 +342,14 @@ export const Peer = (options: PeerProps) => {
   }
 
   function _onIceCandidate(event: RTCPeerConnectionIceEvent) {
-    console.log("send iceCandidate");
+    _logs("send iceCandidate");
     if (event.candidate) {
       _sendMessage({
         messageType: "candidate",
         payload: event.candidate,
       });
     } else {
-      console.log("End of candidates.");
+      _logs("End of candidates.");
     }
   }
 
@@ -361,8 +369,32 @@ export const Peer = (options: PeerProps) => {
     }
   }
 
+  function _onTrack(event: RTCTrackEvent) {
+    if (state.isDestroyed) return;
+
+    event.streams.forEach((eventStream) => {});
+    console.log(event);
+    _emitEvent("stream", {});
+  }
+
+  function on(event: string, listener: Function) {
+    if (!eventListeners[event]) {
+      eventListeners[event] = [];
+    }
+    eventListeners[event].push(listener);
+  }
+
+  function _emitEvent(event: string, data: any) {
+    const listeners = eventListeners[event] || [];
+    listeners.forEach((listener) => {
+      listener(data);
+    });
+  }
+
   return {
+    on,
     addStream,
     signalingMessageCallback,
+    destroy,
   };
 };
