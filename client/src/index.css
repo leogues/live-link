@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+vertical-scroll-bar {
+  scrollbar-width: none;
+}
+
+/vertical-scroll-bar Chrome,
+Edge,
+and Safari vertical-scroll-bar/ vertical-scroll-bar::-webkit-scrollbar {
+  width: 0px;
+}
+
+vertical-scroll-bar::-webkit-scrollbar-track {
+}
+
+vertical-scroll-bar::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  border: 0px none #ffffff;
+}

@@ -28,7 +28,7 @@ export const Profile: React.FC<ProfileProps> = ({
   return (
     <div
       className={clsx(
-        "flex w-full items-center justify-evenly gap-4 rounded-full px-3 py-2 ",
+        "inline-block items-center justify-evenly gap-4 rounded-full p-2 md:py-2 lg:flex lg:w-full lg:px-3 ",
         {
           "dark:bg-darkBlue-600": bgColor === "default",
           "": bgColor === "transparent",
@@ -43,7 +43,7 @@ export const Profile: React.FC<ProfileProps> = ({
       >
         <img className="block h-full" src={picture} />
       </div>
-      <div>
+      <div className="hidden lg:block">
         <div className="flex flex-col">
           <div
             className={clsx("flex gap-1 font-medium dark:text-blue-100", {
@@ -57,7 +57,7 @@ export const Profile: React.FC<ProfileProps> = ({
           {role && <span className="text-xs dark:text-gray-600">{role}</span>}
         </div>
       </div>
-      <div className="ml-auto flex h-full items-center">
+      <div className="ml-auto hidden h-full items-center lg:flex">
         <Button
           className={clsx("min-h-max", {
             "mr-4": marginRight === "4",

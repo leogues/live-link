@@ -1,18 +1,35 @@
-import clsx from "clsx";
+import { tv, VariantProps } from "tailwind-variants";
 
-interface ButtonProps {
-  fontWeight?: "normal" | "bold";
+const button = tv({
+  variants: {
+    rounded: {
+      default: "rounded-3xl",
+      roundendFull: "rounded-full",
+    },
+    fontWeight: {
+      normal: "font-normal",
+      bold: "font-bold",
+    },
+  },
+  defaultVariants: {
+    rounded: "default",
+    fontWeight: "normal",
+  },
+});
+
+type ButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
   type?: "submit" | "button" | "reset" | undefined;
   event?: Event;
-}
+} & VariantProps<typeof button>;
 
 export const Button: React.FC<ButtonProps> = ({
-  fontWeight = "font-normal",
   children,
   onClick,
+  fontWeight,
+  rounded,
   className,
   type = "button",
 }) => {
@@ -20,14 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={clsx(
-        "rounded-3xl",
-        {
-          "font-normal": fontWeight === "normal",
-          "font-bold": fontWeight === "bold",
-        },
-        className,
-      )}
+      className={button({ fontWeight, rounded, className })}
     >
       {children}
     </button>

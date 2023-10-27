@@ -141,7 +141,9 @@ export const Peer = (options: PeerProps) => {
         "ERR_DESTROYED",
       );
 
-    const submap = state._senderMap.get(track) || new Map(); // nested Maps map [track, stream] to sender
+    const submap = state._senderMap.get(track) || new Map();
+    console.log(submap);
+
     let sender = submap.get(stream);
     if (!sender) {
       sender = state._peerConn?.addTrack(track, stream);
@@ -426,10 +428,10 @@ export const Peer = (options: PeerProps) => {
   }
 
   return {
-    off,
-    on,
     addStream,
     signalingMessageCallback,
     destroy,
+    off,
+    on,
   };
 };

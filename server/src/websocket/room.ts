@@ -8,7 +8,7 @@ export const userSocketMap: Record<string, string> = {}
 interface IUser {
   id: string
   name: string
-  lastname?: string | null
+  lastName?: string | null
   picture: string | null
 }
 
@@ -46,7 +46,7 @@ export const roomHandler = (socket: Socket) => {
       user: {
         id: sessionUser.id,
         name: sessionUser.name,
-        lastname: sessionUser.lastName,
+        lastName: sessionUser.lastName,
         picture: sessionUser.picture,
       },
       isMuted: false,

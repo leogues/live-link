@@ -41,7 +41,7 @@ export const RoomV2Context = createContext<RoomV2Value>({
     userId: "",
   },
   peers: {},
-  dispatchPeers: (value: PeerAction) => {},
+  dispatchPeers: (_value: PeerAction) => {},
   isLoading: false,
 });
 
@@ -90,6 +90,8 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   }, []);
 
   console.log(peers);
+
+  if (isLoading) return <></>;
 
   return (
     <RoomV2Context.Provider value={{ room, peers, dispatchPeers, isLoading }}>
