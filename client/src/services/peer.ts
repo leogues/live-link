@@ -21,7 +21,7 @@ interface IState extends PeerProps {
 
   _localStream: MediaStream | null;
   _remoteStreams: MediaStream[];
-  _senderMap: Map<MediaStreamTrack, Map<MediaStream, RTCRtpSender>>;
+  _localTracks: Map<MediaStreamTrack, RTCRtpSender>;
 
   _peerConn?: RTCPeerConnection | null;
   _pendingIceCandidates: RTCIceCandidate[];
@@ -69,7 +69,7 @@ export const Peer = (options: PeerProps) => {
     _localStream: options.stream || null,
     _remoteStreams: [],
     // _remoteTracks:
-    _senderMap: new Map(),
+    _localTracks: new Map(),
 
     _isFirstNegotiatio: true,
     _isNegotiating: false,
@@ -123,17 +123,11 @@ export const Peer = (options: PeerProps) => {
       );
 
     stream.getTracks().forEach((track) => {
-      addTrack({ track, stream });
+      addTrack({ track });
     });
   }
 
-  function addTrack({
-    track,
-    stream,
-  }: {
-    track: MediaStreamTrack;
-    stream: MediaStream;
-  }) {
+  function addTrack({ track }: { track: MediaStreamTrack }) {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
@@ -141,26 +135,42 @@ export const Peer = (options: PeerProps) => {
         "ERR_DESTROYED",
       );
 
-    const submap = state._senderMap.get(track) || new Map();
-    console.log(submap);
-
-    let sender = submap.get(stream);
+    let sender = state._localTracks.get(track);
     if (!sender) {
-      sender = state._peerConn?.addTrack(track, stream);
-      submap.set(stream, sender);
-      state._senderMap.set(track, submap);
+      sender = state._peerConn?.addTrack(track);
+
+      if (!sender) return;
+
+      state._localTracks.set(track, sender);
+
       _logs("add track call needsNegotiation");
       _needsNegotiation();
-    } else if (sender.removed) {
-      throw errCode(
-        new Error(
-          "Track has been removed. You should enable/disable tracks that you want to re-add.",
-        ),
-        "ERR_SENDER_REMOVED",
-      );
     } else {
       throw errCode(
         new Error("Track has already been added to that stream."),
+        "ERR_SENDER_ALREADY_ADDED",
+      );
+    }
+  }
+
+  function removeTrack({ track }: { track: MediaStreamTrack }) {
+    if (state.isDestroying) return;
+    if (state.isDestroyed)
+      throw errCode(
+        new Error("cannot removeTrack after peer is destroyed"),
+        "ERR_DESTROYED",
+      );
+
+    const sender = state._localTracks.get(track);
+
+    if (sender) {
+      state._peerConn?.removeTrack(sender);
+      state._localTracks.delete(track);
+      _logs("remove track call needsNegotiation");
+      _needsNegotiation();
+    } else {
+      throw errCode(
+        new Error("The track does not exist in this stream."),
         "ERR_SENDER_ALREADY_ADDED",
       );
     }
@@ -429,6 +439,8 @@ export const Peer = (options: PeerProps) => {
 
   return {
     addStream,
+    addTrack,
+    removeTrack,
     signalingMessageCallback,
     destroy,
     off,

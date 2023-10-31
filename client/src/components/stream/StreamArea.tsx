@@ -22,7 +22,9 @@ export const StreamArea: React.FC = ({}) => {
         <>
           <div className="box-border flex h-[70%] justify-center">
             <div className="relative flex aspect-[21/9] h-full max-h-full justify-center bg-black">
-              {localStream && <VideoPlayer stream={localStream} />}
+              {localStream.current && (
+                <VideoPlayer stream={localStream.current} />
+              )}
               <div className="absolute right-5 top-4">
                 <ParticipantCard padding="rounded">
                   <img height={20} width={20} src={MaximizeIcon} />
@@ -52,8 +54,8 @@ export const StreamArea: React.FC = ({}) => {
                   className="relative flex aspect-[16/9] h-full justify-center overflow-hidden bg-black"
                   key={peer.user?.id}
                 >
-                  {peer.user?.id === user?.id && localStream && (
-                    <VideoPlayer stream={localStream} />
+                  {peer.user?.id === user?.id && localStream.current && (
+                    <VideoPlayer stream={localStream.current} />
                   )}
                   {peer.stream && <VideoPlayer stream={peer.stream} />}
 

@@ -32,16 +32,14 @@ import { Link } from "react-router-dom";
 export const Room = () => {
   const { room } = useContext(RoomV2Context);
   const { user } = useContext(UserV2Context);
-  const {
-    isMicOn,
-    isStreamScreenOn,
-    isWebCamOn,
-    handleMicOn,
-    handleScreenOn,
-    handleWebCamOn,
-  } = useContext(StreamContext);
+  const toggleChat = false;
+  const { mediaTracks, handleMicOn, handleScreenOn, handleWebCamOn } =
+    useContext(StreamContext);
 
   const createAtFormated = room?.createdAt ? formatDate(room?.createdAt) : "";
+  const isMicOn = mediaTracks.audioTrack.enabled;
+  const isWebCamOn = mediaTracks.videoTrack.enabled;
+  const isSharingScreenOn = mediaTracks.screenTrack.enabled;
 
   useEffect(() => {
     if (room) {
@@ -103,9 +101,11 @@ export const Room = () => {
             </div>
           </div>
           {/* Right */}
-          <div className="basis-80">
-            <span> test</span>
-          </div>
+          {toggleChat && (
+            <div className="basis-80">
+              <span> test</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-shrink-0 grow basis-auto dark:bg-darkBlue-900">
@@ -120,11 +120,11 @@ export const Room = () => {
                 src={isWebCamOn ? videoOnIcon : videoOffIcon}
               />
             </ToggleButton>
-            <ToggleButton enabled={isStreamScreenOn} onClick={handleScreenOn}>
+            <ToggleButton enabled={isSharingScreenOn} onClick={handleScreenOn}>
               <img
                 className="h-6 w-6"
                 src={
-                  isStreamScreenOn ? screenSharingOnIcon : screenSharingOffIcon
+                  isSharingScreenOn ? screenSharingOnIcon : screenSharingOffIcon
                 }
               />
             </ToggleButton>
@@ -141,7 +141,8 @@ export const Room = () => {
             </Button>
           </Link>
         </div>
-        <div className="basis-80">test2</div>
+
+        {toggleChat && <div className="basis-80">test2</div>}
       </div>
     </div>
   );
