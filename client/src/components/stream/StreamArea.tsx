@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
 import MaximizeIcon from "../../assets/maximize.png";
@@ -14,13 +14,13 @@ export const StreamArea: React.FC = ({}) => {
   const { peers } = useContext(RoomV2Context);
   const { localStream } = useContext(StreamContext);
 
-  const [focusedVideoId, setFocusedVideoId] = useState(user?.id);
+  // const [focusedVideoId, setFocusedVideoId] = useState(user?.id);
 
   return (
-    <div className="flex h-full flex-col gap-7 p-7 text-white">
+    <div className="flex h-full flex-col gap-5 p-5 text-white">
       {!!Object.values(peers).length && (
         <>
-          <div className="box-border flex h-[70%] justify-center">
+          <div className="box-border flex h-[calc(70%-(1.25rem*3)*0.70)] justify-center">
             <div className="relative flex aspect-[21/9] h-full max-h-full justify-center bg-black">
               {localStream.current && (
                 <VideoPlayer stream={localStream.current} />
@@ -47,7 +47,7 @@ export const StreamArea: React.FC = ({}) => {
               </div>
             </div>
           </div>
-          <div className="box-border h-[30%]">
+          <div className="box-border h-[calc(30%-(1.25rem*3)*0.30)]">
             <div className="vertical-scroll-bar flex h-full gap-5">
               {Object.values(peers).map((peer) => (
                 <div

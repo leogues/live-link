@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 
 import { ws } from "../services/ws";
-import { ChatContext } from "../context/ChatContext";
 import { UserV2Context } from "../context/UserV2Context";
 import { RoomV2Context } from "../context/RoomV2Context";
 import { formatDate } from "../utils/DateUtils";

@@ -34,18 +34,24 @@ type enableUserTrackProps = {
   };
 };
 
+type ITransformedMediaTracks = {
+  audioTrack: MediaStreamTrack;
+  videoTrack: MediaStreamTrack;
+  screenTrack: MediaStreamTrack;
+  screenAudioTrack: MediaStreamTrack;
+};
+
 type IMediaTrack = {
   enabled: boolean;
-  track: MediaStreamTrack | null;
+  track: MediaStreamTrack;
 };
 
 type IMediaTracks = {
   audioTrack: IMediaTrack;
-  videoTrack: IMediaTrack;
   screenTrack: IMediaTrack;
   screenAudioTrack: IMediaTrack;
+  videoTrack: IMediaTrack;
 };
-
 interface StreamValue {
   localStream: MutableRefObject<MediaStream | undefined>;
   mediaTracks: {
@@ -106,19 +112,19 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
     audioTrack: {
       enabled: true,
-      track: null,
+      track: new MediaStreamTrack(),
     },
     videoTrack: {
       enabled: false,
-      track: null,
+      track: new MediaStreamTrack(),
     },
     screenTrack: {
       enabled: false,
-      track: null,
+      track: new MediaStreamTrack(),
     },
     screenAudioTrack: {
       enabled: false,
-      track: null,
+      track: new MediaStreamTrack(),
     },
   });
 
@@ -197,16 +203,52 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     dispatchPeers(addPeerStreamAction(remotePeerId, stream));
   };
 
+  const transformMediaTracks = () => {
+    const transformedMediaTracks: ITransformedMediaTracks = {
+      audioTrack: null,
+      videoTrack: null,
+      screenTrack: null,
+      screenAudioTrack: null,
+    };
+
+    const mediaTracksKeys = Object.keys(
+      mediaTracks,
+    ) as (keyof ITransformedMediaTracks)[];
+
+    mediaTracksKeys.forEach((mediaTracksKey) => {
+      if (
+        mediaTracksKey === "videoTrack" &&
+        mediaTracks["screenTrack"].enabled
+      ) {
+        transformedMediaTracks[mediaTracksKey] = null;
+      } else {
+        transformedMediaTracks[mediaTracksKey] = mediaTracks[mediaTracksKey]
+          .enabled
+          ? mediaTracks[mediaTracksKey].track
+          : null;
+      }
+    });
+    return transformedMediaTracks;
+  };
+
+  const updatePeersTracks = () => {
+    const transformedMediaTracks = transformMediaTracks();
+
+    multiPeersManager.current?.updateMediaTracks({
+      mediaTracks: transformedMediaTracks,
+    });
+  };
+
   const disableTrack = (mediaTrackType: removeTrackProps) => {
     const mediaTrack = mediaTracks[mediaTrackType];
 
     mediaTrack.enabled = false;
+    mediaTrack.track.enabled = false;
 
     if (
       mediaTrackType === "screenTrack" ||
       mediaTrackType === "screenAudioTrack"
     ) {
-      mediaTrack.track = null;
     }
 
     setMediaTracks((prev) => ({
@@ -300,7 +342,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
     multiPeersManager.current?.startCall({
       remotePeerId: peer.user.id,
-      stream: localStream.current,
+      mediaTracks: transformMediaTracks(),
     });
   };
 
@@ -364,11 +406,12 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     };
   }, []);
 
-  useEffect(() => {}, [mediaTracks]);
+  useEffect(() => {
+    updatePeersTracks();
+    console.log(mediaTracks);
+  }, [mediaTracks]);
 
   localStream.current = createMediaStream();
-
-  console.log(mediaTracks);
 
   return (
     <StreamContext.Provider

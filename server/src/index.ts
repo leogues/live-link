@@ -23,6 +23,7 @@ app.use(
     credentials: true,
   })
 )
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || '',
@@ -34,6 +35,7 @@ app.use(
     store: sessionStore,
   })
 )
+
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
