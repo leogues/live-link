@@ -1,6 +1,10 @@
+import clsx from "clsx";
 import { useEffect, useRef } from "react";
 
-export const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
+export const VideoPlayer: React.FC<{
+  stream: MediaStream;
+  className?: string;
+}> = ({ stream, className }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -9,5 +13,11 @@ export const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
     }
   }, [stream]);
 
-  return <video className="h-full w-full" ref={videoRef} autoPlay />;
+  return (
+    <video
+      className={clsx("h-full w-full", className)}
+      ref={videoRef}
+      autoPlay
+    />
+  );
 };

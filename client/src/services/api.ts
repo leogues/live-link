@@ -3,6 +3,7 @@ import baseUrl from "./apiUrl";
 
 const api = axios.create({
   baseURL: baseUrl,
+
   withCredentials: true,
 });
 

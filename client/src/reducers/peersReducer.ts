@@ -4,6 +4,9 @@ import {
   ADD_PEER,
   REMOVE_PEER,
   ADD_PEER_STREAM,
+  UPDATE_PEER_MICROPHONE_STATE,
+  UPDATE_PEER_SHARINGSCREEN_STATE,
+  UPDATE_PEER_WEBCAM_STATE,
   REMOVE_PEER_STREAM,
   ADD_ALL_PEERS,
 } from "./peersActions";
@@ -13,8 +16,9 @@ export type PeerState = Record<
   {
     user?: IUser;
     stream?: MediaStream;
-    isMuted?: boolean;
-    isSharingScreen?: boolean;
+    isMicOn?: boolean;
+    isWebCamOn?: boolean;
+    isSharingScreenOn?: boolean;
   }
 >;
 
@@ -30,6 +34,18 @@ export type PeerAction =
   | {
       type: typeof ADD_PEER_STREAM;
       payload: { userId: string; stream: MediaStream };
+    }
+  | {
+      type: typeof UPDATE_PEER_MICROPHONE_STATE;
+      payload: { peerId: string; enabled: boolean };
+    }
+  | {
+      type: typeof UPDATE_PEER_SHARINGSCREEN_STATE;
+      payload: { peerId: string; enabled: boolean };
+    }
+  | {
+      type: typeof UPDATE_PEER_WEBCAM_STATE;
+      payload: { peerId: string; enabled: boolean };
     }
   | {
       type: typeof REMOVE_PEER_STREAM;
@@ -67,6 +83,30 @@ export const peersReducer = (state: PeerState, action: PeerAction) => {
         [action.payload.userId]: {
           ...state[action.payload.userId],
           stream: action.payload.stream,
+        },
+      };
+    case UPDATE_PEER_MICROPHONE_STATE:
+      return {
+        ...state,
+        [action.payload.peerId]: {
+          ...state[action.payload.peerId],
+          isMicOn: action.payload.enabled,
+        },
+      };
+    case UPDATE_PEER_WEBCAM_STATE:
+      return {
+        ...state,
+        [action.payload.peerId]: {
+          ...state[action.payload.peerId],
+          isWebCamOn: action.payload.enabled,
+        },
+      };
+    case UPDATE_PEER_SHARINGSCREEN_STATE:
+      return {
+        ...state,
+        [action.payload.peerId]: {
+          ...state[action.payload.peerId],
+          isSharingScreenOn: action.payload.enabled,
         },
       };
 

@@ -14,9 +14,11 @@ interface IUser {
 
 interface IPeer {
   user: IUser
-  isMuted: boolean
-  isSharingScreen: boolean
+  isMicOn?: boolean
+  isWebCamOn?: boolean
+  isSharingScreenOn?: boolean
 }
+
 interface IRoomParams {
   roomId: string
   userId: string
@@ -49,8 +51,9 @@ export const roomHandler = (socket: Socket) => {
         lastName: sessionUser.lastName,
         picture: sessionUser.picture,
       },
-      isMuted: false,
-      isSharingScreen: false,
+      isMicOn: true,
+      isWebCamOn: false,
+      isSharingScreenOn: false,
     }
 
     rooms[roomId][sessionUser.id] = peer

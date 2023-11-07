@@ -13,7 +13,6 @@ export const webrtcCallHandler = (socket: Socket) => {
     payload,
     remotePeerId,
   }: peerMessageProps) => {
-    console.log(payload)
     const remotePeerSocketId = userSocketMap[remotePeerId]
     const localPeerId = socket.request.user.id
 

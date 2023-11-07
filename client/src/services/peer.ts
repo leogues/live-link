@@ -30,7 +30,7 @@ export interface IPeer {
 interface IState extends PeerProps {
   isInitiator: boolean;
 
-  _localStream: MediaStream;
+  localStream: MediaStream;
   _remoteStreams: MediaStream[];
   _localTracks: Map<MediaStreamTrack, RTCRtpSender>;
 
@@ -77,7 +77,7 @@ export const Peer = (options: PeerProps) => {
     _peerConn: null,
     _pendingIceCandidates: [],
 
-    _localStream: new MediaStream(),
+    localStream: new MediaStream(),
     _remoteStreams: [],
     // _remoteTracks:
     _localTracks: new Map(),
@@ -90,7 +90,7 @@ export const Peer = (options: PeerProps) => {
     isDestroyed: false,
     isDestroying: false,
 
-    enabledDebug: options.enabledDebug || true,
+    enabledDebug: options.enabledDebug || false,
   };
 
   const eventListeners: Record<string, Function[]> = {};
@@ -109,14 +109,13 @@ export const Peer = (options: PeerProps) => {
   if (options.initialTracks) {
     Object.values(options.initialTracks).forEach((track) => {
       if (!track) return;
-      console.log({ Teste: track });
 
       addTrack({ track });
     });
   }
 
-  if (state._localStream) {
-    addStream({ stream: state._localStream });
+  if (state.localStream) {
+    addStream({ stream: state.localStream });
   }
 
   _logs("initial negotiation");
@@ -154,17 +153,16 @@ export const Peer = (options: PeerProps) => {
         new Error("cannot addTrack after peer is destroyed"),
         "ERR_DESTROYED",
       );
+    if (!track) return;
 
     let sender = state._localTracks.get(track);
 
-    console.log("Tracks: addTrack", track);
     if (!sender) {
-      sender = state._peerConn?.addTrack(track, state._localStream);
+      sender = state._peerConn?.addTrack(track, state.localStream);
 
       if (!sender) return;
 
       state._localTracks.set(track, sender);
-      console.log("Tracks:", state._localTracks);
 
       _logs("add track call needsNegotiation");
       _needsNegotiation();
@@ -189,8 +187,6 @@ export const Peer = (options: PeerProps) => {
         new Error("cannot replaceTrack after peer is destroyed"),
         "ERR_DESTROYED",
       );
-
-    console.log("Tracks: ReplaceTrack", oldTrack, newTrack);
 
     const sender = state._localTracks.get(oldTrack);
 
@@ -223,9 +219,6 @@ export const Peer = (options: PeerProps) => {
         "ERR_DESTROYED",
       );
 
-    console.log("Tracks: removeTrack", track);
-    console.log("Tracks:", state._localTracks);
-
     const sender = state._localTracks.get(track);
 
     if (sender) {
@@ -254,8 +247,6 @@ export const Peer = (options: PeerProps) => {
     const remoteDescription = new RTCSessionDescription(
       payload as RTCSessionDescriptionInit,
     );
-
-    console.log({ Test: state._peerConn?.getSenders() });
 
     await state._peerConn?.setRemoteDescription(remoteDescription);
 
@@ -335,6 +326,8 @@ export const Peer = (options: PeerProps) => {
       state.isDestroyed = true;
       state.isDestroying = false;
 
+      state._localTracks = new Map();
+
       if (state._peerConn) {
         try {
           state._peerConn.close();
@@ -360,13 +353,14 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying || state.isDestroyed) return;
     if (!state._peerConn) return;
 
-    console.log("senders", state._peerConn.getSenders());
-
     let sessionDescription;
 
     try {
       if (messageType === "offer") {
-        sessionDescription = await state._peerConn.createOffer();
+        sessionDescription = await state._peerConn.createOffer({
+          offerToReceiveAudio: true,
+          offerToReceiveVideo: true,
+        });
       } else if (messageType === "answer") {
         sessionDescription = await state._peerConn.createAnswer();
       }
@@ -465,8 +459,6 @@ export const Peer = (options: PeerProps) => {
 
   function _onTrack(event: RTCTrackEvent) {
     if (state.isDestroyed) return;
-
-    console.log("on Track:", event);
 
     event.streams.forEach((eventStream) => {
       if (

@@ -34,44 +34,15 @@ type enableUserTrackProps = {
   };
 };
 
-type ITransformedMediaTracks = {
-  audioTrack: MediaStreamTrack;
-  videoTrack: MediaStreamTrack;
-  screenTrack: MediaStreamTrack;
-  screenAudioTrack: MediaStreamTrack;
-};
-
-type IMediaTrack = {
-  enabled: boolean;
-  track: MediaStreamTrack;
-};
-
 type IMediaTracks = {
-  audioTrack: IMediaTrack;
-  screenTrack: IMediaTrack;
-  screenAudioTrack: IMediaTrack;
-  videoTrack: IMediaTrack;
+  audioTrack: MediaStreamTrack | null;
+  screenTrack: MediaStreamTrack | null;
+  screenAudioTrack: MediaStreamTrack | null;
+  videoTrack: MediaStreamTrack | null;
 };
 interface StreamValue {
   localStream: MutableRefObject<MediaStream | undefined>;
-  mediaTracks: {
-    audioTrack: {
-      enabled: boolean;
-      track: MediaStreamTrack | null;
-    };
-    videoTrack: {
-      enabled: boolean;
-      track: MediaStreamTrack | null;
-    };
-    screenTrack: {
-      enabled: boolean;
-      track: MediaStreamTrack | null;
-    };
-    screenAudioTrack: {
-      enabled: boolean;
-      track: MediaStreamTrack | null;
-    };
-  };
+  mediaTracks: IMediaTracks;
   handleMicOn: () => void;
   handleWebCamOn: () => void;
   handleScreenOn: () => void;
@@ -80,22 +51,10 @@ interface StreamValue {
 export const StreamContext = createContext<StreamValue>({
   localStream: { current: undefined },
   mediaTracks: {
-    audioTrack: {
-      enabled: false,
-      track: null,
-    },
-    screenTrack: {
-      enabled: false,
-      track: null,
-    },
-    screenAudioTrack: {
-      enabled: false,
-      track: null,
-    },
-    videoTrack: {
-      enabled: false,
-      track: null,
-    },
+    audioTrack: null,
+    screenTrack: null,
+    screenAudioTrack: null,
+    videoTrack: null,
   },
   handleMicOn: () => {},
   handleWebCamOn: () => {},
@@ -105,55 +64,18 @@ export const StreamContext = createContext<StreamValue>({
 export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   children,
 }) => {
-  const { dispatchPeers } = useContext(RoomV2Context);
+  const { room, dispatchPeers } = useContext(RoomV2Context);
 
-  const localStream = useRef<MediaStream>();
+  const localStream = useRef<MediaStream>(new MediaStream());
 
   const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
-    audioTrack: {
-      enabled: true,
-      track: new MediaStreamTrack(),
-    },
-    videoTrack: {
-      enabled: false,
-      track: new MediaStreamTrack(),
-    },
-    screenTrack: {
-      enabled: false,
-      track: new MediaStreamTrack(),
-    },
-    screenAudioTrack: {
-      enabled: false,
-      track: new MediaStreamTrack(),
-    },
+    audioTrack: null,
+    screenTrack: null,
+    screenAudioTrack: null,
+    videoTrack: null,
   });
 
   const multiPeersManager = useRef<IPeers | null>(null);
-
-  const createMediaStream = () => {
-    const newMediaStream = new MediaStream();
-
-    if (
-      mediaTracks.screenAudioTrack.enabled &&
-      mediaTracks.screenAudioTrack.track
-    ) {
-      newMediaStream.addTrack(mediaTracks.screenAudioTrack.track);
-    }
-
-    if (mediaTracks.screenTrack.enabled && mediaTracks.screenTrack.track) {
-      newMediaStream.addTrack(mediaTracks.screenTrack.track);
-    }
-
-    if (mediaTracks.audioTrack.enabled && mediaTracks.audioTrack.track) {
-      newMediaStream.addTrack(mediaTracks.audioTrack.track);
-    }
-
-    if (mediaTracks.videoTrack.enabled && mediaTracks.videoTrack.track) {
-      newMediaStream.addTrack(mediaTracks.videoTrack.track);
-    }
-
-    return newMediaStream;
-  };
 
   const grabMediaStreamTracks = async ({
     type,
@@ -203,74 +125,63 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     dispatchPeers(addPeerStreamAction(remotePeerId, stream));
   };
 
-  const transformMediaTracks = () => {
-    const transformedMediaTracks: ITransformedMediaTracks = {
-      audioTrack: null,
-      videoTrack: null,
-      screenTrack: null,
-      screenAudioTrack: null,
-    };
-
-    const mediaTracksKeys = Object.keys(
-      mediaTracks,
-    ) as (keyof ITransformedMediaTracks)[];
-
-    mediaTracksKeys.forEach((mediaTracksKey) => {
-      if (
-        mediaTracksKey === "videoTrack" &&
-        mediaTracks["screenTrack"].enabled
-      ) {
-        transformedMediaTracks[mediaTracksKey] = null;
-      } else {
-        transformedMediaTracks[mediaTracksKey] = mediaTracks[mediaTracksKey]
-          .enabled
-          ? mediaTracks[mediaTracksKey].track
-          : null;
-      }
-    });
-    return transformedMediaTracks;
-  };
+  function determineVideoTrack(
+    screenTrack: MediaStreamTrack | null,
+    videoTrack: MediaStreamTrack | null,
+  ) {
+    if (screenTrack && screenTrack.enabled) {
+      return screenTrack;
+    } else {
+      return videoTrack;
+    }
+  }
 
   const updatePeersTracks = () => {
-    const transformedMediaTracks = transformMediaTracks();
+    const audioTrack = mediaTracks.audioTrack;
+    const screenAudioTrack = mediaTracks.screenAudioTrack;
+    const screenTrack = mediaTracks.screenTrack;
+    const videoTrack = mediaTracks.videoTrack;
 
-    multiPeersManager.current?.updateMediaTracks({
-      mediaTracks: transformedMediaTracks,
+    const principalVideoTrack = determineVideoTrack(screenTrack, videoTrack);
+
+    return multiPeersManager.current?.updateMediaTracks({
+      mediaTracks: {
+        audioTrack,
+        screenAudioTrack,
+        videoTrack: principalVideoTrack,
+      },
     });
   };
 
   const disableTrack = (mediaTrackType: removeTrackProps) => {
     const mediaTrack = mediaTracks[mediaTrackType];
 
-    mediaTrack.enabled = false;
-    mediaTrack.track.enabled = false;
+    if (!mediaTrack) return false;
 
-    if (
-      mediaTrackType === "screenTrack" ||
-      mediaTrackType === "screenAudioTrack"
-    ) {
-    }
+    mediaTrack.enabled = false;
 
     setMediaTracks((prev) => ({
       ...prev,
       [mediaTrackType]: mediaTrack,
     }));
+
+    return true;
   };
 
   const enableUserTrack = async ({
     mediaTrackType,
     constraints,
   }: enableUserTrackProps) => {
-    const mediaTrack = mediaTracks[mediaTrackType];
+    let mediaTrack = mediaTracks[mediaTrackType];
 
-    if (mediaTrack.track) {
+    if (mediaTrack) {
       mediaTrack.enabled = true;
       setMediaTracks((prev) => ({
         ...prev,
         [mediaTrackType]: mediaTrack,
       }));
 
-      return;
+      return true;
     }
 
     const trackType = constraints.audio ? "audio" : "video";
@@ -285,24 +196,27 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
         console.log(
           `Não foi possível pegar a faixa ${mediaTrackType} do usuário`,
         );
-        return;
+        return false;
       }
 
-      mediaTrack.track = tracks[trackType];
+      mediaTrack = tracks[trackType];
       mediaTrack.enabled = true;
 
       setMediaTracks((prev) => ({
         ...prev,
         [mediaTrackType]: mediaTrack,
       }));
+
+      return true;
     } catch (error) {
       console.error(`Erro ao obter a faixa ${mediaTrackType}: ${error}`);
+      return false;
     }
   };
 
   const enabledDisplayTrack = async () => {
-    const mediaVideoTrack = mediaTracks["screenTrack"];
-    const mediaAudioTrack = mediaTracks["screenAudioTrack"];
+    let mediaVideoTrack = mediaTracks["screenTrack"];
+    let mediaAudioTrack = mediaTracks["screenAudioTrack"];
 
     try {
       const tracks = await grabMediaStreamTracks({
@@ -312,11 +226,10 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
       if (!tracks || !tracks["video"]) {
         console.log(`Não foi possível pegar a faixa share screen do usuário`);
-        return;
+        return false;
       }
 
-      mediaVideoTrack.track = tracks.video;
-      mediaVideoTrack.enabled = true;
+      mediaVideoTrack = tracks.video;
 
       setMediaTracks((prev) => ({
         ...prev,
@@ -324,16 +237,18 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
       }));
 
       if (tracks["audio"]) {
-        mediaAudioTrack.track = tracks.audio;
-        mediaAudioTrack.enabled = true;
+        mediaAudioTrack = tracks.audio;
 
         setMediaTracks((prev) => ({
           ...prev,
           ["screenAudioTrack"]: mediaAudioTrack,
         }));
       }
+
+      return true;
     } catch (error) {
       console.error(`Erro ao obter a faixa screen sharing: ${error}`);
+      return false;
     }
   };
 
@@ -342,7 +257,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
     multiPeersManager.current?.startCall({
       remotePeerId: peer.user.id,
-      mediaTracks: transformMediaTracks(),
+      mediaTracks,
     });
   };
 
@@ -352,36 +267,58 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     multiPeersManager.current?.close(peerId);
   };
 
-  const handleMicOn = () => {
+  const handleMicOn = async () => {
     const mediaTrackType = "audioTrack";
-    const toggleMic = !mediaTracks.audioTrack.enabled;
+    const isMicEnabled = !mediaTracks.audioTrack?.enabled;
 
-    if (toggleMic) {
-      enableUserTrack({ mediaTrackType, constraints: { audio: true } });
-    } else {
-      disableTrack(mediaTrackType);
+    const success = isMicEnabled
+      ? await enableUserTrack({ mediaTrackType, constraints: { audio: true } })
+      : disableTrack(mediaTrackType);
+
+    if (success) {
+      ws.emit("mediaDeviceStatusUpdate", {
+        roomId: room?.id,
+        type: "microphone",
+        enabled: isMicEnabled,
+      });
     }
   };
 
-  const handleWebCamOn = () => {
+  const handleWebCamOn = async () => {
     const mediaTrackType = "videoTrack";
-    const toggleWebCam = !mediaTracks.videoTrack.enabled;
+    const isWebCamEnabled = !mediaTracks.videoTrack?.enabled;
 
-    if (toggleWebCam) {
-      enableUserTrack({ mediaTrackType, constraints: { video: true } });
-    } else {
-      disableTrack(mediaTrackType);
+    const success = isWebCamEnabled
+      ? await enableUserTrack({ mediaTrackType, constraints: { video: true } })
+      : disableTrack(mediaTrackType);
+
+    if (success) {
+      ws.emit("mediaDeviceStatusUpdate", {
+        roomId: room?.id,
+        type: "web-cam",
+        enabled: isWebCamEnabled,
+      });
     }
   };
 
-  const handleScreenOn = () => {
-    const toggleScreenSharing = !mediaTracks.screenTrack.enabled;
+  const handleScreenOn = async () => {
+    const screenTrackEnabled = !mediaTracks.screenTrack?.enabled;
 
-    if (toggleScreenSharing) {
-      enabledDisplayTrack();
+    let success: boolean;
+
+    if (screenTrackEnabled) {
+      success = await enabledDisplayTrack();
     } else {
-      disableTrack("screenTrack");
+      success = disableTrack("screenTrack");
       disableTrack("screenAudioTrack");
+    }
+
+    if (success) {
+      ws.emit("mediaDeviceStatusUpdate", {
+        roomId: room?.id,
+        type: "sharing-screen",
+        enabled: screenTrackEnabled,
+      });
     }
   };
 
@@ -407,11 +344,11 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   }, []);
 
   useEffect(() => {
-    updatePeersTracks();
-    console.log(mediaTracks);
-  }, [mediaTracks]);
+    const mediaStream = updatePeersTracks();
+    if (!mediaStream) return;
 
-  localStream.current = createMediaStream();
+    localStream.current = mediaStream;
+  }, [mediaTracks]);
 
   return (
     <StreamContext.Provider

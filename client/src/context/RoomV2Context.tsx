@@ -11,6 +11,9 @@ import {
   addAllPeersAction,
   addPeerAction,
   removePeerAction,
+  updateMicrophoneStateAction,
+  updateSharingScreenStateAction,
+  updateWebCamStateAction,
 } from "../reducers/peersActions";
 import { IPeer } from "../types/peer";
 import Peer from "peerjs";
@@ -28,6 +31,13 @@ interface RoomV2Value {
   dispatchPeers: React.Dispatch<PeerAction>;
   isLoading: boolean;
 }
+
+type MediaDeviceAccepted = "microphone" | "web-cam" | "sharing-screen";
+
+export type MediaDeviceUpdate = {
+  peerId: string;
+  enabled: boolean;
+};
 
 interface RoomV2ContextProps {
   children: React.ReactNode;
@@ -72,15 +82,52 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     dispatchPeers(addPeerAction(peer));
   };
 
-  const removePeer = (userId: string) => {
-    console.log("removed", userId);
-    dispatchPeers(removePeerAction(userId));
+  const removePeer = (peerId: string) => {
+    console.log("removed", peerId);
+    dispatchPeers(removePeerAction(peerId));
+  };
+
+  const mediaDeviceStatusUpdate = ({
+    peerId,
+    type,
+    enabled,
+  }: {
+    peerId: string;
+    type: MediaDeviceAccepted;
+    enabled: boolean;
+  }) => {
+    console.log("Media Device Update", { type, enabled });
+    const mediaDeviceStatusUpdateAccepted: Record<
+      MediaDeviceAccepted,
+      ({ peerId, enabled }: MediaDeviceUpdate) => void
+    > = {
+      microphone: ({ peerId, enabled }: MediaDeviceUpdate) => {
+        dispatchPeers(updateMicrophoneStateAction({ peerId, enabled }));
+      },
+      "web-cam": ({ peerId, enabled }: MediaDeviceUpdate) => {
+        dispatchPeers(updateWebCamStateAction({ peerId, enabled }));
+      },
+      "sharing-screen": ({ peerId, enabled }: MediaDeviceUpdate) => {
+        dispatchPeers(updateSharingScreenStateAction({ peerId, enabled }));
+      },
+    };
+
+    const mediaDeviceStateDispatch = mediaDeviceStatusUpdateAccepted[type];
+
+    if (!mediaDeviceStateDispatch) {
+      throw new Error(
+        "Função de dispatch não encontrada para esse dispositivo de mídia",
+      );
+    }
+
+    mediaDeviceStateDispatch({ peerId, enabled });
   };
 
   useEffect(() => {
     ws.on("get-users", getUsers);
     ws.on("user-joined", addPeer);
     ws.on("user-disconnected", removePeer);
+    ws.on("mediaDeviceStatusNotification", mediaDeviceStatusUpdate);
 
     return () => {
       ws.off("get-users");

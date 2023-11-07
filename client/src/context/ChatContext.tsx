@@ -29,7 +29,7 @@ export const ChatContext = createContext<ChatValue>({
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [chat, chatDispatch] = useReducer(chatReducer, {
     messages: [],
-    isChatOpen: false,
+    isChatOpen: true,
   });
 
   const sendMessage = (message: string, roomId: string, author: string) => {

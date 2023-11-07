@@ -11,6 +11,7 @@ import cors from 'cors'
 import { roomHandler } from './websocket/room'
 import { webrtcCallHandler } from './websocket/webrtcCall'
 import { frontendUrl, routes } from './routes'
+import { streamHandler } from './websocket/stream'
 
 const port = 8080
 const app = express()
@@ -66,6 +67,7 @@ socket.on('connection', (socket) => {
 
   roomHandler(socket)
   webrtcCallHandler(socket)
+  streamHandler(socket)
 
   socket.on('disconnect', () => {
     console.log('user is disconnected')

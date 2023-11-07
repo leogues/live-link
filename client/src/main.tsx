@@ -15,6 +15,7 @@ import { Login } from "./pages/Login.tsx";
 import { StrictMode } from "react";
 import { RoomV2Provider } from "./context/RoomV2Context.tsx";
 import { StreamProvider } from "./context/StreamContext.tsx";
+import { ChatProvider } from "./context/ChatContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -38,7 +39,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <UserV2Provider>
                   <RoomV2Provider>
                     <StreamProvider>
-                      <Room />
+                      <ChatProvider>
+                        <Room />
+                      </ChatProvider>
                     </StreamProvider>
                   </RoomV2Provider>
                 </UserV2Provider>

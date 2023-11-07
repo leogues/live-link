@@ -2,11 +2,11 @@ import { IPeer, Peer, RTCRenegotiate } from "./peer";
 import { ws } from "./ws";
 
 interface IState {
+  localStream: MediaStream;
   peerConnections: Record<string, IPeer>;
   _mediaTracks: {
     audioTrack: MediaStreamTrack | null;
     videoTrack: MediaStreamTrack | null;
-    screenTrack: MediaStreamTrack | null;
     screenAudioTrack: MediaStreamTrack | null;
   };
 }
@@ -34,19 +34,19 @@ export interface IPeers {
     mediaTracks,
   }: {
     mediaTracks: IState["_mediaTracks"];
-  }) => void;
+  }) => MediaStream;
   off: (event: string) => void;
   on: (event: string, listener?: Function) => void;
 }
 
 export const Peers = () => {
   const state: IState = {
+    localStream: new MediaStream(),
     peerConnections: {},
     _mediaTracks: {
       audioTrack: null,
-      screenTrack: null,
-      screenAudioTrack: null,
       videoTrack: null,
+      screenAudioTrack: null,
     },
   };
 
@@ -62,18 +62,12 @@ export const Peers = () => {
     _emitEvent("stream", { stream, remotePeerId });
   };
 
-  const startCall = ({
-    remotePeerId,
-    mediaTracks,
-  }: {
-    remotePeerId: string;
-    mediaTracks: IState["_mediaTracks"];
-  }) => {
+  const startCall = ({ remotePeerId }: { remotePeerId: string }) => {
     console.log("start call");
 
     const peer = Peer({
       remotePeerId,
-      initialTracks: mediaTracks,
+      initialTracks: state._mediaTracks,
       isInitiator: true,
     });
 
@@ -96,14 +90,15 @@ export const Peers = () => {
         mediaTracks[mediaTrackKey as keyof typeof state._mediaTracks];
 
       if (track && !_track) {
+        state.localStream.addTrack(track);
+
         Object.values(state.peerConnections).forEach((peerConn) => {
           peerConn.addTrack({ track });
         });
-      } else if (!track && _track) {
-        Object.values(state.peerConnections).forEach((peerConn) => {
-          peerConn.removeTrack({ track: _track });
-        });
       } else if (track && _track && track !== _track) {
+        state.localStream.removeTrack(_track);
+        state.localStream.addTrack(track);
+
         Object.values(state.peerConnections).forEach((peerConn) => {
           peerConn.replaceTrack({ oldTrack: _track, newTrack: track });
         });
@@ -111,6 +106,8 @@ export const Peers = () => {
     });
 
     state._mediaTracks = mediaTracks;
+
+    return state.localStream;
   };
 
   const addStream = (stream?: MediaStream) => {
@@ -161,6 +158,11 @@ export const Peers = () => {
     ws.off("offer");
 
     _onStream = undefined;
+
+    state._mediaTracks.audioTrack = null;
+    state._mediaTracks.screenAudioTrack = null;
+    state._mediaTracks.videoTrack = null;
+
     console.log("close", state.peerConnections);
 
     Object.values(state.peerConnections)
