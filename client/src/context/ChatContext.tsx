@@ -7,9 +7,24 @@ import {
 } from "../reducers/chatActions";
 import { ws } from "../services/ws";
 
+interface SendMessageProps {
+  content: string;
+  userId: string;
+  name: string;
+  lastName?: string;
+  picture: string;
+  roomId: string;
+}
 interface ChatValue {
   chat: ChatState;
-  sendMessage: (message: string, roomId: string, author: string) => void;
+  sendMessage: ({
+    roomId,
+    content,
+    userId,
+    name,
+    lastName,
+    picture,
+  }: SendMessageProps) => void;
   toggleChat: () => void;
 }
 
@@ -22,7 +37,7 @@ export const ChatContext = createContext<ChatValue>({
     messages: [],
     isChatOpen: false,
   },
-  sendMessage: (_message: string, _roomId: string, _author: string) => {},
+  sendMessage: ({}) => {},
   toggleChat: () => {},
 });
 
@@ -32,12 +47,31 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     isChatOpen: true,
   });
 
-  const sendMessage = (message: string, roomId: string, author: string) => {
+  function scrollToBottom() {
+    const chatContainer = document.querySelector(".chat-container");
+
+    if (!chatContainer) return;
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  const sendMessage = ({
+    roomId,
+    content,
+    userId,
+    name,
+    lastName,
+    picture,
+  }: SendMessageProps) => {
     const messageData: IMessage = {
-      content: message,
+      content,
+      userId,
+      name,
+      lastName,
+      picture,
       timestamp: new Date().getTime(),
-      author,
     };
+
     chatDispatch(addMessageAction(messageData));
 
     ws.emit("send-message", roomId, messageData);
@@ -63,6 +97,10 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       ws.off("get-messages", addHistory);
     };
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat.messages]);
   return (
     <ChatContext.Provider
       value={{

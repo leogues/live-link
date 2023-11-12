@@ -11,16 +11,15 @@ import {
   ADD_ALL_PEERS,
 } from "./peersActions";
 
-export type PeerState = Record<
-  string,
-  {
-    user?: IUser;
-    stream?: MediaStream;
-    isMicOn?: boolean;
-    isWebCamOn?: boolean;
-    isSharingScreenOn?: boolean;
-  }
->;
+export type IPeerState = {
+  user?: IUser;
+  stream?: MediaStream;
+  isMicOn?: boolean;
+  isWebCamOn?: boolean;
+  isSharingScreenOn?: boolean;
+};
+
+export type PeerState = Record<string, IPeerState>;
 
 export type PeerAction =
   | {

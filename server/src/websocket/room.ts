@@ -29,7 +29,10 @@ interface IJoinRoomParams extends IRoomParams {
 }
 interface IMessage {
   content: string
-  author?: string
+  userId: string
+  name: string
+  lastName?: string
+  picture: string
   timestamp: number
 }
 
@@ -38,9 +41,10 @@ export const roomHandler = (socket: Socket) => {
     const sessionUser = socket.request.user as User
 
     if (!rooms[roomId]) rooms[roomId] = {}
+    if (!chats[roomId]) chats[roomId] = []
 
     userSocketMap[sessionUser.id] = socket.id
-    //socket.emit('get-messages', chats[roomId])
+    socket.emit('get-messages', chats[roomId])
 
     console.log('User:', sessionUser.name, 'Join:', roomId)
 
@@ -88,15 +92,6 @@ export const roomHandler = (socket: Socket) => {
     socket.to(roomId).emit('end-call', user.id)
   }
 
-  const startSharing = ({ userId, roomId }: IRoomParams) => {
-    console.log({ roomId, userId })
-    socket.to(roomId).emit('user-started-sharing', userId)
-  }
-
-  const stopSharing = (roomId: string) => {
-    socket.to(roomId).emit('user-stopped-sharing')
-  }
-
   const addMessage = (roomId: string, message: IMessage) => {
     console.log({ message })
     if (chats[roomId]) {
@@ -109,7 +104,5 @@ export const roomHandler = (socket: Socket) => {
 
   socket.on('join-room', joinRoom)
   socket.on('leave-room', leaveRoom)
-  socket.on('start-sharing', startSharing)
-  socket.on('stop-sharing', stopSharing)
   socket.on('send-message', addMessage)
 }

@@ -1,22 +1,21 @@
-// import { useContext } from "react";
-// import { ChatContext } from "../../context/ChatContext";
-// import { ChatBubble } from "./ChatBubble";
-// import { ChatInput } from "./ChatInput";
+import { useContext } from "react";
+import { ChatContext } from "../../context/ChatContext";
+import { ChatBubble } from "./ChatBubble";
 
-// export const Chat: React.FC = () => {
-//   const { chat } = useContext(ChatContext);
+export const Chat: React.FC = () => {
+  const { chat } = useContext(ChatContext);
 
-//   return (
-//     <div className="flex h-full flex-col justify-between">
-//       <div>
-//         {chat.messages.map((message: IMessage) => (
-//           <ChatBubble
-//             message={message}
-//             key={message.timestamp + (message?.author || "anonymous")}
-//           />
-//         ))}
-//       </div>
-//       <ChatInput />
-//     </div>
-//   );
-// };
+  return (
+    <div className="hidden h-full max-h-[calc(100%-3.5rem)] flex-col justify-between group-aria-[expanded=true]:flex">
+      <div className="chat-container flex h-full max-h-full flex-col gap-2 overflow-x-hidden overflow-y-scroll px-4 py-4 ">
+        {chat.messages?.map((message: IMessage, index: number) => (
+          <ChatBubble
+            message={message}
+            prevMessage={chat.messages[index - 1]}
+            key={message.timestamp + message.userId}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};

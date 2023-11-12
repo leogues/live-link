@@ -4,6 +4,7 @@ export type ChatState = {
   messages: IMessage[];
   isChatOpen: boolean;
 };
+
 type ChatAction =
   | {
       type: typeof ADD_MESSAGE;

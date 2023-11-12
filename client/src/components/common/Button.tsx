@@ -19,8 +19,9 @@ const button = tv({
 
 type ButtonProps = {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
+  disabled?: boolean;
   type?: "submit" | "button" | "reset" | undefined;
   event?: Event;
 } & VariantProps<typeof button>;
@@ -31,11 +32,13 @@ export const Button: React.FC<ButtonProps> = ({
   fontWeight,
   rounded,
   className,
+  disabled,
   type = "button",
 }) => {
   return (
     <button
       type={type}
+      disabled={disabled}
       onClick={onClick}
       className={button({ fontWeight, rounded, className })}
     >

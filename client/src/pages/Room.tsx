@@ -32,6 +32,8 @@ import { Switcher } from "../components/Switcher";
 import { Link } from "react-router-dom";
 import { ChatContext } from "../context/ChatContext";
 import { ChatInput } from "../components/chat/ChatInput";
+import { Participant } from "../components/Partipant";
+import { Chat } from "../components/chat/Chat";
 
 const maxPeersImgs = 4;
 
@@ -50,6 +52,20 @@ export const Room = () => {
   const isMicOn = mediaTracks.audioTrack?.enabled;
   const isWebCamOn = mediaTracks.videoTrack?.enabled;
   const isSharingScreenOn = mediaTracks.screenTrack?.enabled;
+
+  const handleMinimizar = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+
+    const divMinimize = button.closest("[aria-expanded]");
+
+    if (!divMinimize) return;
+
+    const ariaExpanded = divMinimize.getAttribute("aria-expanded");
+
+    const isExpanded = ariaExpanded === "true";
+
+    divMinimize.setAttribute("aria-expanded", String(!isExpanded));
+  };
 
   useEffect(() => {
     if (room) {
@@ -99,7 +115,7 @@ export const Room = () => {
                   </div>
                 )}
               </div>
-              <div className="ml-14 lg:grow">
+              <div className="ml-7 lg:grow">
                 {user && (
                   <Profile
                     name={user.name}
@@ -124,38 +140,65 @@ export const Room = () => {
       <div className="flex flex-col overflow-hidden">
         <div className="flex h-full">
           {/* Left */}
-          <div className="flex h-full grow flex-col">
+          <div className="flex h-full min-w-0 grow flex-col">
             <div className="h-full">
               <StreamArea />
             </div>
           </div>
           {/* Right */}
           {chat.isChatOpen && (
-            <div className="flex basis-[22rem] flex-col shadow-md dark:bg-darkBlue-600">
-              <div className="flex basis-[40%] flex-col">
-                <header className="flex h-14 items-center justify-between px-6 py-2 dark:bg-darkBlue-900">
+            <div className=" flex w-[24rem] shrink-0 flex-col border-l shadow-md dark:border-[#1F2335] dark:bg-darkBlue-600">
+              <div
+                className="group flex flex-col aria-expanded:min-h-[40%] aria-expanded:flex-1"
+                aria-expanded="true"
+              >
+                <header className="flex h-14 items-center justify-between border-b px-6 py-2 dark:border-[#1F2335] dark:bg-darkBlue-900">
                   <span>Participantes</span>
                   <div className="flex gap-2">
                     <Button className="flex gap-2 bg-blue-50 px-5 py-[0.6rem] text-blue-800 dark:bg-darkBlue-400 dark:text-blue-700">
                       <span className="text-sm">Convidar</span>
                       <img width={18} src={inviteUser} />
                     </Button>
-                    <Button>
-                      <img src={minimizarIcon} />
+                    <Button className="p-1" onClick={handleMinimizar}>
+                      <img
+                        className="rotate-180 group-aria-[expanded=true]:rotate-0"
+                        src={minimizarIcon}
+                      />
                     </Button>
                   </div>
                 </header>
-                <div className="max-h-full grow overflow-auto"></div>
+                <div className="hidden max-h-[calc(100%-3.5rem)] grow group-aria-[expanded=true]:block">
+                  <div className=" box-border flex h-full max-h-full flex-col gap-2 overflow-auto p-4">
+                    {Object.values(peers).map((peer) => {
+                      return (
+                        <Participant
+                          name={peer.user?.name}
+                          lastName={peer.user?.lastName}
+                          picture={peer.user?.picture}
+                          micOn={peer.isMicOn}
+                          videoOn={peer.isSharingScreenOn || peer.isWebCamOn}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
-              <div className="flex-1">
+              <div
+                className="group aria-expanded:min-h-[60%] aria-expanded:flex-1"
+                aria-expanded="true"
+              >
                 <header className="flex h-14 items-center justify-between px-6 py-2 dark:bg-darkBlue-900">
-                  <span>Chats</span>
+                  <span>Chat</span>
                   <div className="flex gap-2">
-                    <Button>
-                      <img src={minimizarIcon} />
+                    <Button className="p-1" onClick={handleMinimizar}>
+                      <img
+                        className="rotate-180 group-aria-[expanded=true]:rotate-0"
+                        src={minimizarIcon}
+                      />
                     </Button>
                   </div>
                 </header>
+                <Chat />
               </div>
             </div>
           )}
@@ -204,7 +247,7 @@ export const Room = () => {
         </div>
 
         {chat.isChatOpen && (
-          <div className="flex basis-[22rem] items-center justify-center border dark:border-[#1F2335]">
+          <div className="flex w-[24rem] shrink-0 items-center justify-center border dark:border-[#1F2335]">
             <ChatInput />
           </div>
         )}

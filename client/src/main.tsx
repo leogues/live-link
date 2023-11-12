@@ -38,11 +38,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               element={
                 <UserV2Provider>
                   <RoomV2Provider>
-                    <StreamProvider>
-                      <ChatProvider>
+                    <ChatProvider>
+                      <StreamProvider>
                         <Room />
-                      </ChatProvider>
-                    </StreamProvider>
+                      </StreamProvider>
+                    </ChatProvider>
                   </RoomV2Provider>
                 </UserV2Provider>
               }

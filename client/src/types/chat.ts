@@ -1,5 +1,8 @@
 interface IMessage {
   content: string;
-  author: string | undefined;
+  userId: string;
+  name: string;
+  lastName?: string;
+  picture: string;
   timestamp: number;
 }

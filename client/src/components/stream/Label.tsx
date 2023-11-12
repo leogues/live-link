@@ -1,7 +1,7 @@
 import { tv, VariantProps } from "tailwind-variants";
 
-const participantCard = tv({
-  base: "text flex gap-1 rounded-full bg-[rgba(125,125,125,0.30)]  text-base",
+const label = tv({
+  base: "text flex gap-1 rounded-full bg-[rgba(0,0,0,0.30)]  text-base",
   variants: {
     padding: {
       default: "px-6 py-1 ",
@@ -19,20 +19,16 @@ const participantCard = tv({
   },
 });
 
-export type ParticipantCardProps = VariantProps<typeof participantCard> & {
+export type ParticipantCardProps = VariantProps<typeof label> & {
   children: React.ReactNode;
   className?: string;
 };
 
-export const ParticipantCard: React.FC<ParticipantCardProps> = ({
+export const Label: React.FC<ParticipantCardProps> = ({
   size,
   padding,
   className,
   children,
 }) => {
-  return (
-    <div className={participantCard({ size, padding, className })}>
-      {children}
-    </div>
-  );
+  return <div className={label({ size, padding, className })}>{children}</div>;
 };
