@@ -30,7 +30,7 @@ export const Profile: React.FC<ProfileProps> = ({
       className={clsx(
         "inline-block items-center justify-evenly gap-4 rounded-full p-2 md:py-2 lg:flex lg:w-full lg:px-3 ",
         {
-          "dark:bg-darkBlue-600": bgColor === "default",
+          "bg-gray-100 dark:bg-darkBlue-600": bgColor === "default",
           "": bgColor === "transparent",
         },
       )}
@@ -46,15 +46,18 @@ export const Profile: React.FC<ProfileProps> = ({
       <div className="hidden lg:block">
         <div className="flex flex-col">
           <div
-            className={clsx("flex gap-1 font-medium dark:text-blue-100", {
-              "text-sm": fontSize === "sm",
-              "text-base": fontSize === "md",
-            })}
+            className={clsx(
+              "text-darkBlue-650 flex gap-1 font-medium dark:text-blue-100",
+              {
+                "text-sm": fontSize === "sm",
+                "text-base": fontSize === "md",
+              },
+            )}
           >
             <span>{name}</span>
             <span>{lastName}</span>
           </div>
-          {role && <span className="text-xs dark:text-gray-600">{role}</span>}
+          {role && <span className="text-xs text-gray-600">{role}</span>}
         </div>
       </div>
       <div className="ml-auto hidden h-full items-center lg:flex">

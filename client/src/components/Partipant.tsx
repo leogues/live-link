@@ -12,12 +12,12 @@ export const Participant: React.FC<{
   videoOn?: boolean;
 }> = ({ picture, name, lastName, micOn, videoOn }) => {
   return (
-    <div className="flex items-center justify-between rounded-full bg-darkBlue-900 p-2">
+    <div className="flex items-center justify-between rounded-full bg-white bg-opacity-80 p-2 dark:bg-darkBlue-900 dark:bg-opacity-100">
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 overflow-hidden rounded-full">
           <img src={picture} />
         </div>
-        <div className="flex gap-1 text-sm text-blue-100 ">
+        <div className="text-darkBlue-650 flex gap-1 text-sm dark:text-blue-100 ">
           <span>{name}</span>
           <span className="hidden lg:block">{lastName}</span>
         </div>

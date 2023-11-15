@@ -33,7 +33,7 @@ export const ChatBubble: React.FC<{
       </div>
       <div
         className={clsx(
-          " flex min-w-0 grow flex-col gap-1 break-words rounded-xl bg-darkBlue-900 px-3 py-2",
+          " flex min-w-0 grow flex-col gap-1 break-words rounded-xl bg-white px-3 py-2 dark:bg-darkBlue-900",
           {
             "mr-4": isSelf,
             "ml-4": !isSelf,
@@ -49,7 +49,7 @@ export const ChatBubble: React.FC<{
             </>
           )}
         </div>
-        <div className="font-normal leading-7 text-blue-100 ">
+        <div className="text-darkBlue-650 font-normal leading-7 dark:text-blue-100 ">
           {message.content}
         </div>
       </div>

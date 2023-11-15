@@ -22,7 +22,7 @@ function debounce(callback: Function, delay: number) {
   };
 }
 
-export const StreamArea: React.FC = ({}) => {
+export const StreamArea: React.FC = () => {
   const { user } = useContext(UserV2Context);
   const { chat } = useContext(ChatContext);
   const { peers, room } = useContext(RoomV2Context);
@@ -32,7 +32,7 @@ export const StreamArea: React.FC = ({}) => {
 
   if (!focusedPeerId || !peers[focusedPeerId]?.user?.id) {
     const focusedPeerIdFromPeers =
-      Object.keys(peers).find((peerId) => peerId === room?.userId) ||
+      Object.keys(peers).find((peerId) => peerId === room?.userId) ??
       Object.keys(peers)[0];
 
     if (focusedPeerIdFromPeers && peers[focusedPeerIdFromPeers]) {
@@ -137,18 +137,13 @@ export const StreamArea: React.FC = ({}) => {
 
     const sliderItemMargin = getCssVariable(sliderMask, "--slider-item-margin");
 
-    console.log({ sliderItemAspectRatio, sliderItemMargin });
-
     const sliderWidth = slider.clientWidth;
-
-    console.log({ sliderWidth });
 
     const sliderItemWidth = calculateSliderItemWidth(
       sliderMask,
       sliderItemAspectRatio,
       sliderItemMargin,
     );
-    console.log({ sliderWidth, sliderItemWidth });
 
     const itemsPerRowBasedWidth = Math.floor(sliderWidth / sliderItemWidth);
 
@@ -156,13 +151,6 @@ export const StreamArea: React.FC = ({}) => {
       sliderItemCount < itemsPerRowBasedWidth
         ? sliderItemCount
         : itemsPerRowBasedWidth;
-
-    console.log({
-      sliderItemWidth,
-      sliderItemsPerRow,
-      itemsPerRowBasedWidth,
-      sliderItemCount,
-    });
 
     setSliderVariable(sliderMask, sliderItemsPerRow);
 
@@ -240,7 +228,7 @@ export const StreamArea: React.FC = ({}) => {
                 className="relative flex aspect-[21/9] h-full max-h-full max-w-full 
               justify-center overflow-hidden rounded-xl bg-black data-[fullscreen=true]:fixed 
               data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-50 
-              data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:bg-black"
+              data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:rounded-none data-[fullscreen=true]:bg-black"
               >
                 {focusedPeer.user?.id === user?.id && localStream.current ? (
                   <VideoPlayer stream={localStream.current} />
@@ -279,7 +267,7 @@ export const StreamArea: React.FC = ({}) => {
           {hasRemaingPeer && (
             <div className="slider box-border h-[calc(30%-(1.25rem)*0.30)]">
               <div className="slider-mask relative mx-auto h-full min-h-0 ">
-                <div className="h-full min-h-0  overflow-x-hidden">
+                <div className="h-full min-h-0 overflow-x-hidden">
                   <Button
                     className="slider-button-prev group absolute left-0 top-0 z-10 flex h-full w-7 -translate-x-full items-center justify-center  disabled:hidden"
                     onClick={prevSliderItem}

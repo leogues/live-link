@@ -22,7 +22,7 @@ type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   disabled?: boolean;
-  type?: "submit" | "button" | "reset" | undefined;
+  type?: "submit" | "button" | "reset";
   event?: Event;
 } & VariantProps<typeof button>;
 

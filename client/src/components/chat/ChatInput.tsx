@@ -31,14 +31,17 @@ export const ChatInput: React.FC = () => {
           setMessage("");
         }}
       >
-        <div className="flex h-14 max-w-full items-center justify-center rounded-full bg-darkBlue-700 ">
+        <div className="flex h-14 max-w-full items-center justify-center rounded-full bg-gray-100 dark:bg-darkBlue-700 ">
           <textarea
             placeholder="Digite uma mensagem..."
-            className="flex h-4/5 grow resize-none overflow-hidden border-0 bg-transparent px-3 py-[0.6rem] align-middle outline-none"
+            className="flex h-4/5 grow resize-none overflow-hidden border-0 bg-transparent px-3 py-[0.6rem] align-middle text-gray-900 outline-none placeholder:text-gray-700 dark:text-white"
             onChange={(e) => setMessage(e.target.value)}
             value={message}
           />
-          <Button type="submit" className="mr-1 rounded-full bg-blue-700 p-2">
+          <Button
+            type="submit"
+            className="focus: mr-1 rounded-full bg-blue-700 p-2 hover:brightness-90"
+          >
             <img src={SendIcon} />
           </Button>
         </div>

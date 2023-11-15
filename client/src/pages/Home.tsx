@@ -3,9 +3,12 @@ import { useContext, useRef } from "react";
 import { UserV2Context } from "../context/UserV2Context";
 import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../components/common/Input";
 import api from "../services/api";
 import { Profile } from "../components/Profile";
+import { MeetingHeader } from "../components/home/MeetingHeader";
+import { MeetingInput } from "../components/home/MeetingInput";
+import { UserProfile } from "../components/UserProfile";
+import { MeetingButtons } from "../components/home/MeetingButtons";
 
 export const Home = () => {
   const { user } = useContext(UserV2Context);
@@ -30,7 +33,7 @@ export const Home = () => {
     const response = await api.get("./room/" + roomId);
     const room = response.data;
 
-    if (!room.id) return;
+    if (!room) return;
 
     navigate("./room/" + room.id);
   };
@@ -44,43 +47,13 @@ export const Home = () => {
       <Header />
       <div className="font-family flex flex-grow items-center justify-center text-gray-850 dark:text-gray-300">
         <div className="w-full max-w-md rounded-md bg-white px-10 py-8 shadow-md dark:bg-darkBlue-900">
-          <header className="flex justify-center border-b border-gray-300 pb-3">
-            <h3 className="text-2xl font-medium">Entre em uma reunião</h3>
-          </header>
-          <div className="mt-5">
-            <Input
-              inputRef={inputRoomIdRef}
-              placeholder="Insira o ID da reunião ou o link"
-            />
-          </div>
-          <div className="mt-8 flex w-full items-center gap-4 px-1">
-            {user && (
-              <Profile
-                name={user.name}
-                lastName={user.lastName}
-                picture={user.picture}
-                bgColor="transparent"
-              />
-            )}
-          </div>
-          <div className="mt-10 flex items-center gap-2 text-sm font-semibold">
-            <div className="flex flex-1 flex-col gap-2">
-              <Button
-                onClick={redirectCreateRoomHandle}
-                className="bg-blue-50 py-3 text-blue-800 dark:bg-darkBlue-400 dark:text-blue-700"
-              >
-                Crie sua reunião
-              </Button>
-            </div>
-            <div className="flex flex-1 flex-col gap-2">
-              <Button
-                className="bg-blue-800 py-3 text-white "
-                onClick={joinButtonHandle}
-              >
-                Entrar na reunião
-              </Button>
-            </div>
-          </div>
+          <MeetingHeader />
+          <MeetingInput inputRoomIdRef={inputRoomIdRef} />
+          <UserProfile user={user} />
+          <MeetingButtons
+            joinButtonHandle={joinButtonHandle}
+            createRoomHandle={redirectCreateRoomHandle}
+          />
         </div>
       </div>
     </div>
