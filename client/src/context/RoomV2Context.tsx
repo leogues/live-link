@@ -16,15 +16,15 @@ import {
 } from "../reducers/peersActions";
 import { IPeer } from "../types/peer";
 
-interface Room {
+export type IRoom = {
   id: string;
   topic: string;
   userId?: string;
   createdAt: string;
-}
+};
 
 interface RoomV2Value {
-  room?: Room;
+  room?: IRoom;
   peers: PeerState;
   dispatchPeers: React.Dispatch<PeerAction>;
   isLoading: boolean;
@@ -59,7 +59,7 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   const { id } = useParams();
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
 
-  const { data: room, isLoading } = useQuery<Room, AxiosError>({
+  const { data: room, isLoading } = useQuery<IRoom, AxiosError>({
     queryKey: ["roomData"],
     queryFn: async () => {
       const response = await api.get(`/room/${id}`);

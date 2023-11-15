@@ -1,10 +1,8 @@
 import { Header } from "../components/Header";
 import { useContext, useRef } from "react";
 import { UserV2Context } from "../context/UserV2Context";
-import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { Profile } from "../components/Profile";
 import { MeetingHeader } from "../components/home/MeetingHeader";
 import { MeetingInput } from "../components/home/MeetingInput";
 import { UserProfile } from "../components/UserProfile";
@@ -38,7 +36,7 @@ export const Home = () => {
     navigate("./room/" + room.id);
   };
 
-  const redirectCreateRoomHandle = () => {
+  const createRoomHandle = () => {
     navigate("./createRoom");
   };
 
@@ -49,10 +47,10 @@ export const Home = () => {
         <div className="w-full max-w-md rounded-md bg-white px-10 py-8 shadow-md dark:bg-darkBlue-900">
           <MeetingHeader />
           <MeetingInput inputRoomIdRef={inputRoomIdRef} />
-          <UserProfile user={user} />
+          <UserProfile user={user} className="mt-7" bgColor="transparent" />
           <MeetingButtons
             joinButtonHandle={joinButtonHandle}
-            createRoomHandle={redirectCreateRoomHandle}
+            createRoomHandle={createRoomHandle}
           />
         </div>
       </div>

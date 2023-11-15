@@ -2,7 +2,7 @@ import { Button } from "./common/Button";
 import VectorIcon from "../assets/Vector.svg";
 import clsx from "clsx";
 
-interface ProfileProps {
+export interface ProfileProps {
   name: string;
   lastName: string;
   picture: string;
@@ -47,7 +47,7 @@ export const Profile: React.FC<ProfileProps> = ({
         <div className="flex flex-col">
           <div
             className={clsx(
-              "text-darkBlue-650 flex gap-1 font-medium dark:text-blue-100",
+              "flex gap-1 font-medium text-darkBlue-650 dark:text-blue-100",
               {
                 "text-sm": fontSize === "sm",
                 "text-base": fontSize === "md",
