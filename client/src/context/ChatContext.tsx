@@ -15,7 +15,7 @@ interface SendMessageProps {
   picture: string;
   roomId: string;
 }
-interface ChatValue {
+export type ChatValue = {
   chat: ChatState;
   sendMessage: ({
     roomId,
@@ -26,7 +26,7 @@ interface ChatValue {
     picture,
   }: SendMessageProps) => void;
   toggleChat: () => void;
-}
+};
 
 interface ChatProviderProps {
   children: React.ReactNode;

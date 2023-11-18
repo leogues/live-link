@@ -39,6 +39,7 @@ export const ChatInput: React.FC = () => {
             value={message}
           />
           <Button
+            testid="send-message"
             type="submit"
             className="focus: mr-1 rounded-full bg-blue-700 p-2 hover:brightness-90"
           >

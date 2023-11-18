@@ -29,22 +29,31 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
 
   return (
     <div className="flex items-center gap-4 px-4">
-      <ToggleButton enabled={isMicOn} onClick={handleMicOn}>
+      <ToggleButton testid="mic-toggle" enabled={isMicOn} onClick={handleMicOn}>
         <img className="h-6 w-6" src={isMicOn ? micOnIcon : micOffIcon} />
       </ToggleButton>
-      <ToggleButton enabled={isWebCamOn} onClick={handleWebCamOn}>
+      <ToggleButton
+        testid="web-cam-toggle"
+        enabled={isWebCamOn}
+        onClick={handleWebCamOn}
+      >
         <img
           className="h-6 w-6"
           src={isWebCamOn ? videoOnIcon : videoOffIcon}
         />
       </ToggleButton>
-      <ToggleButton enabled={isSharingScreenOn} onClick={handleScreenOn}>
+      <ToggleButton
+        testid="sharingscreen-toggle"
+        enabled={isSharingScreenOn}
+        onClick={handleScreenOn}
+      >
         <img
           className="h-6 w-6"
           src={isSharingScreenOn ? screenSharingOnIcon : screenSharingOffIcon}
         />
       </ToggleButton>
       <ToggleButton
+        testid="chat-toggle"
         enabled={chat.isChatOpen}
         onClick={() => {
           toggleChat();

@@ -23,12 +23,12 @@ export type IRoom = {
   createdAt: string;
 };
 
-interface RoomV2Value {
+export type RoomV2Value = {
   room?: IRoom;
   peers: PeerState;
   dispatchPeers: React.Dispatch<PeerAction>;
   isLoading: boolean;
-}
+};
 
 type MediaDeviceAccepted = "microphone" | "web-cam" | "sharing-screen";
 
@@ -66,6 +66,8 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
       return response.data;
     },
   });
+
+  console.log(room);
 
   const getUsers = ({
     participants,

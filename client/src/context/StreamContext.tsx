@@ -40,7 +40,7 @@ type IMediaTracks = {
   screenAudioTrack: MediaStreamTrack | null;
   videoTrack: MediaStreamTrack | null;
 };
-interface StreamValue {
+export interface StreamValue {
   localStream: MutableRefObject<MediaStream | undefined>;
   mediaTracks: IMediaTracks;
   handleMicOn: () => void;

@@ -81,7 +81,6 @@
 .slider-mask {
   --slider-height: 0px;
   --slider-item-margin: 20px;
-  --slider-item-padding: 40px;
   --slider-item-width-aspect: 16;
   --slider-item-height-aspect: 9;
   --slider-items-per-row: 0;

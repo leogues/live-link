@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
-import { ChatState } from "../../reducers/chatReduces";
+import React, { useContext } from "react";
+import { ChatContext } from "../../context/ChatContext";
 
-export const RoomFooter: React.FC<{ chat: ChatState }> = ({ chat }) => {
+export const RoomFooter: React.FC = () => {
+  const { chat } = useContext(ChatContext);
   return (
     <footer className="flex flex-shrink-0 grow basis-auto  bg-white dark:bg-darkBlue-900">
       <div className="relative flex h-full grow border border-[#EDF0F6] dark:border-[#1F2335] lg:justify-center">

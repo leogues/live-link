@@ -24,6 +24,7 @@ type ButtonProps = {
   disabled?: boolean;
   type?: "submit" | "button" | "reset";
   event?: Event;
+  testid?: string;
 } & VariantProps<typeof button>;
 
 export const Button: React.FC<ButtonProps> = ({
@@ -34,9 +35,11 @@ export const Button: React.FC<ButtonProps> = ({
   className,
   disabled,
   type = "button",
+  testid,
 }) => {
   return (
     <button
+      data-testid={testid}
       type={type}
       disabled={disabled}
       onClick={onClick}

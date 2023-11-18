@@ -1,7 +1,7 @@
 import { GoogleButton } from "./GoogleButton";
 import { Button } from "./common/Button";
 import apiUrl from "../services/apiUrl";
-import TristeIcon from "../assets/triste.svg";
+import TristeIcon from "../assets/triste.png";
 
 export const LoginForm: React.FC = () => {
   const loginHandle = async () => {

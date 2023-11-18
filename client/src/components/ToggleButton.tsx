@@ -17,6 +17,7 @@ const toggleButton = tv({
 
 type ToggleButtonProps = {
   onClick?: () => void;
+  testid?: string;
   children: React.ReactNode;
   className?: string;
   event?: Event;
@@ -24,6 +25,7 @@ type ToggleButtonProps = {
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
   onClick,
+  testid,
   children,
   enabled,
   className,
@@ -31,6 +33,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   return (
     <Button
       onClick={onClick}
+      testid={testid}
       rounded="roundendFull"
       className={toggleButton({ enabled, className })}
     >

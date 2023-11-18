@@ -12,7 +12,7 @@ export const ParticipantAvatars: React.FC<{ peers?: PeerState }> = ({
   const hasRemainingPeers = remainingPeers.length > 0;
 
   return (
-    <div className="flex">
+    <div data-testid="participants-avatars" className="flex">
       {peers &&
         renderedPeersImg.map((peer) => {
           return (

@@ -3,4 +3,5 @@ dist
 logs
 *.logs
 *.env
+*.scannerwork
 
