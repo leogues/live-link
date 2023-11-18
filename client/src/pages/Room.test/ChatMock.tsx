@@ -4,12 +4,12 @@ export type IChatProviderProps = ChatValue;
 
 export type ChatCustomProviderProps = {
   children: any;
-  providerProps: IChatProviderProps | {};
+  providerProps?: IChatProviderProps | {};
 };
 
 export const chatCustomProviderProps = ({
   children,
-  providerProps,
+  providerProps = {},
 }: ChatCustomProviderProps) => {
   const defaultProps: IChatProviderProps = {
     chat: {

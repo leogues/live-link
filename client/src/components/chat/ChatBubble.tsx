@@ -9,26 +9,39 @@ export const ChatBubble: React.FC<{
 }> = ({ message, prevMessage }) => {
   const { peers } = useContext(RoomV2Context);
   const { user } = useContext(UserV2Context);
-  const name = message.name && peers[message.userId]?.user?.name;
-  const lastName = message.lastName && peers[message.userId]?.user?.lastName;
-  const picture = message.picture && peers[message.userId]?.user?.picture;
+  const peerExists = peers[message.userId];
+
+  const name = (peerExists && peerExists.user?.name) || message.name;
+  const lastName =
+    (peerExists && peerExists.user?.lastName) || message.lastName;
+  const picture = (peerExists && peerExists.user?.picture) || message.picture;
 
   const isPrevMessageSameAuthor =
     prevMessage && prevMessage.userId === message.userId;
   const isSelf = message.userId === user?.id;
+
+  const prevMessageTime =
+    prevMessage &&
+    new Date(prevMessage.timestamp).toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   const time = new Date(message.timestamp).toLocaleTimeString("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
   });
 
+  const isPrevMessageSameTime = prevMessageTime === time;
+
   return (
     <div
+      data-testid="message"
       className={clsx("flex w-full ", {
         "flex-row-reverse": isSelf,
       })}
     >
-      <div className="mt-2 h-11 w-11 shrink-0 overflow-hidden rounded-full">
+      <div className="mt-2 max-h-11 w-11 shrink-0 overflow-hidden rounded-full">
         {!isPrevMessageSameAuthor && <img src={picture} />}
       </div>
       <div
@@ -40,16 +53,18 @@ export const ChatBubble: React.FC<{
           },
         )}
       >
-        <div className={clsx("text-xs text-[#AFAFAF]")}>
-          {isSelf ? (
-            <span>Você</span>
-          ) : (
-            <>
-              <span>{name}</span> <span>{lastName}</span>
-            </>
-          )}
-        </div>
-        <div className="text-darkBlue-650 font-normal leading-7 dark:text-blue-100 ">
+        {!isPrevMessageSameAuthor && (
+          <div className={clsx("text-xs text-[#AFAFAF]")}>
+            {isSelf ? (
+              <span>Você</span>
+            ) : (
+              <>
+                <span>{name}</span> <span>{lastName}</span>
+              </>
+            )}
+          </div>
+        )}
+        <div className="font-normal leading-7 text-darkBlue-650 dark:text-blue-100 ">
           {message.content}
         </div>
       </div>
@@ -60,7 +75,7 @@ export const ChatBubble: React.FC<{
         })}
       >
         <span className="text-xs text-gray-500">
-          {!isPrevMessageSameAuthor && time}
+          {!isPrevMessageSameTime && time}
         </span>
       </div>
     </div>

@@ -10,10 +10,10 @@ export interface IUser {
   picture: string;
 }
 
-interface UserV2Value {
+export type UserV2Value = {
   user?: IUser;
   isLoading: boolean;
-}
+};
 
 interface UserProviderProps {
   children: React.ReactNode;

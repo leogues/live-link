@@ -67,8 +67,6 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     },
   });
 
-  console.log(room);
-
   const getUsers = ({
     participants,
   }: {
