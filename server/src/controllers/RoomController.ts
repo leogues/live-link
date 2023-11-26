@@ -23,6 +23,7 @@ export const RoomController = {
 
   async Create(req: Request, res: Response) {
     const { topic } = req.body
+
     const { id: userId } = (await req.user) as User
 
     const room = await prisma.room.create({

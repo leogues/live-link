@@ -33,6 +33,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "passport": "^0.6.0",
+    "passport-custom": "^1.1.1",
     "passport-google-oauth20": "^2.0.0",
     "passport.socketio": "^3.7.0",
     "peer": "^1.0.1",

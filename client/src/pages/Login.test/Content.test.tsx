@@ -7,7 +7,7 @@ describe("Login form tests", () => {
     render(<Login />);
 
     const loginWithGoogleButton = screen.getByRole("button", {
-      name: /Continue com o Google/i,
+      name: "Continue com o Google",
     });
 
     expect(loginWithGoogleButton).toBeInTheDocument();
@@ -17,7 +17,7 @@ describe("Login form tests", () => {
     render(<Login />);
 
     const loginWithAnonymousButton = screen.getByRole("button", {
-      name: /Continue como anônimo/i,
+      name: "Continue como anônimo",
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();

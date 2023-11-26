@@ -16,6 +16,7 @@ import { StrictMode } from "react";
 import { RoomV2Provider } from "./context/RoomV2Context.tsx";
 import { StreamProvider } from "./context/StreamContext.tsx";
 import { ChatProvider } from "./context/ChatContext.tsx";
+import { CreateRoom } from "./pages/CreateRoom.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -33,6 +34,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </UserV2Provider>
               }
             />
+            <Route
+              path="createRoom"
+              element={
+                <UserV2Provider>
+                  <CreateRoom />
+                </UserV2Provider>
+              }
+            ></Route>
             <Route
               path="/room/:id"
               element={

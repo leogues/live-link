@@ -7,9 +7,14 @@ export const ChatSidebar: React.FC<{
   return (
     <div
       className="group aria-expanded:min-h-[60%] aria-expanded:flex-1"
+      data-testid="chat"
       aria-expanded="true"
     >
-      <SiderbarHeader name="Chat" handleMinimizar={handleMinimizar} />
+      <SiderbarHeader
+        name="Chat"
+        handleMinimizar={handleMinimizar}
+        buttonTestId="chat-expand-toggle"
+      />
       <Chat />
     </div>
   );

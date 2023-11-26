@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { ReactNode, createContext, useEffect, useReducer } from "react";
 import { chatReducer, ChatState } from "../reducers/chatReduces";
 import {
   addHistoryAction,
@@ -29,13 +29,13 @@ export type ChatValue = {
 };
 
 interface ChatProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const ChatContext = createContext<ChatValue>({
   chat: {
     messages: [],
-    isChatOpen: false,
+    isChatOpen: true,
   },
   sendMessage: ({}) => {},
   toggleChat: () => {},

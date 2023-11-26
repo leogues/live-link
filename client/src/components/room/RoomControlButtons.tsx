@@ -1,16 +1,16 @@
 import { useContext } from "react";
 
-import micOffIcon from "../../assets/micOffControl.svg";
-import micOnIcon from "../../assets/micOnControl.svg";
+import micOffIcon from "../../assets/micOffControl.png";
+import micOnIcon from "../../assets/micOnControl.png";
 
-import videoOnIcon from "../../assets/videoOnControl.svg";
-import videoOffIcon from "../../assets/videoOffControl.svg";
+import videoOnIcon from "../../assets/videoOnControl.png";
+import videoOffIcon from "../../assets/videoOffControl.png";
 
-import screenSharingOnIcon from "../../assets/screensharingOn.svg";
-import screenSharingOffIcon from "../../assets/screensharingOff.svg";
+import screenSharingOnIcon from "../../assets/screensharingOn.png";
+import screenSharingOffIcon from "../../assets/screensharingOff.png";
 
-import chatOnIcon from "../../assets/chatOn.svg";
-import chatOffIcon from "../../assets/chatOff.svg";
+import chatOnIcon from "../../assets/chatOn.png";
+import chatOffIcon from "../../assets/chatOff.png";
 
 import { ToggleButton } from "../ToggleButton";
 import { StreamContext } from "../../context/StreamContext";

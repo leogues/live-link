@@ -59,12 +59,16 @@ interface sendMessageProps {
 }
 
 import errCode from "err-code";
-import { ws } from "./ws";
+import { ws } from "../services/ws";
 
 const peerConfig = {
   iceServers: [
     {
-      urls: "stun:stun.l.google.com:19302",
+      urls: [
+        "stun:stun.l.google.com:19302",
+        "stun:stun.voip.voipfone.co.uk",
+        "stun:stun.ekiga.net",
+      ],
     },
   ],
 };
@@ -79,7 +83,6 @@ export const Peer = (options: PeerProps) => {
 
     localStream: new MediaStream(),
     _remoteStreams: [],
-    // _remoteTracks:
     _localTracks: new Map(),
 
     _isFirstNegotiatio: true,
@@ -197,7 +200,7 @@ export const Peer = (options: PeerProps) => {
       );
     }
 
-    if (sender.replaceTrack != null) {
+    if (sender.replaceTrack) {
       state._localTracks.delete(oldTrack);
       state._localTracks.set(newTrack, sender);
       sender.replaceTrack(newTrack);
@@ -231,36 +234,6 @@ export const Peer = (options: PeerProps) => {
         new Error("The track does not exist in this stream."),
         "ERR_SENDER_ALREADY_ADDED",
       );
-    }
-  }
-
-  async function _addIceCandidatePending() {
-    if (state._pendingIceCandidates.length > 0) {
-      state._pendingIceCandidates.forEach((iceCandidate: RTCIceCandidate) => {
-        state._peerConn?.addIceCandidate(iceCandidate);
-      });
-      state._pendingIceCandidates.length = 0;
-    }
-  }
-
-  async function _processSessionDescription({ payload }: sendMessageProps) {
-    const remoteDescription = new RTCSessionDescription(
-      payload as RTCSessionDescriptionInit,
-    );
-
-    await state._peerConn?.setRemoteDescription(remoteDescription);
-
-    if (payload.type === "offer") {
-      _logs(
-        "Got offer. Sending answer to peer. remotePeerId:",
-        state.remotePeerId,
-      );
-
-      _createSessionDescription({
-        messageType: "answer",
-      });
-    } else if (payload.type === "answer") {
-      _logs("Got answer.");
     }
   }
 
@@ -331,7 +304,9 @@ export const Peer = (options: PeerProps) => {
       if (state._peerConn) {
         try {
           state._peerConn.close();
-        } catch (err) {}
+        } catch (err) {
+          _logs(err);
+        }
 
         state._peerConn.oniceconnectionstatechange = null;
         state._peerConn.onicegatheringstatechange = null;
@@ -345,6 +320,38 @@ export const Peer = (options: PeerProps) => {
 
       cb();
     });
+  }
+
+  async function _addIceCandidatePending() {
+    if (state._pendingIceCandidates.length > 0) {
+      state._pendingIceCandidates.forEach((iceCandidate: RTCIceCandidate) => {
+        state._peerConn?.addIceCandidate(iceCandidate);
+      });
+      state._pendingIceCandidates.length = 0;
+    }
+  }
+
+  async function _processSessionDescription({ payload }: sendMessageProps) {
+    const remoteDescription = new RTCSessionDescription(
+      payload as RTCSessionDescriptionInit,
+    );
+
+    await state._peerConn?.setRemoteDescription(remoteDescription);
+
+    console.log({ senders: state._peerConn?.getSenders() });
+
+    if (payload.type === "offer") {
+      _logs(
+        "Got offer. Sending answer to peer. remotePeerId:",
+        state.remotePeerId,
+      );
+
+      _createSessionDescription({
+        messageType: "answer",
+      });
+    } else if (payload.type === "answer") {
+      _logs("Got answer.");
+    }
   }
 
   async function _createSessionDescription({
@@ -362,7 +369,7 @@ export const Peer = (options: PeerProps) => {
           offerToReceiveVideo: true,
         });
       } else if (messageType === "answer") {
-        sessionDescription = await state._peerConn.createAnswer();
+        sessionDescription = await state._peerConn.createAnswer({});
       }
     } catch (err) {
       destroy(errCode(err, "ERR_CREATE_" + messageType));
@@ -470,8 +477,8 @@ export const Peer = (options: PeerProps) => {
 
       state._remoteStreams.push(eventStream);
 
+      _logs("on stream");
       queueMicrotask(() => {
-        _logs("on stream");
         _emitEvent("stream", {
           stream: eventStream,
           remotePeerId: state.remotePeerId,

@@ -76,15 +76,14 @@
 
 .slider {
   --slider-index: 0;
-}
-
-.slider-mask {
   --slider-height: 0px;
   --slider-item-margin: 20px;
   --slider-item-width-aspect: 16;
   --slider-item-height-aspect: 9;
   --slider-items-per-row: 0;
+}
 
+.slider-mask {
   --slider-item-aspectRatio: calc(
     var(--slider-item-width-aspect) / var(--slider-item-height-aspect)
   );
@@ -107,11 +106,11 @@
   );
 }
 
-.slider-button-prev {
+.slider-prev-button {
   margin-left: calc(var(--slider-item-margin) / 2 - 3px);
 }
 
-.slider-button-next {
+.slider-next-button {
   margin-right: calc(var(--slider-item-margin) / 2 - 3px);
 }
 

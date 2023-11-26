@@ -1,5 +1,5 @@
 import { IPeer, Peer, RTCRenegotiate } from "./peer";
-import { ws } from "./ws";
+import { ws } from "../services/ws";
 
 interface IState {
   localStream: MediaStream;

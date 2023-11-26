@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Button } from "./common/Button";
 import { ThemeContext } from "../context/ThemeContext";
 
-export const Switcher: React.FC<{}> = ({}) => {
+export const Switcher: React.FC = () => {
   const { theme, switchTheme } = useContext(ThemeContext);
   const darkSide = theme === "dark" ? true : false;
 
@@ -21,7 +21,7 @@ export const Switcher: React.FC<{}> = ({}) => {
             className="fill-sky-500"
           ></path>
           <path
-            fillRule="evenodd"
+            fill-fillRule="evenodd"
             clipRule="evenodd"
             d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z"
             className="fill-sky-500"

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "../common/Button";
-import minimizarIcon from "../../assets/setaCima.svg";
+import minimizarIcon from "../../assets/setaCima.png";
 import clsx from "clsx";
 
 export const SiderbarHeader: React.FC<{
@@ -8,7 +8,8 @@ export const SiderbarHeader: React.FC<{
   name: String;
   className?: String;
   handleMinimizar: (event: React.MouseEvent<HTMLButtonElement>) => void;
-}> = ({ children, name, className, handleMinimizar }) => {
+  buttonTestId?: string;
+}> = ({ children, name, className, handleMinimizar, buttonTestId }) => {
   return (
     <header
       className={clsx(
@@ -19,7 +20,7 @@ export const SiderbarHeader: React.FC<{
       <span>{name}</span>
       <div className="flex gap-2">
         {children}
-        <Button className="p-1" onClick={handleMinimizar}>
+        <Button testid={buttonTestId} className="p-1" onClick={handleMinimizar}>
           <img
             className="rotate-180 group-aria-[expanded=true]:rotate-0"
             src={minimizarIcon}

@@ -2,18 +2,17 @@ import { Ref } from "react";
 import { Input } from "../common/Input";
 
 type MeetingInputProps = {
-  inputRoomIdRef: Ref<HTMLInputElement> | null;
+  inputRef: Ref<HTMLInputElement> | null;
+  placeholder: string;
 };
 
 export const MeetingInput: React.FC<MeetingInputProps> = ({
-  inputRoomIdRef,
+  inputRef,
+  placeholder,
 }) => {
   return (
     <div className="mt-5">
-      <Input
-        inputRef={inputRoomIdRef}
-        placeholder="Insira o ID da reunião ou o link"
-      />
+      <Input inputRef={inputRef} placeholder={placeholder} />
     </div>
   );
 };

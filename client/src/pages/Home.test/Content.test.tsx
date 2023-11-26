@@ -27,7 +27,7 @@ describe("Home content tests", () => {
     );
 
     const loginWithAnonymousButton = screen.getByRole("button", {
-      name: /Crie sua reunião/i,
+      name: "Crie sua reunião",
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe("Home content tests", () => {
     );
 
     const loginWithAnonymousButton = screen.getByRole("button", {
-      name: /Entrar na reunião/i,
+      name: "Entrar na reunião",
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();

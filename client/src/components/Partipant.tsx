@@ -1,8 +1,8 @@
-import micOnIcon from "../assets/micOnParticpant.svg";
-import micOffIcon from "../assets/micOffParticpant.svg";
+import micOnIcon from "../assets/micOnParticpant.png";
+import micOffIcon from "../assets/micOffParticpant.png";
 
-import videoOnIcon from "../assets/videoOnParticipant.svg";
-import videoOffIcon from "../assets/videoOffParticipant.svg";
+import videoOnIcon from "../assets/videoOnParticipant.png";
+import videoOffIcon from "../assets/videoOffParticipant.png";
 
 export const Participant: React.FC<{
   picture?: string;

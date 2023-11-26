@@ -3,7 +3,7 @@ import { useContext, useRef } from "react";
 import { UserV2Context } from "../context/UserV2Context";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { MeetingHeader } from "../components/home/MeetingHeader";
+import { FormHeader } from "../components/FormHeader";
 import { MeetingInput } from "../components/home/MeetingInput";
 import { UserProfile } from "../components/UserProfile";
 import { MeetingButtons } from "../components/home/MeetingButtons";
@@ -45,12 +45,17 @@ export const Home = () => {
       <Header />
       <div className="font-family flex flex-grow items-center justify-center text-gray-850 dark:text-gray-300">
         <div className="w-full max-w-md rounded-md bg-white px-10 py-8 shadow-md dark:bg-darkBlue-900">
-          <MeetingHeader />
-          <MeetingInput inputRoomIdRef={inputRoomIdRef} />
+          <FormHeader title="Entre em uma reunião" />
+          <MeetingInput
+            inputRef={inputRoomIdRef}
+            placeholder="Insira o ID da reunião ou o link"
+          />
           <UserProfile user={user} className="mt-7" bgColor="transparent" />
           <MeetingButtons
-            joinButtonHandle={joinButtonHandle}
-            createRoomHandle={createRoomHandle}
+            leftButtonHandle={createRoomHandle}
+            leftButtonText="Crie sua reunião"
+            rightButtonHandle={joinButtonHandle}
+            rightButtonText="Entrar na reunião"
           />
         </div>
       </div>

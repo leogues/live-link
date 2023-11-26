@@ -4,7 +4,7 @@ import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
 import { Button } from "../common/Button";
 
-import SendIcon from "../../assets/sendMessage.svg";
+import SendIcon from "../../assets/sendMessage.png";
 
 export const ChatInput: React.FC = () => {
   const [message, setMessage] = useState("");
@@ -19,6 +19,8 @@ export const ChatInput: React.FC = () => {
           e.preventDefault();
 
           if (!room || !user) return;
+
+          if (message === "") return;
 
           sendMessage({
             roomId: room.id,

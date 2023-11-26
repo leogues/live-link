@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import { Room } from "../Room";
 import { MemoryRouter } from "react-router-dom";
-import { streamCustomProviderProps } from "./StreamMock";
+import { streamCustomProviderProps } from "./StreamProviderMock";
 import { ChatProvider } from "../../context/ChatContext";
 
 describe("Room footer controls tests", () => {
@@ -131,5 +131,19 @@ describe("Room footer controls tests", () => {
     textarea = screen.queryByRole("textbox");
 
     expect(textarea).toBeInTheDocument();
+  });
+
+  test("renders 'Sair da reunião' button", () => {
+    render(
+      <MemoryRouter>
+        <Room />
+      </MemoryRouter>,
+    );
+
+    const leaveRoomButton = screen.getByRole("link", {
+      name: "Sair da reunião",
+    });
+
+    expect(leaveRoomButton).toBeInTheDocument();
   });
 });

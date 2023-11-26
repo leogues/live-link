@@ -38,8 +38,6 @@ export const UserV2Provider: React.FC<UserProviderProps> = ({ children }) => {
     },
   });
 
-  if (isLoading) return <></>;
-
   return (
     <UserV2Context.Provider value={{ user, isLoading }}>
       {children}

@@ -4,9 +4,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Room } from "../Room";
 import { MemoryRouter } from "react-router-dom";
 import { ChatProvider } from "../../context/ChatContext";
-import { roomCustomProviderProps } from "./RoomMock";
-import { chatCustomProviderProps } from "./ChatMock";
-import { userCustomProviderProps } from "./UserMock";
+import { roomCustomProviderProps } from "./RoomProviderMock";
+import { chatCustomProviderProps } from "./ChatProviderMock";
+import { userCustomProviderProps } from "./UserProviderMock";
 import { ChatState } from "../../reducers/chatReduces";
 
 const chatMock: ChatState = {
@@ -29,7 +29,7 @@ const chatMock: ChatState = {
   ],
 };
 
-describe("Room siderbar tests", () => {
+describe("room siderbar tests", () => {
   test("renders participant for every peer", () => {
     render(
       <MemoryRouter>
@@ -45,7 +45,7 @@ describe("Room siderbar tests", () => {
     expect(participants).toHaveLength(5);
   });
 
-  test("Checks the correct rendering of chat messages for the current user and other users", () => {
+  test("checks the correct rendering of chat messages for the current user and other users", () => {
     const user = { id: "testid", name: "nametestid" };
     const otherUser = { id: "test2", name: "nametest2" };
 
@@ -74,7 +74,7 @@ describe("Room siderbar tests", () => {
     expect(otherMessage).toHaveTextContent(otherUser.name);
   });
 
-  test("Ensures no image or name is displayed in the consecutive message if it's from the same author", () => {
+  test("ensures no image or name is displayed in the consecutive message if it's from the same author", () => {
     const chat = { ...chatMock };
 
     const firstMessage = {
@@ -119,5 +119,55 @@ describe("Room siderbar tests", () => {
 
     expect(secondMessageElement).not.toHaveTextContent(secondMessage.name);
     expect(secondMessageUserPicture).toBeNull();
+  });
+
+  test("participants expand button toggle aria-expand state", () => {
+    render(
+      <MemoryRouter>
+        <ChatProvider>
+          <Room />
+        </ChatProvider>
+      </MemoryRouter>,
+    );
+
+    const participants = screen.getByTestId("participants");
+    const participantsExpandToggleButton = screen.getByTestId(
+      "participant-expand-toggle",
+    );
+
+    const expandStateBeforeClick = participants.getAttribute("aria-expanded");
+
+    fireEvent.click(participantsExpandToggleButton);
+
+    const expandStateAfterClick = participants.getAttribute("aria-expanded");
+
+    expect(expandStateBeforeClick).not.toEqual(expandStateAfterClick);
+    expect(expandStateAfterClick).toEqual(
+      expandStateBeforeClick === "true" ? "false" : "true",
+    );
+  });
+
+  test("chat expand button toggle expand state", () => {
+    render(
+      <MemoryRouter>
+        <ChatProvider>
+          <Room />
+        </ChatProvider>
+      </MemoryRouter>,
+    );
+
+    const chat = screen.getByTestId("chat");
+    const chatExpandToggleButton = screen.getByTestId("chat-expand-toggle");
+
+    const expandStateBeforeClick = chat.getAttribute("aria-expanded");
+
+    fireEvent.click(chatExpandToggleButton);
+
+    const expandStateAfterClick = chat.getAttribute("aria-expanded");
+
+    expect(expandStateBeforeClick).not.toEqual(expandStateAfterClick);
+    expect(expandStateAfterClick).toEqual(
+      expandStateBeforeClick === "true" ? "false" : "true",
+    );
   });
 });

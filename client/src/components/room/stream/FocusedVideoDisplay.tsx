@@ -8,8 +8,8 @@ import { StreamContext } from "../../../context/StreamContext";
 import { IPeerState } from "../../../reducers/peersReducer";
 
 import MaximizeIcon from "../../../assets/maximize.png";
-import MicOnIcon from "../../../assets/micOn.svg";
-import MicOffIcon from "../../../assets/micOff.svg";
+import MicOnIcon from "../../../assets/micOn.png";
+import MicOffIcon from "../../../assets/micOff.png";
 
 export const FocusedVideoDisplay: React.FC<{
   focusedPeer: IPeerState | undefined;
@@ -23,6 +23,8 @@ export const FocusedVideoDisplay: React.FC<{
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
+
+  console.log(focusedPeer?.stream);
 
   return (
     <div className="box-border flex min-h-0 grow justify-center">

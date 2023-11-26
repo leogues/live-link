@@ -1,11 +1,11 @@
 import { describe, test, expect, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { chatCustomProviderProps } from "./ChatMock";
+import { chatCustomProviderProps } from "./ChatProviderMock";
 import { MemoryRouter } from "react-router-dom";
 import { Room } from "../Room";
 
-describe("Room footer chat tests", () => {
+describe("room footer chat tests", () => {
   test("send message button call the function", () => {
     const sendMessage = vitest.fn();
 
@@ -19,6 +19,10 @@ describe("Room footer chat tests", () => {
     );
 
     const sendMessageButton = screen.getByTestId("send-message");
+
+    const chatTextArea = screen.getByPlaceholderText("Digite uma mensagem...");
+
+    fireEvent.change(chatTextArea, { target: { value: "testid" } });
 
     fireEvent.click(sendMessageButton);
 

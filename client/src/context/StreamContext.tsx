@@ -10,7 +10,7 @@ import { ws } from "../services/ws";
 import { addPeerStreamAction } from "../reducers/peersActions";
 import { RoomV2Context } from "./RoomV2Context";
 import { IPeer } from "../types/peer";
-import { IPeers, Peers } from "../services/multiPeerManager";
+import { IPeers, Peers } from "../utils/multiPeerManager";
 
 interface getMediaProps {
   type: "user-media" | "display-media";
@@ -64,7 +64,7 @@ export const StreamContext = createContext<StreamValue>({
 export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   children,
 }) => {
-  const { room, dispatchPeers } = useContext(RoomV2Context);
+  const { room, dispatchPeers, isEnteredRoom } = useContext(RoomV2Context);
 
   const localStream = useRef<MediaStream>(new MediaStream());
 
@@ -77,6 +77,18 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
   const multiPeersManager = useRef<IPeers | null>(null);
 
+  const applyMediaConstraintsTransformations = (
+    constraints: MediaStreamConstraints,
+  ) => {
+    if (constraints.audio) {
+      constraints.audio = {
+        noiseSuppression: true,
+        echoCancellation: true,
+      };
+    }
+    return constraints;
+  };
+
   const grabMediaStreamTracks = async ({
     type,
     constraints,
@@ -84,27 +96,33 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     const acceptedMedia = {
       "user-media": async (constraints: MediaStreamConstraints) => {
         try {
+          constraints = applyMediaConstraintsTransformations(constraints);
           const media = await navigator.mediaDevices.getUserMedia(constraints);
 
-          const mediaTrack = {
+          const userTrack = {
             audio: media.getAudioTracks()[0],
             video: media.getVideoTracks()[0],
           };
 
-          return mediaTrack;
+          return userTrack;
         } catch (error) {
           console.error(error);
         }
       },
       "display-media": async (constraints: MediaStreamConstraints) => {
-        const media = await navigator.mediaDevices.getDisplayMedia(constraints);
+        try {
+          const media =
+            await navigator.mediaDevices.getDisplayMedia(constraints);
 
-        const screenTrack = {
-          audio: media.getAudioTracks()[0],
-          video: media.getVideoTracks()[0],
-        };
+          const screenTrack = {
+            audio: media.getAudioTracks()[0],
+            video: media.getVideoTracks()[0],
+          };
 
-        return screenTrack;
+          return screenTrack;
+        } catch (error) {
+          console.error(error);
+        }
       },
     };
 
@@ -136,7 +154,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     }
   }
 
-  const updatePeersTracks = () => {
+  const updateUserMediaTracks = () => {
     const audioTrack = mediaTracks.audioTrack;
     const screenAudioTrack = mediaTracks.screenAudioTrack;
     const screenTrack = mediaTracks.screenTrack;
@@ -225,7 +243,9 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
       });
 
       if (!tracks || !tracks["video"]) {
-        console.log(`Não foi possível pegar a faixa share screen do usuário`);
+        console.log(
+          `Não foi possível pegar o compartilhamento de tela do usuário`,
+        );
         return false;
       }
 
@@ -247,7 +267,7 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
 
       return true;
     } catch (error) {
-      console.error(`Erro ao obter a faixa screen sharing: ${error}`);
+      console.error(`Erro ao obter o compartilhamento de tela: ${error}`);
       return false;
     }
   };
@@ -326,11 +346,6 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
     console.log("render Stream");
     multiPeersManager.current = Peers();
 
-    enableUserTrack({
-      mediaTrackType: "audioTrack",
-      constraints: { audio: true },
-    });
-
     multiPeersManager.current?.on("stream", addStream);
     ws.on("call-new-user", peerJoined);
     ws.on("end-call", endCall);
@@ -344,7 +359,14 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   }, []);
 
   useEffect(() => {
-    const mediaStream = updatePeersTracks();
+    if (!room?.id || !isEnteredRoom) return;
+
+    handleMicOn();
+  }, [room?.id, isEnteredRoom]);
+
+  useEffect(() => {
+    const mediaStream = updateUserMediaTracks();
+
     if (!mediaStream) return;
 
     localStream.current = mediaStream;

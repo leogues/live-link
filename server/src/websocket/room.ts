@@ -1,7 +1,7 @@
 import { User } from '.prisma/client'
 import { Socket } from 'socket.io'
 
-const rooms: Record<string, Record<string, IPeer>> = {}
+export const rooms: Record<string, Record<string, IPeer>> = {}
 const chats: Record<string, IMessage[]> = {}
 export const userSocketMap: Record<string, string> = {}
 
@@ -12,7 +12,7 @@ interface IUser {
   picture: string | null
 }
 
-interface IPeer {
+export interface IPeer {
   user: IUser
   isMicOn?: boolean
   isWebCamOn?: boolean
@@ -44,6 +44,7 @@ export const roomHandler = (socket: Socket) => {
     if (!chats[roomId]) chats[roomId] = []
 
     userSocketMap[sessionUser.id] = socket.id
+
     socket.emit('get-messages', chats[roomId])
 
     console.log('User:', sessionUser.name, 'Join:', roomId)
@@ -55,7 +56,7 @@ export const roomHandler = (socket: Socket) => {
         lastName: sessionUser.lastName,
         picture: sessionUser.picture,
       },
-      isMicOn: true,
+      isMicOn: false,
       isWebCamOn: false,
       isSharingScreenOn: false,
     }
@@ -79,26 +80,25 @@ export const roomHandler = (socket: Socket) => {
   }
 
   const leaveRoom = ({ roomId }: IRoomParams) => {
-    const user = socket.request.user
+    const sessionUser = socket.request.user as User
 
-    if (rooms[roomId] && rooms[roomId][user.id]) {
-      delete rooms[roomId][user.id]
-    }
-    if (userSocketMap[user.id]) {
-      delete userSocketMap[user.id]
+    if (rooms[roomId] && rooms[roomId][sessionUser.id]) {
+      delete rooms[roomId][sessionUser.id]
     }
 
-    socket.to(roomId).emit('user-disconnected', user.id)
-    socket.to(roomId).emit('end-call', user.id)
+    if (userSocketMap[sessionUser.id]) {
+      delete userSocketMap[sessionUser.id]
+    }
+
+    socket.to(roomId).emit('user-disconnected', sessionUser.id)
+    socket.to(roomId).emit('end-call', sessionUser.id)
   }
 
   const addMessage = (roomId: string, message: IMessage) => {
-    console.log({ message })
-    if (chats[roomId]) {
-      chats[roomId].push(message)
-    } else {
-      chats[roomId] = [message]
-    }
+    if (!chats[roomId]) chats[roomId] = []
+
+    chats[roomId].push(message)
+
     socket.to(roomId).emit('add-message', message)
   }
 

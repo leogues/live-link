@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Room } from "../Room";
-import { roomCustomProviderProps } from "./RoomMock";
+import { roomCustomProviderProps, mockedPeers } from "./RoomProviderMock";
 import { MemoryRouter } from "react-router-dom";
 import { IRoom } from "../../context/RoomV2Context";
 import { PeerState } from "../../reducers/peersReducer";
@@ -43,6 +43,9 @@ const mockPeers: PeerState = {
 
 describe("Room content tests", () => {
   test("renders video for every peer", () => {
+    const mockPeersLength = Object.keys(mockedPeers).length;
+    const peerVideosQuantity = mockPeersLength - 1;
+
     render(
       <MemoryRouter>
         {roomCustomProviderProps({
@@ -57,7 +60,7 @@ describe("Room content tests", () => {
 
     const remainingVideos = screen.getAllByTestId("peer-video");
 
-    expect(remainingVideos).toHaveLength(4);
+    expect(remainingVideos).toHaveLength(peerVideosQuantity);
   });
 
   test("don't renders slider videos if only one peer is present", () => {

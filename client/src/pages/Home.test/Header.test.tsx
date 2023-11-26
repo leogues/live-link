@@ -19,13 +19,7 @@ describe("Home header tests", () => {
 
     const themaButton = screen.getByTestId("switcher");
 
-    fireEvent(
-      themaButton,
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
+    fireEvent.click(themaButton);
 
     expect(switchTheme).toHaveBeenCalled();
   });

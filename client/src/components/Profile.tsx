@@ -1,5 +1,5 @@
 import { Button } from "./common/Button";
-import VectorIcon from "../assets/Vector.svg";
+import VectorIcon from "../assets/Vector.png";
 import clsx from "clsx";
 
 export interface ProfileProps {

@@ -82,6 +82,8 @@ export const roomCustomProviderProps = ({
   providerProps = {},
 }: RoomCustomProviderProps) => {
   const defaultProps: IRoomProviderProps = {
+    isEnteredRoom: true,
+    setIsEnteredRoom: () => {},
     room: mockedRoom,
     peers: mockedPeers,
     dispatchPeers: () => {},

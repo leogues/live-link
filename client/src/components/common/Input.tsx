@@ -2,7 +2,9 @@ interface InputProps {
   inputRef?: React.Ref<HTMLInputElement>;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
-  placeholder: string;
+  readonly?: boolean;
+  placeholder?: string;
+  onClick?: React.MouseEventHandler<HTMLInputElement> | undefined;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -10,6 +12,8 @@ export const Input: React.FC<InputProps> = ({
   onChange,
   value,
   placeholder,
+  readonly,
+  onClick,
 }) => {
   return (
     <input
@@ -18,6 +22,8 @@ export const Input: React.FC<InputProps> = ({
       ref={inputRef}
       onChange={onChange}
       value={value}
+      readOnly={readonly}
+      onClick={onClick}
     />
   );
 };

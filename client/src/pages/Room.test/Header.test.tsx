@@ -6,7 +6,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { Room } from "../Room";
 import { IRoom } from "../../context/RoomV2Context";
 import { MemoryRouter } from "react-router-dom";
-import { roomCustomProviderProps } from "./RoomMock";
+import { roomCustomProviderProps } from "./RoomProviderMock";
 
 describe("Room header tests", () => {
   test("renders creation date correctly", () => {
@@ -72,13 +72,7 @@ describe("Room header tests", () => {
 
     const themaButton = screen.getByTestId("switcher");
 
-    fireEvent(
-      themaButton,
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-      }),
-    );
+    fireEvent.click(themaButton);
 
     expect(switchTheme).toBeCalled();
   });
