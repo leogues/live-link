@@ -18,6 +18,7 @@ type SliderState = {
   getSliderContent: (slider: HTMLElement) => HTMLElement;
   getPrevButton: (slider: HTMLElement) => HTMLButtonElement | null;
   getNextButton: (slider: HTMLElement) => HTMLButtonElement | null;
+  getSliderIndicator: (slider: HTMLElement) => HTMLElement;
   sliderMinIndex: number;
   sliderEndIndex: number;
 };
@@ -54,6 +55,9 @@ const getPrevButton = (slider: HTMLElement) =>
 const getNextButton = (slider: HTMLElement) =>
   slider.querySelector(".slider-next-button") as HTMLButtonElement;
 
+const getSliderIndicator = (slider: HTMLElement) =>
+  slider.querySelector(".slider-indicator") as HTMLElement;
+
 const getSliderContent = (slider: HTMLElement) =>
   slider.querySelector(".slider-content") as HTMLElement;
 
@@ -68,6 +72,7 @@ export const Slider = ({
     getSliderContent: () => getSliderContent(slider),
     getPrevButton: () => getPrevButton(slider),
     getNextButton: () => getNextButton(slider),
+    getSliderIndicator: () => getSliderIndicator(slider),
     sliderMinIndex: 0,
     sliderEndIndex: 0,
   };
@@ -107,7 +112,14 @@ export const Slider = ({
     sliderItemsCount: number,
     sliderItemsPerRow: number,
   ) => {
-    state.sliderEndIndex = calculeEndIndex(sliderItemsCount, sliderItemsPerRow);
+    const sliderEndIndex = calculeEndIndex(sliderItemsCount, sliderItemsPerRow);
+    console.log({ sliderEndIndex });
+    state.sliderEndIndex = sliderEndIndex;
+
+    setCssVariableValue({
+      variableName: "slider-end-index",
+      value: sliderEndIndex,
+    });
   };
 
   const setSliderIndexAndButtonState = (sliderIndex: number) => {
@@ -162,6 +174,26 @@ export const Slider = ({
     return Math.max(itemsPerRow, 1);
   };
 
+  const updateIndicator = () => {
+    const sliderIndicator = state.getSliderIndicator(slider);
+
+    const sliderIndicatorWidth = sliderIndicator.clientWidth;
+
+    setCssVariableValue({
+      variableName: "slider-indicator-width",
+      value: sliderIndicatorWidth,
+      unit: "px",
+    });
+
+    const sliderIndicatorDisplay =
+      state.sliderEndIndex === 0 ? "hidden" : "visible";
+
+    setCssVariableValue({
+      variableName: "slider-indicator-display",
+      value: sliderIndicatorDisplay,
+    });
+  };
+
   const updateSlider = () => {
     const sliderContent = state.getSliderContent(slider);
 
@@ -204,6 +236,7 @@ export const Slider = ({
 
     const sliderIndex = getCssVariableValue("slider-index");
 
+    updateIndicator();
     setSliderIndexAndButtonState(sliderIndex);
   };
 
