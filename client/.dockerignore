@@ -1,0 +1,14 @@
+# Arquivos e diretórios específicos do React
+node_modules/
+build/
+coverage/
+
+# Arquivos de desenvolvimento
+.DS_Store
+
+# Outros arquivos e diretórios que podem ser ignorados
+.git
+.gitignore
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

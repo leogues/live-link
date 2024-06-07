@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: ./server
+    env_file:
+      - server/.env
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build: ./client
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: WebRTC
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U root -d WebRTC']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - node_db:/var/lib/postgresql/data
+  proxy:
+    build: ./proxy
+    ports:
+      - '80:4000'
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  node_db:
