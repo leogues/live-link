@@ -59,6 +59,7 @@ interface sendMessageProps {
 }
 
 import errCode from "err-code";
+
 import { ws } from "../services/ws";
 
 const peerConfig = {
@@ -316,6 +317,9 @@ export const Peer = (options: PeerProps) => {
         state._peerConn.ondatachannel = null;
       }
       state._peerConn = null;
+
+      _emitEvent("close", state.remotePeerId);
+
       if (!cb) return;
 
       cb();

@@ -1,8 +1,9 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { RoomV2Context } from "../../context/RoomV2Context";
 import { formatDate } from "../../utils/DateUtils";
 import { MeetingButtons } from "../home/MeetingButtons";
-import { useNavigate } from "react-router-dom";
 
 export const RoomInfoEntry: React.FC = () => {
   const { room, setIsEnteredRoom } = useContext(RoomV2Context);

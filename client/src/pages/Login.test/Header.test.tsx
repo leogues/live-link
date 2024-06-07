@@ -1,9 +1,9 @@
-import { describe, test, expect, vitest } from "vitest";
+import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { Login } from "../Login";
 import { ThemeContext } from "../../context/ThemeContext";
+import { Login } from "../Login";
 
 describe("Login header tests", () => {
   test("thema button toggle thema", () => {

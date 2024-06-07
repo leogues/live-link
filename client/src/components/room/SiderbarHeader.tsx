@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
-import { Button } from "../common/Button";
-import minimizarIcon from "../../assets/setaCima.png";
 import clsx from "clsx";
+import { ReactNode } from "react";
+
+import minimizarIcon from "../../assets/setaCima.png";
+import { Button } from "../common/Button";
 
 export const SiderbarHeader: React.FC<{
   children?: ReactNode;

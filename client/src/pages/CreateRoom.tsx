@@ -1,9 +1,10 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { FormHeader } from "../components/FormHeader";
 import { Header } from "../components/Header";
-import { MeetingInput } from "../components/home/MeetingInput";
 import { MeetingButtons } from "../components/home/MeetingButtons";
-import { useNavigate } from "react-router-dom";
+import { MeetingInput } from "../components/home/MeetingInput";
 import api from "../services/api";
 
 export const CreateRoom = () => {

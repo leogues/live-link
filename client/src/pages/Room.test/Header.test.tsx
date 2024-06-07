@@ -1,11 +1,11 @@
-import { describe, test, expect, vitest } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
+import { IRoom } from "../../context/RoomV2Context";
 import { ThemeContext } from "../../context/ThemeContext";
 import { Room } from "../Room";
-import { IRoom } from "../../context/RoomV2Context";
-import { MemoryRouter } from "react-router-dom";
 import { roomCustomProviderProps } from "./RoomProviderMock";
 
 describe("Room header tests", () => {

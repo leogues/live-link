@@ -1,21 +1,17 @@
 import { useContext } from "react";
 
+import chatOffIcon from "../../assets/chatOff.png";
+import chatOnIcon from "../../assets/chatOn.png";
 import micOffIcon from "../../assets/micOffControl.png";
 import micOnIcon from "../../assets/micOnControl.png";
-
-import videoOnIcon from "../../assets/videoOnControl.png";
-import videoOffIcon from "../../assets/videoOffControl.png";
-
-import screenSharingOnIcon from "../../assets/screensharingOn.png";
 import screenSharingOffIcon from "../../assets/screensharingOff.png";
-
-import chatOnIcon from "../../assets/chatOn.png";
-import chatOffIcon from "../../assets/chatOff.png";
-
-import { ToggleButton } from "../ToggleButton";
-import { StreamContext } from "../../context/StreamContext";
+import screenSharingOnIcon from "../../assets/screensharingOn.png";
+import videoOffIcon from "../../assets/videoOffControl.png";
+import videoOnIcon from "../../assets/videoOnControl.png";
 import { ChatContext } from "../../context/ChatContext";
+import { StreamContext } from "../../context/StreamContext";
 import { ChatState } from "../../reducers/chatReduces";
+import { ToggleButton } from "../ToggleButton";
 
 export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
   const { mediaTracks, handleMicOn, handleScreenOn, handleWebCamOn } =

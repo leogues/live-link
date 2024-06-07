@@ -1,4 +1,4 @@
-import { RoomV2Value, RoomV2Context } from "../../context/RoomV2Context";
+import { RoomV2Context, RoomV2Value } from "../../context/RoomV2Context";
 
 export type IRoomProviderProps = RoomV2Value;
 

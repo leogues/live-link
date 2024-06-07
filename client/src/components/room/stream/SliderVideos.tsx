@@ -1,32 +1,21 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 
-import { UserV2Context } from "../../../context/UserV2Context";
-import { StreamContext } from "../../../context/StreamContext";
-import { RoomV2Context } from "../../../context/RoomV2Context";
-
-import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
-import { Button } from "../../common/Button";
-import { Label } from "./Label";
-import { VideoPlayer } from "./VideoPlayer";
-
-import MicOnIcon from "../../../assets/micOn.png";
-import MicOffIcon from "../../../assets/micOff.png";
 import ArrowIcon from "../../../assets/setaSlider.png";
 import { ChatContext } from "../../../context/ChatContext";
-
-import { ISlider, Slider } from "../../../utils/slider/slider";
+import { RoomV2Context } from "../../../context/RoomV2Context";
 import { cssVariableHelper } from "../../../utils/cssVariableHelper";
 import { debounce } from "../../../utils/debounce";
+import { ISlider, Slider } from "../../../utils/slider/slider";
+import { Button } from "../../common/Button";
+import { SliderVideo } from "./SliderVideo";
 
 export const SliderVideos: React.FC<{
   focusedPeerId?: string;
   remaingPeerLength: number;
   handleSetFocusedVideoPeerId: (peerId?: string) => void;
 }> = ({ focusedPeerId, remaingPeerLength, handleSetFocusedVideoPeerId }) => {
-  const { user } = useContext(UserV2Context);
   const { chat } = useContext(ChatContext);
   const { peers } = useContext(RoomV2Context);
-  const { localStream } = useContext(StreamContext);
 
   const slider = useRef<ISlider | null>(null);
 
@@ -73,244 +62,14 @@ export const SliderVideos: React.FC<{
           </Button>
           <div className="slider-content flex h-full max-h-full transition-transform duration-300">
             {Object.values(peers).map((peer) => {
-              if (peer.user?.id !== focusedPeerId) {
-                return (
-                  <Button
-                    testid="peer-video"
-                    className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
-                    onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
-                    key={peer.user?.id}
-                  >
-                    {peer.user?.id === user?.id && localStream.current ? (
-                      <VideoPlayer stream={localStream.current} />
-                    ) : peer.stream ? (
-                      <VideoPlayer stream={peer.stream} />
-                    ) : null}
-
-                    <div className="absolute bottom-5 right-5 z-10">
-                      <UserMicrophoneVideoToggle
-                        bg="toggle"
-                        toggle={peer.isMicOn}
-                      >
-                        <img
-                          height={17}
-                          width={17}
-                          src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-                          alt="Microfone status"
-                        />
-                      </UserMicrophoneVideoToggle>
-                    </div>
-
-                    {!(peer.isSharingScreenOn || peer.isWebCamOn) && (
-                      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2">
-                        <div className="h-14 w-14 overflow-hidden rounded-full">
-                          <img src={peer.user?.picture} />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-5 left-5 z-10">
-                      <Label size="sm">
-                        <span>{peer?.user?.name}</span>
-                        <span>{peer?.user?.lastName}</span>{" "}
-                      </Label>
-                    </div>
-                  </Button>
-                );
-              }
-              return null;
-            })}
-            {Object.values(peers).map((peer) => {
-              if (peer.user?.id !== focusedPeerId) {
-                return (
-                  <Button
-                    testid="peer-video"
-                    className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
-                    onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
-                    key={peer.user?.id}
-                  >
-                    {peer.user?.id === user?.id && localStream.current ? (
-                      <VideoPlayer stream={localStream.current} />
-                    ) : peer.stream ? (
-                      <VideoPlayer stream={peer.stream} />
-                    ) : null}
-
-                    <div className="absolute bottom-5 right-5 z-10">
-                      <UserMicrophoneVideoToggle
-                        bg="toggle"
-                        toggle={peer.isMicOn}
-                      >
-                        <img
-                          height={17}
-                          width={17}
-                          src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-                          alt="Microfone status"
-                        />
-                      </UserMicrophoneVideoToggle>
-                    </div>
-
-                    {!(peer.isSharingScreenOn || peer.isWebCamOn) && (
-                      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2">
-                        <div className="h-14 w-14 overflow-hidden rounded-full">
-                          <img src={peer.user?.picture} />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-5 left-5 z-10">
-                      <Label size="sm">
-                        <span>{peer?.user?.name}</span>
-                        <span>{peer?.user?.lastName}</span>{" "}
-                      </Label>
-                    </div>
-                  </Button>
-                );
-              }
-              return null;
-            })}
-            {Object.values(peers).map((peer) => {
-              if (peer.user?.id !== focusedPeerId) {
-                return (
-                  <Button
-                    testid="peer-video"
-                    className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
-                    onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
-                    key={peer.user?.id}
-                  >
-                    {peer.user?.id === user?.id && localStream.current ? (
-                      <VideoPlayer stream={localStream.current} />
-                    ) : peer.stream ? (
-                      <VideoPlayer stream={peer.stream} />
-                    ) : null}
-
-                    <div className="absolute bottom-5 right-5 z-10">
-                      <UserMicrophoneVideoToggle
-                        bg="toggle"
-                        toggle={peer.isMicOn}
-                      >
-                        <img
-                          height={17}
-                          width={17}
-                          src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-                          alt="Microfone status"
-                        />
-                      </UserMicrophoneVideoToggle>
-                    </div>
-
-                    {!(peer.isSharingScreenOn || peer.isWebCamOn) && (
-                      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2">
-                        <div className="h-14 w-14 overflow-hidden rounded-full">
-                          <img src={peer.user?.picture} />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-5 left-5 z-10">
-                      <Label size="sm">
-                        <span>{peer?.user?.name}</span>
-                        <span>{peer?.user?.lastName}</span>{" "}
-                      </Label>
-                    </div>
-                  </Button>
-                );
-              }
-              return null;
-            })}
-            {Object.values(peers).map((peer) => {
-              if (peer.user?.id !== focusedPeerId) {
-                return (
-                  <Button
-                    testid="peer-video"
-                    className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
-                    onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
-                    key={peer.user?.id}
-                  >
-                    {peer.user?.id === user?.id && localStream.current ? (
-                      <VideoPlayer stream={localStream.current} />
-                    ) : peer.stream ? (
-                      <VideoPlayer stream={peer.stream} />
-                    ) : null}
-
-                    <div className="absolute bottom-5 right-5 z-10">
-                      <UserMicrophoneVideoToggle
-                        bg="toggle"
-                        toggle={peer.isMicOn}
-                      >
-                        <img
-                          height={17}
-                          width={17}
-                          src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-                          alt="Microfone status"
-                        />
-                      </UserMicrophoneVideoToggle>
-                    </div>
-
-                    {!(peer.isSharingScreenOn || peer.isWebCamOn) && (
-                      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2">
-                        <div className="h-14 w-14 overflow-hidden rounded-full">
-                          <img src={peer.user?.picture} />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-5 left-5 z-10">
-                      <Label size="sm">
-                        <span>{peer?.user?.name}</span>
-                        <span>{peer?.user?.lastName}</span>{" "}
-                      </Label>
-                    </div>
-                  </Button>
-                );
-              }
-              return null;
-            })}
-            {Object.values(peers).map((peer) => {
-              if (peer.user?.id !== focusedPeerId) {
-                return (
-                  <Button
-                    testid="peer-video"
-                    className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
-                    onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
-                    key={peer.user?.id}
-                  >
-                    {peer.user?.id === user?.id && localStream.current ? (
-                      <VideoPlayer stream={localStream.current} />
-                    ) : peer.stream ? (
-                      <VideoPlayer stream={peer.stream} />
-                    ) : null}
-
-                    <div className="absolute bottom-5 right-5 z-10">
-                      <UserMicrophoneVideoToggle
-                        bg="toggle"
-                        toggle={peer.isMicOn}
-                      >
-                        <img
-                          height={17}
-                          width={17}
-                          src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-                          alt="Microfone status"
-                        />
-                      </UserMicrophoneVideoToggle>
-                    </div>
-
-                    {!(peer.isSharingScreenOn || peer.isWebCamOn) && (
-                      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2">
-                        <div className="h-14 w-14 overflow-hidden rounded-full">
-                          <img src={peer.user?.picture} />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-5 left-5 z-10">
-                      <Label size="sm">
-                        <span>{peer?.user?.name}</span>
-                        <span>{peer?.user?.lastName}</span>{" "}
-                      </Label>
-                    </div>
-                  </Button>
-                );
-              }
-              return null;
+              return (
+                <SliderVideo
+                  key={peer.user?.id}
+                  peer={peer}
+                  focusedPeerId={focusedPeerId}
+                  handleSetFocusedVideoPeerId={handleSetFocusedVideoPeerId}
+                />
+              );
             })}
           </div>
 

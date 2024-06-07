@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io'
-import { rooms } from './room'
+
+import { IActiveRoomManagerService } from '../interfaces/services/IActiveRoomManagerService'
 
 const mediaDeviceMap = {
   microphone: 'isMicOn',
@@ -9,34 +10,10 @@ const mediaDeviceMap = {
 
 type IMediaDeviceKey = keyof typeof mediaDeviceMap
 
-type IPeerDevicePropriety = 'isMicOn' | 'isWebCamOn' | 'isSharingScreenOn'
-
-export const streamHandler = (socket: Socket) => {
-  const updatePeerDeviceState = ({
-    roomId,
-    enabled,
-    localPeerId,
-    type,
-  }: {
-    roomId: string
-    enabled: boolean
-    localPeerId: string
-    type: IMediaDeviceKey
-  }) => {
-    if (rooms[roomId] && rooms[roomId][localPeerId]) {
-      const peer = rooms[roomId][localPeerId]
-      const peerDeviceStatePropertyKey = mediaDeviceMap[
-        type
-      ] as IPeerDevicePropriety
-
-      if (!peerDeviceStatePropertyKey) return
-
-      if (!peer[peerDeviceStatePropertyKey] === undefined) return
-
-      peer[peerDeviceStatePropertyKey] = enabled
-    }
-  }
-
+export const streamHandler = (
+  socket: Socket,
+  activeRoomManagerService: IActiveRoomManagerService
+) => {
   const mediaDeviceStatusUpdate = ({
     roomId,
     type,
@@ -48,7 +25,10 @@ export const streamHandler = (socket: Socket) => {
   }) => {
     const localPeerId = socket.request.user.id
 
-    updatePeerDeviceState({ roomId, enabled, localPeerId, type })
+    const room = activeRoomManagerService.getRoom(roomId)
+    const peerDeviceStatePropertyKey = mediaDeviceMap[type]
+
+    room.updatePeer(localPeerId, { [peerDeviceStatePropertyKey]: enabled })
 
     socket.emit('mediaDeviceStatusNotification', {
       peerId: localPeerId,

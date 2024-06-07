@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
+
+import SendIcon from "../../assets/sendMessage.png";
 import { ChatContext } from "../../context/ChatContext";
 import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
 import { Button } from "../common/Button";
-
-import SendIcon from "../../assets/sendMessage.png";
 
 export const ChatInput: React.FC = () => {
   const [message, setMessage] = useState("");

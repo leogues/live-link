@@ -1,5 +1,5 @@
-import { IRoom } from "../../context/RoomV2Context";
 import videoCamIcon from "../../assets/videoCam.png";
+import { IRoom } from "../../context/RoomV2Context";
 import { formatDate } from "../../utils/DateUtils";
 
 export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {

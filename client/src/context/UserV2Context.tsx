@@ -1,6 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { createContext } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+
 import api from "../services/api";
 
 export interface IUser {

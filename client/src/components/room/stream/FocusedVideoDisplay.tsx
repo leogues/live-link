@@ -1,15 +1,15 @@
-import { useContext, useState } from "react";
-import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
-import { Label } from "./Label";
-import { Button } from "../../common/Button";
-import { VideoPlayer } from "./VideoPlayer";
-import { UserV2Context } from "../../../context/UserV2Context";
-import { StreamContext } from "../../../context/StreamContext";
-import { IPeerState } from "../../../reducers/peersReducer";
+import { useContext, useMemo, useState } from "react";
 
 import MaximizeIcon from "../../../assets/maximize.png";
-import MicOnIcon from "../../../assets/micOn.png";
 import MicOffIcon from "../../../assets/micOff.png";
+import MicOnIcon from "../../../assets/micOn.png";
+import { StreamContext } from "../../../context/StreamContext";
+import { UserV2Context } from "../../../context/UserV2Context";
+import { IPeerState } from "../../../reducers/peersReducer";
+import { Button } from "../../common/Button";
+import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
+import { Label } from "./Label";
+import { VideoPlayer } from "./VideoPlayer";
 
 export const FocusedVideoDisplay: React.FC<{
   focusedPeer: IPeerState | undefined;
@@ -18,13 +18,19 @@ export const FocusedVideoDisplay: React.FC<{
   const { localStream } = useContext(StreamContext);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const videoOn = focusedPeer?.isWebCamOn || focusedPeer?.isWebCamOn;
+  const videoOn = focusedPeer?.isWebCamOn || focusedPeer?.isSharingScreenOn;
+
+  const stream = useMemo<MediaStream | undefined>(() => {
+    if (focusedPeer?.user?.id === user?.id) {
+      return localStream.current;
+    }
+
+    return focusedPeer?.stream;
+  }, [focusedPeer, localStream]);
 
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
-
-  console.log(focusedPeer?.stream);
 
   return (
     <div className="box-border flex min-h-0 grow justify-center">
@@ -37,11 +43,12 @@ justify-center overflow-hidden rounded-xl bg-black data-[fullscreen=true]:fixed
 data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-50 
 data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:rounded-none"
         >
-          {focusedPeer.user?.id === user?.id && localStream.current ? (
+          {/* {focusedPeer.user?.id === user?.id && localStream.current ? (
             <VideoPlayer stream={localStream.current} />
           ) : focusedPeer.stream ? (
             <VideoPlayer stream={focusedPeer.stream} />
-          ) : null}
+          ) : null} */}
+          {stream && <VideoPlayer stream={stream} />}
 
           <div className="absolute right-5 top-4 z-10">
             <Button testid="fullscreen-toggle" onClick={handleFullscreen}>

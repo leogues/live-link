@@ -1,9 +1,10 @@
-import { describe, test, expect, vitest } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { chatCustomProviderProps } from "./ChatProviderMock";
-import { MemoryRouter } from "react-router-dom";
+
 import { Room } from "../Room";
+import { chatCustomProviderProps } from "./ChatProviderMock";
 
 describe("room footer chat tests", () => {
   test("send message button call the function", () => {

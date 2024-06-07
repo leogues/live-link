@@ -1,10 +1,7 @@
-import { ReactNode, createContext, useEffect, useReducer } from "react";
+import { createContext, ReactNode, useEffect, useReducer } from "react";
+
+import { addHistoryAction, addMessageAction, toggleChatAction } from "../reducers/chatActions";
 import { chatReducer, ChatState } from "../reducers/chatReduces";
-import {
-  addHistoryAction,
-  addMessageAction,
-  toggleChatAction,
-} from "../reducers/chatActions";
 import { ws } from "../services/ws";
 
 interface SendMessageProps {

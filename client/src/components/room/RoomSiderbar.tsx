@@ -1,9 +1,8 @@
 import { useContext } from "react";
 
 import { ChatContext } from "../../context/ChatContext";
-
-import { ParticipantsListSidebar } from "./ParticipantsListSidebar";
 import { ChatSidebar } from "./ChatSidebar";
+import { ParticipantsListSidebar } from "./ParticipantsListSidebar";
 
 export const RoomSiderbar: React.FC = () => {
   const { chat } = useContext(ChatContext);

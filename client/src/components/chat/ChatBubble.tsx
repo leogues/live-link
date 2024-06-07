@@ -1,6 +1,7 @@
-import { useContext } from "react";
-import { RoomV2Context } from "../../context/RoomV2Context";
 import clsx from "clsx";
+import { useContext } from "react";
+
+import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
 
 export const ChatBubble: React.FC<{
@@ -75,7 +76,7 @@ export const ChatBubble: React.FC<{
         })}
       >
         <span className="text-xs text-gray-500">
-          {!isPrevMessageSameTime && time}
+          {(!isPrevMessageSameTime || !isPrevMessageSameAuthor) && time}
         </span>
       </div>
     </div>

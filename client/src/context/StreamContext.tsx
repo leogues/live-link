@@ -1,16 +1,10 @@
-import {
-  MutableRefObject,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { ws } from "../services/ws";
+import { createContext, MutableRefObject, useContext, useEffect, useRef, useState } from "react";
+
 import { addPeerStreamAction } from "../reducers/peersActions";
-import { RoomV2Context } from "./RoomV2Context";
+import { ws } from "../services/ws";
 import { IPeer } from "../types/peer";
 import { IPeers, Peers } from "../utils/multiPeerManager";
+import { RoomV2Context } from "./RoomV2Context";
 
 interface getMediaProps {
   type: "user-media" | "display-media";

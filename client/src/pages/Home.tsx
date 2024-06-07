@@ -1,12 +1,13 @@
-import { Header } from "../components/Header";
 import { useContext, useRef } from "react";
-import { UserV2Context } from "../context/UserV2Context";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+
 import { FormHeader } from "../components/FormHeader";
+import { Header } from "../components/Header";
+import { MeetingButtons } from "../components/home/MeetingButtons";
 import { MeetingInput } from "../components/home/MeetingInput";
 import { UserProfile } from "../components/UserProfile";
-import { MeetingButtons } from "../components/home/MeetingButtons";
+import { UserV2Context } from "../context/UserV2Context";
+import api from "../services/api";
 
 export const Home = () => {
   const { user } = useContext(UserV2Context);

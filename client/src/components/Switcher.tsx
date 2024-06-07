@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { Button } from "./common/Button";
+
 import { ThemeContext } from "../context/ThemeContext";
+import { Button } from "./common/Button";
 
 export const Switcher: React.FC = () => {
   const { theme, switchTheme } = useContext(ThemeContext);

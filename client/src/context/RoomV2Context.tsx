@@ -1,19 +1,16 @@
+import { AxiosError } from "axios";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+
+import {
+    addAllPeersAction, addPeerAction, removePeerAction, updateMicrophoneStateAction,
+    updateSharingScreenStateAction, updateWebCamStateAction
+} from "../reducers/peersActions";
+import { PeerAction, peersReducer, PeerState } from "../reducers/peersReducer";
 import api from "../services/api";
 import { ws } from "../services/ws";
-import { PeerAction, PeerState, peersReducer } from "../reducers/peersReducer";
-import {
-  addAllPeersAction,
-  addPeerAction,
-  removePeerAction,
-  updateMicrophoneStateAction,
-  updateSharingScreenStateAction,
-  updateWebCamStateAction,
-} from "../reducers/peersActions";
 import { IPeer } from "../types/peer";
 
 export type IRoom = {

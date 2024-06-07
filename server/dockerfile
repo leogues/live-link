@@ -1,0 +1,31 @@
+FROM node:20.11.0 as builder
+
+WORKDIR /backend
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . ./
+
+RUN npm run build
+
+FROM node:20.11.0-alpine
+
+WORKDIR /backend
+
+COPY --from=builder /backend/dist ./dist
+COPY package.json package-lock.json ./
+
+COPY --from=builder /backend/prisma ./prisma
+COPY --from=builder /backend/public ./public
+COPY --from=builder /backend/package.json ./
+COPY --from=builder /backend/package-lock.json ./
+
+RUN npm install --omit=dev
+
+RUN npx prisma generate
+
+EXPOSE 8080
+
+CMD ["npm", "run", "prod"]
+

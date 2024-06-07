@@ -1,11 +1,11 @@
-import { describe, test, expect, vitest } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { Room } from "../Room";
-import { MemoryRouter } from "react-router-dom";
-import { streamCustomProviderProps } from "./StreamProviderMock";
 import { ChatProvider } from "../../context/ChatContext";
+import { Room } from "../Room";
+import { streamCustomProviderProps } from "./StreamProviderMock";
 
 describe("Room footer controls tests", () => {
   test("microphone button calls the function", () => {

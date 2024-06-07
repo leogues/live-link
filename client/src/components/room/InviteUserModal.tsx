@@ -1,8 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Button } from "../common/Button";
+
 import inviteUserIcon from "../../assets/userAdd.png";
-import { FormHeader } from "../FormHeader";
+import { Button } from "../common/Button";
 import { Input } from "../common/Input";
+import { FormHeader } from "../FormHeader";
 
 export const InviteUserModal: React.FC = () => {
   const roomUrl = window.location.href;

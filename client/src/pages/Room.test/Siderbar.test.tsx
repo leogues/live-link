@@ -1,13 +1,14 @@
-import { describe, test, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Room } from "../Room";
-import { MemoryRouter } from "react-router-dom";
+
 import { ChatProvider } from "../../context/ChatContext";
-import { roomCustomProviderProps } from "./RoomProviderMock";
-import { chatCustomProviderProps } from "./ChatProviderMock";
-import { userCustomProviderProps } from "./UserProviderMock";
 import { ChatState } from "../../reducers/chatReduces";
+import { Room } from "../Room";
+import { chatCustomProviderProps } from "./ChatProviderMock";
+import { roomCustomProviderProps } from "./RoomProviderMock";
+import { userCustomProviderProps } from "./UserProviderMock";
 
 const chatMock: ChatState = {
   isChatOpen: true,

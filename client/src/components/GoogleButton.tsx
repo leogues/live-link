@@ -1,5 +1,5 @@
-import { Button } from "./common/Button";
 import GoogleIcon from "../assets/google.png";
+import { Button } from "./common/Button";
 
 export const GoogleButton: React.FC<{ onClick: () => void }> = ({
   onClick,

@@ -1,8 +1,9 @@
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+
+import { ChatContext } from "../../context/ChatContext";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
-import React, { useContext } from "react";
-import { ChatContext } from "../../context/ChatContext";
 
 export const RoomFooter: React.FC = () => {
   const { chat } = useContext(ChatContext);

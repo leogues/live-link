@@ -1,15 +1,18 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-
-import { Profile, _StrategyOptionsBase } from 'passport-google-oauth20'
-import { User } from '@prisma/client'
-import prisma from '../database/client'
-
 const passport = require('passport')
+
+import { _StrategyOptionsBase, Profile } from 'passport-google-oauth20'
+
+import { UserRepository } from '../repositories/database/UserRepository'
+import { UserService } from '../services/UserService'
+
+const userRepository = new UserRepository()
+const userService = new UserService(userRepository)
 
 const googleStrategyOptions: _StrategyOptionsBase = {
   clientID: process.env.GOOGLE_CLIENT_ID || '',
-  clientSecret: process.env.GOOGLE_CLIENT_SCRET || '',
-  callbackURL: 'http://localhost:8080/auth/google/callback',
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+  callbackURL: process.env.GOOGLE_CALLBACK_URL || '',
   scope: ['profile'],
 }
 
@@ -23,40 +26,23 @@ passport.use(
       done: any
     ) => {
       try {
-        const { provider, displayName } = profile
-        const {
-          sub: id,
-          given_name: name,
-          family_name: lastName,
-          picture,
-        } = profile._json
+        const id = profile._json.sub
+        const name = profile._json.given_name || profile.displayName
 
-        let user = await prisma.user.findFirst({
-          where: {
-            providerId: id,
-            provider: provider,
-          },
-        })
-
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              name: name ? name : displayName,
-              lastName,
-              picture,
-              providerId: id,
-              provider,
-            },
-          })
+        const newUserData = {
+          name,
+          lastName: profile._json.family_name,
+          picture: profile._json.picture,
+          providerId: id,
+          provider: profile.provider,
         }
+
+        const user = await userService.getUserOrCreate(id, newUserData)
 
         if (!user) return done(null, false)
 
-        console.log(user)
-
         return done(null, user)
       } catch (error) {
-        console.log(error)
         return done(error, false)
       }
     }
@@ -72,14 +58,10 @@ passport.serializeUser(async (user: User, done: any) => {
 passport.deserializeUser(async (userId: string, done: any) => {
   process.nextTick(async function () {
     try {
-      const user = await prisma.user.findFirst({
-        where: {
-          id: userId,
-        },
-      })
+      const user = await userService.getUserById(userId)
+
       return done(null, user)
     } catch (error) {
-      console.log(error)
       return done(error, null)
     }
   })

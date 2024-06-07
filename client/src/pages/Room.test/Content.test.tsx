@@ -1,11 +1,12 @@
-import { describe, test, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Room } from "../Room";
-import { roomCustomProviderProps, mockedPeers } from "./RoomProviderMock";
-import { MemoryRouter } from "react-router-dom";
+
 import { IRoom } from "../../context/RoomV2Context";
 import { PeerState } from "../../reducers/peersReducer";
+import { Room } from "../Room";
+import { mockedPeers, roomCustomProviderProps } from "./RoomProviderMock";
 
 const mockRoom: IRoom = {
   id: "1",

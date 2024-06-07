@@ -1,8 +1,8 @@
-import { describe, test, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, test } from "vitest";
 
 import { render, screen } from "@testing-library/react";
 
-import { MemoryRouter } from "react-router-dom";
 import { Home } from "../Home";
 
 describe("Home content tests", () => {

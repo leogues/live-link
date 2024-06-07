@@ -1,5 +1,6 @@
 import { Socket } from 'socket.io'
-import { userSocketMap } from './room'
+
+import { IActiveRoomManagerService } from '../interfaces/services/IActiveRoomManagerService'
 
 interface peerMessageProps {
   messageType: string
@@ -7,22 +8,25 @@ interface peerMessageProps {
   remotePeerId: string
 }
 
-export const webrtcCallHandler = (socket: Socket) => {
+export const webrtcCallHandler = (
+  socket: Socket,
+  activeRoomManagerService: IActiveRoomManagerService
+) => {
   const signalMessagesIntermediary = ({
     messageType,
     payload,
     remotePeerId,
   }: peerMessageProps) => {
-    const remotePeerSocketId = userSocketMap[remotePeerId]
+    const remotePeerSocketId =
+      activeRoomManagerService.getUserSocket(remotePeerId)
     const localPeerId = socket.request.user.id
 
     if (!remotePeerSocketId) {
-      console.log("remotePeerId don't exist in equivalent in userSocketMap")
       return
     }
 
     socket.to(remotePeerSocketId).emit(messageType, {
-      messageType: messageType,
+      messageType,
       payload,
       remotePeerId: localPeerId,
     })

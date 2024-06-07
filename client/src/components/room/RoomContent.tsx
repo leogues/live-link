@@ -1,5 +1,5 @@
-import { StreamArea } from "./stream/StreamArea";
 import { RoomSiderbar } from "./RoomSiderbar";
+import { StreamArea } from "./stream/StreamArea";
 
 export const RoomContent: React.FC = () => {
   return (

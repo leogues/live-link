@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+
 import baseUrl from "./apiUrl";
 
 const api = axios.create({

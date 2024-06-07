@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { RoomV2Context } from "../../../context/RoomV2Context";
 
+import { RoomV2Context } from "../../../context/RoomV2Context";
 import { FocusedVideoDisplay } from "./FocusedVideoDisplay";
 import { SliderVideos } from "./SliderVideos";
 
@@ -39,7 +39,7 @@ export const StreamArea: React.FC = () => {
   return (
     <div className="flex h-full min-w-0 grow flex-col">
       <div className="flex h-full flex-col gap-5 p-3 text-white">
-        {hasPeers && (
+        {hasPeers && focusedPeer && (
           <>
             <FocusedVideoDisplay focusedPeer={focusedPeer} />
             {hasRemaingPeer && (

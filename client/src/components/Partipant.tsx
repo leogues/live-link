@@ -1,8 +1,7 @@
-import micOnIcon from "../assets/micOnParticpant.png";
 import micOffIcon from "../assets/micOffParticpant.png";
-
-import videoOnIcon from "../assets/videoOnParticipant.png";
+import micOnIcon from "../assets/micOnParticpant.png";
 import videoOffIcon from "../assets/videoOffParticipant.png";
+import videoOnIcon from "../assets/videoOnParticipant.png";
 
 export const Participant: React.FC<{
   picture?: string;

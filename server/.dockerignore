@@ -1,0 +1,18 @@
+# Arquivos e diretórios específicos do Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Arquivos de build
+dist/
+build/
+
+# Arquivos de configuração
+.env
+
+# Arquivos de teste
+__tests__/
+
+# Outros arquivos e diretórios que você deseja ignorar
+logs/
+tmp/

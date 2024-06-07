@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, ADD_HISTORY, TOGGLE_CHAT } from "./chatActions";
+import { ADD_HISTORY, ADD_MESSAGE, TOGGLE_CHAT } from "./chatActions";
 
 export type ChatState = {
   messages: IMessage[];
