@@ -1,8 +1,14 @@
 import { IUser } from "../context/UserV2Context";
 import { IPeer } from "../types/peer";
 import {
-    ADD_ALL_PEERS, ADD_PEER, ADD_PEER_STREAM, REMOVE_PEER, REMOVE_PEER_STREAM,
-    UPDATE_PEER_MICROPHONE_STATE, UPDATE_PEER_SHARINGSCREEN_STATE, UPDATE_PEER_WEBCAM_STATE
+  ADD_ALL_PEERS,
+  ADD_PEER,
+  ADD_PEER_STREAM,
+  REMOVE_PEER,
+  REMOVE_PEER_STREAM,
+  UPDATE_PEER_MICROPHONE_STATE,
+  UPDATE_PEER_SHARINGSCREEN_STATE,
+  UPDATE_PEER_WEBCAM_STATE,
 } from "./peersActions";
 
 export type IPeerState = {
@@ -69,8 +75,6 @@ export const peersReducer = (state: PeerState, action: PeerAction) => {
       return rest;
 
     case ADD_PEER_STREAM:
-      console.log("set stream:", action.payload.userId);
-
       return {
         ...state,
         [action.payload.userId]: {

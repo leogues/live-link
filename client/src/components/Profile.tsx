@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import VectorIcon from "../assets/vector.png";
+import LeftIcon from "../assets/logout.png";
 import { Button } from "./common/Button";
 
 export interface ProfileProps {
@@ -68,7 +68,7 @@ export const Profile: React.FC<ProfileProps> = ({
           })}
           onClick={onClick}
         >
-          <img className="block " src={VectorIcon}></img>
+          <img className="block h-[18px] w-[18px]" src={LeftIcon}></img>
         </Button>
       </div>
     </div>

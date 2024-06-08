@@ -1,4 +1,11 @@
-import { createContext, MutableRefObject, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { addPeerStreamAction } from "../reducers/peersActions";
 import { ws } from "../services/ws";
@@ -267,8 +274,6 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   };
 
   const peerJoined = async (peer: IPeer) => {
-    console.log("joined:", peer.user.id);
-
     multiPeersManager.current?.startCall({
       remotePeerId: peer.user.id,
       mediaTracks,
@@ -276,8 +281,6 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   };
 
   const endCall = (peerId: string) => {
-    console.log("end call:", peerId);
-
     multiPeersManager.current?.close(peerId);
   };
 
@@ -337,7 +340,6 @@ export const StreamProvider: React.FunctionComponent<StreamContextProps> = ({
   };
 
   useEffect(() => {
-    console.log("render Stream");
     multiPeersManager.current = Peers();
 
     multiPeersManager.current?.on("stream", addStream);

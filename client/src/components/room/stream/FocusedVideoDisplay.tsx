@@ -28,6 +28,8 @@ export const FocusedVideoDisplay: React.FC<{
     return focusedPeer?.stream;
   }, [focusedPeer, localStream]);
 
+  const isMyVideo = focusedPeer?.user?.id === user?.id;
+
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
@@ -48,7 +50,7 @@ data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=tru
           ) : focusedPeer.stream ? (
             <VideoPlayer stream={focusedPeer.stream} />
           ) : null} */}
-          {stream && <VideoPlayer stream={stream} />}
+          {stream && <VideoPlayer stream={stream} muted={isMyVideo} />}
 
           <div className="absolute right-5 top-4 z-10">
             <Button testid="fullscreen-toggle" onClick={handleFullscreen}>

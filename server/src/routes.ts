@@ -8,8 +8,10 @@ import {
   validateRoomId,
   validateRoomTopic,
 } from './middleware/ValidationMiddleware'
+import { AuthController } from './controllers/AuthController'
 
-export const frontendUrl = process.env.FRONTEND_URL || 'http://localhost'
+// export const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
+export const frontendUrl = 'http://localhost:5173'
 
 require('./strategies/googlestrategy')
 require('./strategies/customstrategy')
@@ -37,6 +39,8 @@ routes.get(
     res.redirect(frontendUrl)
   }
 )
+
+routes.get('/auth/logout', AuthController.Logout)
 
 routes.get('/user', authenticationMiddleware, UserController.Index)
 

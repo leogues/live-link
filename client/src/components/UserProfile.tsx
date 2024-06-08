@@ -2,6 +2,7 @@ import clsx from "clsx";
 
 import { IUser } from "../context/UserV2Context";
 import { Profile } from "./Profile";
+import baseUrl from "../services/apiUrl";
 
 type UserProfileProps = {
   user?: IUser;
@@ -22,6 +23,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   marginRight,
   className,
 }) => {
+  const handleLogout = () => {
+    window.location.href = `${baseUrl}/auth/logout`;
+  };
+
   return (
     <div className={clsx("lg:grow", className)}>
       {user && (
@@ -34,6 +39,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           fontSize={fontSize}
           imageSize={imageSize}
           marginRight={marginRight}
+          onClick={handleLogout}
         />
       )}
     </div>
