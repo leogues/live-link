@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 export const VideoPlayer: React.FC<{
   stream: MediaStream;
   className?: string;
-}> = ({ stream, className }) => {
+  muted?: boolean;
+}> = ({ stream, className, muted }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export const VideoPlayer: React.FC<{
       className={clsx("h-full w-full", className)}
       ref={videoRef}
       autoPlay
+      muted={muted}
     />
   );
 };

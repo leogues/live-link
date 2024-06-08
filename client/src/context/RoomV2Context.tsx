@@ -5,8 +5,12 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import {
-    addAllPeersAction, addPeerAction, removePeerAction, updateMicrophoneStateAction,
-    updateSharingScreenStateAction, updateWebCamStateAction
+  addAllPeersAction,
+  addPeerAction,
+  removePeerAction,
+  updateMicrophoneStateAction,
+  updateSharingScreenStateAction,
+  updateWebCamStateAction,
 } from "../reducers/peersActions";
 import { PeerAction, peersReducer, PeerState } from "../reducers/peersReducer";
 import api from "../services/api";
@@ -78,12 +82,10 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   };
 
   const addPeer = (peer: IPeer) => {
-    console.log("add:", peer);
     dispatchPeers(addPeerAction(peer));
   };
 
   const removePeer = (peerId: string) => {
-    console.log("removed", peerId);
     dispatchPeers(removePeerAction(peerId));
   };
 
@@ -96,7 +98,6 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     type: MediaDeviceAccepted;
     enabled: boolean;
   }) => {
-    console.log("Media Device Update", { type, enabled });
     const mediaDeviceStatusUpdateAccepted: Record<
       MediaDeviceAccepted,
       ({ peerId, enabled }: MediaDeviceUpdate) => void
@@ -135,8 +136,6 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
       ws.off("user-disconnected");
     };
   }, []);
-
-  console.log(peers);
 
   return (
     <RoomV2Context.Provider

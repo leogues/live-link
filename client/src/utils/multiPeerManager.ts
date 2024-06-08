@@ -63,8 +63,6 @@ export const Peers = () => {
   };
 
   const startCall = ({ remotePeerId }: { remotePeerId: string }) => {
-    console.log("start call");
-
     const peer = Peer({
       remotePeerId,
       initialTracks: state._mediaTracks,
@@ -111,7 +109,7 @@ export const Peers = () => {
   };
 
   const addStream = (stream?: MediaStream) => {
-    console.log("add Stream");
+
     if (!stream) return;
 
     Object.values(state.peerConnections).forEach(
@@ -124,7 +122,6 @@ export const Peers = () => {
     payload,
     remotePeerId,
   }: signalMessagesCallbackProps) {
-    console.log("signal");
     let peer;
     if (!state.peerConnections[remotePeerId]) {
       peer = Peer({ remotePeerId, initialTracks: state._mediaTracks });
@@ -142,7 +139,7 @@ export const Peers = () => {
   }
 
   const close = (remotePeerId: string) => {
-    console.log("close");
+
     const peerConn = state.peerConnections[remotePeerId];
 
     if (peerConn) {
@@ -162,8 +159,6 @@ export const Peers = () => {
     state._mediaTracks.audioTrack = null;
     state._mediaTracks.screenAudioTrack = null;
     state._mediaTracks.videoTrack = null;
-
-    console.log("close", state.peerConnections);
 
     Object.values(state.peerConnections)
       .filter((peerConn) => peerConn !== undefined)

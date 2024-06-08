@@ -342,8 +342,6 @@ export const Peer = (options: PeerProps) => {
 
     await state._peerConn?.setRemoteDescription(remoteDescription);
 
-    console.log({ senders: state._peerConn?.getSenders() });
-
     if (payload.type === "offer") {
       _logs(
         "Got offer. Sending answer to peer. remotePeerId:",

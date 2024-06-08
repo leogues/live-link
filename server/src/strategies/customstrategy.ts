@@ -17,7 +17,7 @@ passport.use(
       const user = await userService.createUser({
         name: 'Anônimo',
         lastName: tag,
-        picture: `${frontendUrl}api/images/sad.png`,
+        picture: `${frontendUrl}/api/images/sad.png`,
         provider: 'local',
       })
 

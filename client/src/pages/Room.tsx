@@ -19,7 +19,6 @@ export const Room = () => {
       });
 
       return () => {
-        console.log("leave-room", room.id);
         ws.emit("leave-room", { roomId: room.id });
       };
     }
