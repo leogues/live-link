@@ -113,6 +113,7 @@ export const Slider = ({
     sliderItemsPerRow: number,
   ) => {
     const sliderEndIndex = calculeEndIndex(sliderItemsCount, sliderItemsPerRow);
+
     state.sliderEndIndex = sliderEndIndex;
 
     setCssVariableValue({
