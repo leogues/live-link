@@ -1,9 +1,10 @@
-import { IMessageRepositoryClass } from "../interfaces/repositories/IMessageRepository";
-import { IPeerRepositoryClass } from "../interfaces/repositories/IPeerRepository";
-import { IActiveRoomManagerService } from "../interfaces/services/IActiveRoomManagerService";
+import { IMessageRepositoryClass } from '../interfaces/repositories/IMessageRepository'
+import { IPeerRepositoryClass } from '../interfaces/repositories/IPeerRepository'
+import { IActiveRoomManagerService } from '../interfaces/services/IActiveRoomManagerService'
 import {
-    IActiveRoomService, IActiveRoomServiceClass
-} from "../interfaces/services/IActiveRoomService";
+  IActiveRoomService,
+  IActiveRoomServiceClass,
+} from '../interfaces/services/IActiveRoomService'
 
 export class ActiveRoomManagerService implements IActiveRoomManagerService {
   private rooms: Record<string, IActiveRoomService>
@@ -50,5 +51,9 @@ export class ActiveRoomManagerService implements IActiveRoomManagerService {
 
   public removeUserSocket(userId: string): void {
     delete this.userSocketMap[userId]
+  }
+
+  public removeRoom(roomId: string): void {
+    delete this.rooms[roomId]
   }
 }

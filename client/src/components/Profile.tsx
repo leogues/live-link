@@ -63,9 +63,12 @@ export const Profile: React.FC<ProfileProps> = ({
       </div>
       <div className="ml-auto hidden h-full items-center lg:flex">
         <Button
-          className={clsx("min-h-max", {
-            "mr-4": marginRight === "4",
-          })}
+          className={clsx(
+            "min-h-max hover:brightness-90 dark:hover:brightness-125",
+            {
+              "mr-4": marginRight === "4",
+            },
+          )}
           onClick={onClick}
         >
           <img className="block h-[18px] w-[18px]" src={LeftIcon}></img>
