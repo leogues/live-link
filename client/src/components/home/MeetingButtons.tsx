@@ -18,14 +18,14 @@ export const MeetingButtons: React.FC<MeetingHeaderProps> = ({
       <div className="flex flex-1 flex-col gap-2">
         <Button
           onClick={leftButtonHandle}
-          className="bg-blue-50 py-3 text-blue-800 dark:bg-darkBlue-400 dark:text-blue-700"
+          className="bg-blue-50 py-3 text-blue-800 hover:brightness-95 dark:bg-darkBlue-400 dark:text-blue-700 dark:hover:brightness-110"
         >
           {leftButtonText}
         </Button>
       </div>
       <div className="flex flex-1 flex-col gap-2">
         <Button
-          className="bg-blue-800 py-3 text-white "
+          className="bg-blue-800 py-3 text-white hover:brightness-110  dark:hover:brightness-90"
           onClick={rightButtonHandle}
         >
           {rightButtonText}

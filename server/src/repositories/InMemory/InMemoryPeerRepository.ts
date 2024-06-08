@@ -1,4 +1,4 @@
-import { IPeerRepository } from "../../interfaces/repositories/IPeerRepository";
+import { IPeerRepository } from '../../interfaces/repositories/IPeerRepository'
 
 export class InMemoryPeerRepository implements IPeerRepository {
   private peers: Record<string, Peer>

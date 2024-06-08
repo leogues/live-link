@@ -1,4 +1,4 @@
-import { IActiveRoomService } from "./IActiveRoomService";
+import { IActiveRoomService } from './IActiveRoomService'
 
 export interface IActiveRoomManagerService {
   createRoom(roomId: string): IActiveRoomService
@@ -6,4 +6,5 @@ export interface IActiveRoomManagerService {
   addUserSocket(userId: string, socketId: string): void
   getUserSocket(userId: string): string | undefined
   removeUserSocket(userId: string): void
+  removeRoom(roomId: string): void
 }

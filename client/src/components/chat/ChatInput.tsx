@@ -12,25 +12,35 @@ export const ChatInput: React.FC = () => {
   const { user } = useContext(UserV2Context);
   const { room } = useContext(RoomV2Context);
 
+  const handleSendMessage = () => {
+    if (!room || !user) return;
+
+    if (message === "") return;
+
+    sendMessage({
+      roomId: room.id,
+      content: message,
+      userId: user.id,
+      name: user.name,
+      lastName: user.lastName,
+      picture: user.picture,
+    });
+    setMessage("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="w-full py-1 pl-4 pr-5">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-
-          if (!room || !user) return;
-
-          if (message === "") return;
-
-          sendMessage({
-            roomId: room.id,
-            content: message,
-            userId: user.id,
-            name: user.name,
-            lastName: user.lastName,
-            picture: user.picture,
-          });
-          setMessage("");
+          handleSendMessage();
         }}
       >
         <div className="flex h-14 max-w-full items-center justify-center rounded-full bg-gray-100 dark:bg-darkBlue-700 ">
@@ -39,6 +49,7 @@ export const ChatInput: React.FC = () => {
             className="flex h-4/5 grow resize-none overflow-hidden border-0 bg-transparent px-3 py-[0.6rem] align-middle text-gray-900 outline-none placeholder:text-gray-700 dark:text-white"
             onChange={(e) => setMessage(e.target.value)}
             value={message}
+            onKeyDown={handleKeyDown}
           />
           <Button
             testid="send-message"

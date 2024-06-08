@@ -66,6 +66,10 @@ export const roomHandler = (
 
     activeRoomManagerService.removeUserSocket(sessionUser.id)
 
+    if (Object.values(room.getAllPeers()).length === 0) {
+      activeRoomManagerService.removeRoom(roomId)
+    }
+
     socket.to(roomId).emit('user-disconnected', sessionUser.id)
     socket.to(roomId).emit('end-call', sessionUser.id)
   }
