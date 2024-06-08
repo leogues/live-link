@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { RoomV2Context } from "../../context/RoomV2Context";
-import { formatDate } from "../../utils/DateUtils";
+import { formatDate } from "../../utils/dateUtils";
 import { MeetingButtons } from "../home/MeetingButtons";
 
 export const RoomInfoEntry: React.FC = () => {
