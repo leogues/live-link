@@ -109,6 +109,7 @@ export const Peers = () => {
   };
 
   const addStream = (stream?: MediaStream) => {
+
     if (!stream) return;
 
     Object.values(state.peerConnections).forEach(
@@ -138,6 +139,7 @@ export const Peers = () => {
   }
 
   const close = (remotePeerId: string) => {
+
     const peerConn = state.peerConnections[remotePeerId];
 
     if (peerConn) {
