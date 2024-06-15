@@ -40,7 +40,7 @@ export const SliderVideo: React.FC<{
       onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
       key={peer.user?.id}
     >
-      {stream && <VideoPlayer stream={stream} muted={isMyVideo} />}
+      {stream && videoOn && <VideoPlayer stream={stream} muted={isMyVideo} />}
 
       <div className="absolute bottom-5 right-5 z-10">
         <UserMicrophoneVideoToggle bg="toggle" toggle={peer.isMicOn}>

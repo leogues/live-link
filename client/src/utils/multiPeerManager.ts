@@ -93,6 +93,11 @@ export const Peers = () => {
         Object.values(state.peerConnections).forEach((peerConn) => {
           peerConn.addTrack({ track });
         });
+      } else if (!track && _track) {
+        state.localStream.removeTrack(_track);
+        Object.values(state.peerConnections).forEach((peerConn) => {
+          peerConn.removeTrack({ track: _track });
+        });
       } else if (track && _track && track !== _track) {
         state.localStream.removeTrack(_track);
         state.localStream.addTrack(track);
@@ -109,7 +114,6 @@ export const Peers = () => {
   };
 
   const addStream = (stream?: MediaStream) => {
-
     if (!stream) return;
 
     Object.values(state.peerConnections).forEach(
@@ -139,7 +143,6 @@ export const Peers = () => {
   }
 
   const close = (remotePeerId: string) => {
-
     const peerConn = state.peerConnections[remotePeerId];
 
     if (peerConn) {
