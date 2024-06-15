@@ -50,7 +50,9 @@ data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=tru
           ) : focusedPeer.stream ? (
             <VideoPlayer stream={focusedPeer.stream} />
           ) : null} */}
-          {stream && <VideoPlayer stream={stream} muted={isMyVideo} />}
+          {stream && videoOn && (
+            <VideoPlayer stream={stream} muted={isMyVideo} />
+          )}
 
           <div className="absolute right-5 top-4 z-10">
             <Button testid="fullscreen-toggle" onClick={handleFullscreen}>
