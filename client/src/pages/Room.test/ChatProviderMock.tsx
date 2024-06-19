@@ -16,6 +16,10 @@ export const chatCustomProviderProps = ({
       isChatOpen: true,
       messages: [],
     },
+    menuRef: {
+      chatInput: null,
+      chat: null,
+    },
     sendMessage: () => {},
     toggleChat: () => {},
   };
