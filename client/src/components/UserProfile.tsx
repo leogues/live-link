@@ -1,22 +1,18 @@
 import clsx from "clsx";
 
 import { IUser } from "../context/UserV2Context";
-import { Profile } from "./Profile";
 import baseUrl from "../services/apiUrl";
+import { Profile, ProfileProps } from "./Profile";
 
-type UserProfileProps = {
+type UserProfileProps = Omit<ProfileProps, "name" | "lastName" | "picture"> & {
   user?: IUser;
   className?: string;
-  role?: string;
-  bgColor?: "transparent";
-  fontSize?: "sm" | "md";
-  imageSize?: "sm" | "md";
-  marginRight?: "none" | "4";
 };
 
 export const UserProfile: React.FC<UserProfileProps> = ({
   user,
   role,
+  hiddenBreakpoint,
   bgColor,
   fontSize,
   imageSize,
@@ -34,6 +30,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           name={user.name}
           lastName={user.lastName}
           picture={user.picture}
+          hiddenBreakpoint={hiddenBreakpoint}
           role={role}
           bgColor={bgColor}
           fontSize={fontSize}
