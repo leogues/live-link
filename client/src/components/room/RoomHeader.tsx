@@ -12,7 +12,7 @@ export const RoomHeader: React.FC = () => {
   const { user } = useContext(UserV2Context);
 
   return (
-    <header className="flex items-center border border-[rgba(217,217,217,0.29)] bg-white dark:border-[#3333] dark:border-opacity-30 dark:bg-darkBlue-900">
+    <header className=" flex items-center border border-[rgba(217,217,217,0.29)] bg-white dark:border-[#3333] dark:border-opacity-30 dark:bg-darkBlue-900">
       <RoomInfo room={room} />
       <div className="ml-auto flex items-center px-7 lg:basis-[32rem]">
         <ParticipantAvatars peers={peers} />
@@ -21,6 +21,7 @@ export const RoomHeader: React.FC = () => {
           className="ml-7"
           user={user}
           role={user?.id === room?.userId ? "Moderador" : "Participante"}
+          hiddenBreakpoint="lg"
           fontSize="sm"
           imageSize="sm"
           marginRight="4"

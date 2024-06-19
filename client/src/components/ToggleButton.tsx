@@ -16,7 +16,7 @@ const toggleButton = tv({
 });
 
 type ToggleButtonProps = {
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   testid?: string;
   children: React.ReactNode;
   className?: string;
