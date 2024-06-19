@@ -3,7 +3,7 @@ import { Switcher } from "./Switcher";
 
 export const Header: React.FC<{}> = ({}) => {
   return (
-    <div className="flex items-center justify-end gap-4 p-4">
+    <div className="flex w-full items-center justify-end gap-4 p-4">
       <Switcher />
       <a
         data-testid="github"
