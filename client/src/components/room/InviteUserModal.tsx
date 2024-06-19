@@ -1,22 +1,24 @@
+import { useContext } from "react";
+
 import * as Dialog from "@radix-ui/react-dialog";
 
 import inviteUserIcon from "../../assets/userAdd.png";
+import { ChatContext } from "../../context/ChatContext";
+import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
 import { FormHeader } from "../FormHeader";
 
 export const InviteUserModal: React.FC = () => {
   const roomUrl = window.location.href;
+  const { menuRef } = useContext(ChatContext);
+  const [isCopiedToClipboard, copyToClipboard] = useCopyToClipboard();
 
   const inputOnClickhandle: React.MouseEventHandler<HTMLInputElement> = (
     event,
   ) => {
     const input = event.currentTarget;
     input.select();
-  };
-
-  const copyRoomUrl = () => {
-    navigator.clipboard.writeText(roomUrl);
   };
 
   return (
@@ -29,7 +31,10 @@ export const InviteUserModal: React.FC = () => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 animate-overlayShow bg-black bg-opacity-30" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-6 py-6 text-gray-850 shadow-md dark:bg-darkBlue-900 dark:text-gray-300">
+        <Dialog.Content
+          ref={menuRef.inviteModal}
+          className="fixed left-1/2 top-1/2 z-50 w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-6 py-6 text-gray-850 shadow-md dark:bg-darkBlue-900 dark:text-gray-300"
+        >
           <header>
             <FormHeader title="Convidar" fontWeight="semibold" />
             <Dialog.Description className="mt-3 text-center text-base font-semibold">
@@ -52,9 +57,11 @@ export const InviteUserModal: React.FC = () => {
               <Input readonly value={roomUrl} onClick={inputOnClickhandle} />
               <Button
                 className="flex items-center justify-center text-gray-850 hover:text-opacity-80 dark:text-white hover:dark:text-gray-300"
-                onClick={copyRoomUrl}
+                onClick={() => copyToClipboard(roomUrl)}
               >
-                <span className="font-semibold">Copiar</span>
+                <span className="min-w-[4rem] font-semibold">
+                  {isCopiedToClipboard ? "Copiado" : "Copiar"}
+                </span>
               </Button>
             </div>
           </div>

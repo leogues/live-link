@@ -8,9 +8,11 @@ import { StreamArea } from "./stream/StreamArea";
 export const RoomContent: React.FC = () => {
   const { chat, menuRef, toggleChat } = useContext(ChatContext);
 
-  useMultipleRefsClickOutside([menuRef.chat, menuRef.chatInput], () => {
-    toggleChat();
-  });
+  useMultipleRefsClickOutside(
+    [menuRef.chat, menuRef.chatInput, menuRef.inviteModal],
+    () => toggleChat(),
+    768,
+  );
 
   return (
     <>
