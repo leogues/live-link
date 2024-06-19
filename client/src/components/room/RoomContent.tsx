@@ -1,35 +1,16 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { ChatContext } from "../../context/ChatContext";
+import { useMultipleRefsClickOutside } from "../../hooks/useClickOutside";
 import { RoomSiderbar } from "./RoomSiderbar";
 import { StreamArea } from "./stream/StreamArea";
 
 export const RoomContent: React.FC = () => {
   const { chat, menuRef, toggleChat } = useContext(ChatContext);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const breakPoint = 768;
-      const inputRef = menuRef.chatInput?.current;
-      const chatRef = menuRef.chat?.current;
-
-      if (window.innerWidth > breakPoint) return;
-      if (
-        inputRef &&
-        !inputRef.contains(event.target as Node) &&
-        chatRef &&
-        !chatRef.contains(event.target as Node)
-      ) {
-        toggleChat();
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [toggleChat]);
+  useMultipleRefsClickOutside([menuRef.chat, menuRef.chatInput], () => {
+    toggleChat();
+  });
 
   return (
     <>

@@ -19,8 +19,8 @@ interface SendMessageProps {
 export type ChatValue = {
   chat: ChatState;
   menuRef: {
-    chatInput: React.RefObject<HTMLDivElement> | null;
-    chat: React.RefObject<HTMLDivElement> | null;
+    chatInput: React.RefObject<HTMLDivElement>;
+    chat: React.RefObject<HTMLDivElement>;
   };
 
   sendMessage: ({
@@ -44,8 +44,8 @@ export const ChatContext = createContext<ChatValue>({
     isChatOpen: false,
   },
   menuRef: {
-    chatInput: null,
-    chat: null,
+    chatInput: { current: null },
+    chat: { current: null },
   },
   sendMessage: ({}) => {},
   toggleChat: () => {},
