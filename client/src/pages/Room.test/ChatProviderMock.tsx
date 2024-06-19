@@ -17,8 +17,9 @@ export const chatCustomProviderProps = ({
       messages: [],
     },
     menuRef: {
-      chatInput: null,
-      chat: null,
+      chatInput: { current: null },
+      chat: { current: null },
+      inviteModal: { current: null },
     },
     sendMessage: () => {},
     toggleChat: () => {},
