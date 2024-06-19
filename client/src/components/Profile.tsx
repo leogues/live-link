@@ -29,7 +29,6 @@ export const Profile: React.FC<ProfileProps> = ({
   marginRight = "none",
   onClick,
 }) => {
-  console.log(hiddenBreakpoint);
   return (
     <div
       className={cn("flex items-center gap-4 rounded-full p-2 md:py-2", {
