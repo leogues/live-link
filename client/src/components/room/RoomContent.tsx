@@ -9,11 +9,11 @@ export const RoomContent: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const breakPoint = 768;
       const inputRef = menuRef.chatInput?.current;
       const chatRef = menuRef.chat?.current;
 
-      if (!inputRef && !chatRef) return;
-
+      if (window.innerWidth > breakPoint) return;
       if (
         inputRef &&
         !inputRef.contains(event.target as Node) &&
@@ -29,7 +29,7 @@ export const RoomContent: React.FC = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [toggleChat]);
 
   return (
     <>
