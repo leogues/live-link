@@ -1,6 +1,10 @@
-import { createContext, ReactNode, useEffect, useReducer } from "react";
+import { createContext, ReactNode, useEffect, useReducer, useRef } from "react";
 
-import { addHistoryAction, addMessageAction, toggleChatAction } from "../reducers/chatActions";
+import {
+  addHistoryAction,
+  addMessageAction,
+  toggleChatAction,
+} from "../reducers/chatActions";
 import { chatReducer, ChatState } from "../reducers/chatReduces";
 import { ws } from "../services/ws";
 
@@ -14,6 +18,11 @@ interface SendMessageProps {
 }
 export type ChatValue = {
   chat: ChatState;
+  menuRef: {
+    chatInput: React.RefObject<HTMLDivElement> | null;
+    chat: React.RefObject<HTMLDivElement> | null;
+  };
+
   sendMessage: ({
     roomId,
     content,
@@ -32,7 +41,11 @@ interface ChatProviderProps {
 export const ChatContext = createContext<ChatValue>({
   chat: {
     messages: [],
-    isChatOpen: true,
+    isChatOpen: false,
+  },
+  menuRef: {
+    chatInput: null,
+    chat: null,
   },
   sendMessage: ({}) => {},
   toggleChat: () => {},
@@ -41,8 +54,12 @@ export const ChatContext = createContext<ChatValue>({
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [chat, chatDispatch] = useReducer(chatReducer, {
     messages: [],
-    isChatOpen: true,
+    isChatOpen: false,
   });
+  const menuRef = {
+    chatInput: useRef<HTMLInputElement>(null),
+    chat: useRef<HTMLDivElement>(null),
+  };
 
   function scrollToBottom() {
     const chatContainer = document.querySelector(".chat-container");
@@ -102,6 +119,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     <ChatContext.Provider
       value={{
         chat,
+        menuRef,
         sendMessage,
         toggleChat,
       }}
