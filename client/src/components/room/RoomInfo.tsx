@@ -16,11 +16,11 @@ export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {
           <img className="block h-12 w-12 md:h-16 md:w-16" src={videoCamIcon} />
         </Link>
       </div>
-      <div className="ml-10 hidden flex-col md:flex">
-        <span className="text-2xl text-gray-850 dark:text-[#E2E2E2]">
+      <div className="ml-10 hidden flex-col sm:flex">
+        <span className="truncate text-2xl text-gray-850 dark:text-[#E2E2E2]">
           {room.topic}
         </span>
-        <span className="text-gray-400 dark:text-[#9F9F9F]">
+        <span className="truncate text-gray-400 dark:text-[#9F9F9F]">
           {createAtFormated}
         </span>
       </div>
