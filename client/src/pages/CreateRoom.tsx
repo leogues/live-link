@@ -32,7 +32,7 @@ export const CreateRoom = () => {
     <div className="mx-auto my-0 flex h-screen flex-col">
       <Header />
       <div className="font-family flex flex-grow items-center justify-center text-gray-850 dark:text-gray-300">
-        <div className="w-full max-w-md rounded-md bg-white px-10 py-8 shadow-md dark:bg-darkBlue-900">
+        <div className="w-[95%] max-w-xs rounded-md bg-white p-6 shadow-md dark:bg-darkBlue-900 sm:max-w-sm sm:px-10 sm:py-8">
           <FormHeader title="Crie uma reunião" />
           <div className="mt-10">
             <MeetingInput
