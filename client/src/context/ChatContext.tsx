@@ -21,6 +21,7 @@ export type ChatValue = {
   menuRef: {
     chatInput: React.RefObject<HTMLDivElement>;
     chat: React.RefObject<HTMLDivElement>;
+    inviteModal: React.RefObject<HTMLDivElement>;
   };
 
   sendMessage: ({
@@ -46,6 +47,7 @@ export const ChatContext = createContext<ChatValue>({
   menuRef: {
     chatInput: { current: null },
     chat: { current: null },
+    inviteModal: { current: null },
   },
   sendMessage: ({}) => {},
   toggleChat: () => {},
@@ -59,6 +61,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const menuRef = {
     chatInput: useRef<HTMLInputElement>(null),
     chat: useRef<HTMLDivElement>(null),
+    inviteModal: useRef<HTMLDivElement>(null),
   };
 
   function scrollToBottom() {
