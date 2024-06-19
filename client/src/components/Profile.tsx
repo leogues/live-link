@@ -1,6 +1,7 @@
 import clsx from "clsx";
 
 import LeftIcon from "../assets/logout.png";
+import { cn } from "../utils/cn";
 import { Button } from "./common/Button";
 
 export interface ProfileProps {
@@ -8,6 +9,7 @@ export interface ProfileProps {
   lastName: string;
   picture: string;
   role?: string;
+  hiddenBreakpoint?: "lg" | "none";
   fontSize?: "sm" | "md";
   imageSize?: "sm" | "md";
   bgColor?: "default" | "transparent";
@@ -20,21 +22,20 @@ export const Profile: React.FC<ProfileProps> = ({
   lastName,
   picture,
   role,
+  hiddenBreakpoint = "none",
   fontSize = "md",
   imageSize = "md",
   bgColor = "default",
   marginRight = "none",
   onClick,
 }) => {
+  console.log(hiddenBreakpoint);
   return (
     <div
-      className={clsx(
-        "inline-block items-center justify-evenly gap-4 rounded-full p-2 md:py-2 lg:flex lg:w-full lg:px-3 ",
-        {
-          "bg-gray-100 dark:bg-darkBlue-600": bgColor === "default",
-          "": bgColor === "transparent",
-        },
-      )}
+      className={cn("flex items-center gap-4 rounded-full p-2 md:py-2", {
+        "flex w-full px-3": hiddenBreakpoint === "none",
+        "bg-gray-100 dark:bg-darkBlue-600": bgColor === "default",
+      })}
     >
       <div
         className={clsx("min-w-max overflow-hidden rounded-full", {
@@ -44,7 +45,11 @@ export const Profile: React.FC<ProfileProps> = ({
       >
         <img className="block h-full" src={picture} />
       </div>
-      <div className="hidden lg:block">
+      <div
+        className={cn({
+          "hidden lg:block": hiddenBreakpoint === "lg",
+        })}
+      >
         <div className="flex flex-col">
           <div
             className={clsx(

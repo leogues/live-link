@@ -5,7 +5,7 @@ import { ChatSidebar } from "./ChatSidebar";
 import { ParticipantsListSidebar } from "./ParticipantsListSidebar";
 
 export const RoomSiderbar: React.FC = () => {
-  const { chat } = useContext(ChatContext);
+  const { chat, menuRef } = useContext(ChatContext);
 
   const handleMinimizar = (event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
@@ -24,7 +24,10 @@ export const RoomSiderbar: React.FC = () => {
   return (
     <>
       {chat.isChatOpen && (
-        <div className=" flex w-[24rem] shrink-0 flex-col border-l border-[#EDF0F6] bg-gray-100 shadow-md dark:border-[#1F2335] dark:bg-darkBlue-600">
+        <div
+          ref={menuRef.chat}
+          className="absolute right-0 z-50 flex h-full w-[24rem] shrink-0 flex-col border-l border-[#EDF0F6] bg-gray-100 shadow-md dark:border-[#1F2335] dark:bg-darkBlue-600 md:static"
+        >
           <ParticipantsListSidebar handleMinimizar={handleMinimizar} />
           <ChatSidebar handleMinimizar={handleMinimizar} />
         </div>

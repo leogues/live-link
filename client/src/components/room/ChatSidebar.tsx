@@ -6,7 +6,7 @@ export const ChatSidebar: React.FC<{
 }> = ({ handleMinimizar }) => {
   return (
     <div
-      className="group aria-expanded:min-h-[60%] aria-expanded:flex-1"
+      className="group flex flex-col aria-expanded:min-h-[60%] aria-expanded:flex-1 aria-expanded:grow"
       data-testid="chat"
       aria-expanded="true"
     >

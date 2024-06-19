@@ -21,7 +21,7 @@ export const RoomInfoEntry: React.FC = () => {
 
   return (
     <div className="font-family flex h-full flex-grow items-center justify-center text-gray-850 dark:text-gray-300">
-      <div className="w-full max-w-md rounded-md bg-white px-10 py-8 shadow-md dark:bg-darkBlue-900">
+      <div className="w-[95%] max-w-xs rounded-md bg-white px-6 py-4 shadow-md dark:bg-darkBlue-900 sm:w-full sm:max-w-md sm:px-10 sm:py-8">
         <div className="flex flex-col">
           <span className="text-center text-2xl text-gray-850 dark:text-[#E2E2E2]">
             {room?.topic}

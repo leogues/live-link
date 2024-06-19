@@ -23,8 +23,14 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
   const isWebCamOn = mediaTracks.videoTrack?.enabled;
   const isSharingScreenOn = mediaTracks.screenTrack?.enabled;
 
+  function handleToggleChat(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleChat();
+  }
+
   return (
-    <div className="flex items-center gap-4 px-4">
+    <div className="flex items-center gap-3">
       <ToggleButton testid="mic-toggle" enabled={isMicOn} onClick={handleMicOn}>
         <img className="h-6 w-6" src={isMicOn ? micOnIcon : micOffIcon} />
       </ToggleButton>
@@ -51,9 +57,7 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
       <ToggleButton
         testid="chat-toggle"
         enabled={chat.isChatOpen}
-        onClick={() => {
-          toggleChat();
-        }}
+        onClick={handleToggleChat}
       >
         <img
           className="h-6 w-6"

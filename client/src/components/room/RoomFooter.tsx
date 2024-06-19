@@ -1,26 +1,35 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
+import LeftIcon from "../../assets/logout.png";
 import { ChatContext } from "../../context/ChatContext";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
 
 export const RoomFooter: React.FC = () => {
-  const { chat } = useContext(ChatContext);
+  const { chat, menuRef } = useContext(ChatContext);
   return (
-    <footer className="flex flex-shrink-0 grow basis-auto  bg-white dark:bg-darkBlue-900">
-      <div className="relative flex h-full grow border border-[#EDF0F6] dark:border-[#1F2335] lg:justify-center">
+    <footer className="relative flex flex-shrink-0 grow basis-auto  bg-white dark:bg-darkBlue-900">
+      <div className="relative flex h-full grow items-center  justify-between border border-[#EDF0F6] px-2 dark:border-[#1F2335] sm:px-4 lg:justify-center">
         <RoomControlButtons chat={chat} />
+
         <Link
           to=".."
-          className="absolute right-8 top-1/2 -translate-y-1/2 rounded-full bg-red-600 px-7 py-3 hover:brightness-90 dark:bg-red-800"
+          className="h-max rounded-full bg-red-600 p-3.5 hover:brightness-90 dark:bg-red-800 md:px-7 md:py-3 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
         >
-          Sair da reunião
+          <img
+            className="block h-5 w-5 brightness-200 invert-0 lg:hidden"
+            src={LeftIcon}
+          ></img>
+          <span className="hidden lg:block">Sair da reunião</span>
         </Link>
       </div>
 
       {chat.isChatOpen && (
-        <div className="flex w-[24rem] shrink-0 items-center justify-center border border-[#EDF0F6] dark:border-[#1F2335]">
+        <div
+          ref={menuRef.chatInput}
+          className="absolute right-0 z-40 flex h-full w-[24rem] shrink-0 items-center justify-center border border-[#EDF0F6] bg-white dark:border-[#1F2335] dark:bg-darkBlue-900 md:static"
+        >
           <ChatInput />
         </div>
       )}
