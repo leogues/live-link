@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import LeftIcon from "../../assets/logout.png";
 import { ChatContext } from "../../context/ChatContext";
+import { LeaveIcon } from "../../icons/Leave";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
 
@@ -17,11 +17,12 @@ export const RoomFooter: React.FC = () => {
           to=".."
           className="h-max rounded-full bg-red-600 p-3.5 hover:brightness-90 dark:bg-red-800 md:px-7 md:py-3 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
         >
-          <img
-            className="block h-5 w-5 brightness-200 invert-0 lg:hidden"
-            src={LeftIcon}
-          ></img>
-          <span className="hidden lg:block">Sair da reunião</span>
+          <LeaveIcon
+            width={25}
+            height={25}
+            className="block brightness-200 invert-0 lg:hidden"
+          />
+          <span className="hidden lg:block ">Sair da reunião</span>
         </Link>
       </div>
 

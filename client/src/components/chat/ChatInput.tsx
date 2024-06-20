@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 
-import SendIcon from "../../assets/sendMessage.png";
 import { ChatContext } from "../../context/ChatContext";
 import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
+import { SendIcon } from "../../icons/Send";
 import { Button } from "../common/Button";
 
 export const ChatInput: React.FC = () => {
@@ -56,7 +56,7 @@ export const ChatInput: React.FC = () => {
             type="submit"
             className="focus: mr-1 rounded-full bg-blue-700 p-2 hover:brightness-90"
           >
-            <img src={SendIcon} />
+            <SendIcon width={30} height={30} />
           </Button>
         </div>
       </form>

@@ -1,10 +1,12 @@
 import { useContext, useMemo, useState } from "react";
 
-import MaximizeIcon from "../../../assets/maximize.png";
-import MicOffIcon from "../../../assets/micOff.png";
-import MicOnIcon from "../../../assets/micOn.png";
 import { StreamContext } from "../../../context/StreamContext";
 import { UserV2Context } from "../../../context/UserV2Context";
+import { MaximizeIcon } from "../../../icons/stream/Maximize";
+import {
+  MicrophoneOffIcon,
+  MicrophoneOnIcon,
+} from "../../../icons/stream/Microphone";
 import { IPeerState } from "../../../reducers/peersReducer";
 import { Button } from "../../common/Button";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
@@ -42,14 +44,9 @@ export const FocusedVideoDisplay: React.FC<{
           data-fullscreen={isFullscreen}
           className="relative flex aspect-[21/9] h-full max-h-full max-w-full 
 justify-center overflow-hidden rounded-xl bg-black data-[fullscreen=true]:fixed 
-data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-50 
+data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-[100] 
 data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:rounded-none"
         >
-          {/* {focusedPeer.user?.id === user?.id && localStream.current ? (
-            <VideoPlayer stream={localStream.current} />
-          ) : focusedPeer.stream ? (
-            <VideoPlayer stream={focusedPeer.stream} />
-          ) : null} */}
           {stream && videoOn && (
             <VideoPlayer stream={stream} muted={isMyVideo} />
           )}
@@ -57,12 +54,12 @@ data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=tru
           <div className="absolute right-5 top-4 z-10">
             <Button testid="fullscreen-toggle" onClick={handleFullscreen}>
               <Label padding="rounded">
-                <img height={20} width={20} src={MaximizeIcon} />
+                <MaximizeIcon height={20} width={20} />
               </Label>
             </Button>
           </div>
           <div className="absolute bottom-5 left-7 z-10 flex gap-1">
-            <Label>
+            <Label className="truncate">
               <span>{focusedPeer.user?.name}</span>
               <span>{focusedPeer.user?.lastName}</span>
             </Label>
@@ -78,10 +75,11 @@ data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=tru
 
           <div className="absolute bottom-5 right-7 z-10">
             <UserMicrophoneVideoToggle bg="toggle" toggle={focusedPeer.isMicOn}>
-              <img
-                src={focusedPeer.isMicOn ? MicOnIcon : MicOffIcon}
-                alt="Microfone status"
-              />
+              {focusedPeer.isMicOn ? (
+                <MicrophoneOnIcon width={24} height={24} />
+              ) : (
+                <MicrophoneOffIcon width={24} height={24} />
+              )}
             </UserMicrophoneVideoToggle>
           </div>
         </div>

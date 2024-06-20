@@ -1,4 +1,4 @@
-import TristeIcon from "../assets/triste.png";
+import { AnonymousIcon } from "../icons/social/Anonymous";
 import apiUrl from "../services/apiUrl";
 import { Button } from "./common/Button";
 import { FormHeader } from "./FormHeader";
@@ -22,7 +22,8 @@ export const LoginForm: React.FC = () => {
           onClick={loginLocalHandle}
           className="flex items-center gap-1 border border-gray-400 px-6 py-3 font-bold hover:bg-neutral-200 dark:border-darkBlue-600 dark:hover:bg-darkBlue-600 sm:gap-3"
         >
-          <img className="dark:invert-[0.85]" src={TristeIcon} />
+          {/* <img className="dark:invert-[0.85]" src={TristeIcon} /> */}
+          <AnonymousIcon width={22} height={22} />
           <span>Continue como anônimo</span>
         </Button>
       </div>

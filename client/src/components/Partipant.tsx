@@ -1,7 +1,8 @@
-import micOffIcon from "../assets/micOffParticpant.png";
-import micOnIcon from "../assets/micOnParticpant.png";
-import videoOffIcon from "../assets/videoOffParticipant.png";
-import videoOnIcon from "../assets/videoOnParticipant.png";
+import {
+  MicrophoneOffIcon,
+  MicrophoneOnIcon,
+} from "../icons/stream/Microphone";
+import { VideoOffIcon, VideoOnIcon } from "../icons/stream/Video";
 
 export const Participant: React.FC<{
   picture?: string;
@@ -26,14 +27,17 @@ export const Participant: React.FC<{
       </div>
 
       <div className="mr-3 flex gap-3">
-        <img
-          className="h-[1.4rem] w-[1.4rem]"
-          src={micOn ? micOnIcon : micOffIcon}
-        />
-        <img
-          className="h-[1.4rem] w-[1.4rem]"
-          src={videoOn ? videoOnIcon : videoOffIcon}
-        />
+        {micOn ? (
+          <MicrophoneOnIcon width={22} height={22} className="text-blue-700" />
+        ) : (
+          <MicrophoneOffIcon width={22} height={22} className="text-red-400" />
+        )}
+
+        {videoOn ? (
+          <VideoOnIcon width={22} height={22} className="text-blue-700" />
+        ) : (
+          <VideoOffIcon width={22} height={22} className="text-red-400" />
+        )}
       </div>
     </div>
   );

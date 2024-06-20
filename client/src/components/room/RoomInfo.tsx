@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import videoCamIcon from "../../assets/videoCam.png";
 import { IRoom } from "../../context/RoomV2Context";
+import { LogoIcon } from "../../icons/Logo";
 import { formatDate } from "../../utils/dateUtils";
 
 export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {
@@ -13,7 +13,7 @@ export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {
     <>
       <div className="min-w-max border-r border-opacity-60 px-6 py-3 dark:border-[#23212194] md:p-4 md:px-8">
         <Link to="/">
-          <img className="block h-12 w-12 md:h-16 md:w-16" src={videoCamIcon} />
+          <LogoIcon className="block h-12 w-12 text-blue-700 hover:brightness-110 md:h-16 md:w-16" />
         </Link>
       </div>
       <div className="ml-10 hidden flex-col sm:flex">

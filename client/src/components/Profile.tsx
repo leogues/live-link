@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import LeftIcon from "../assets/logout.png";
+import { LeaveIcon } from "../icons/Leave";
 import { cn } from "../utils/cn";
 import { Button } from "./common/Button";
 
@@ -68,14 +68,18 @@ export const Profile: React.FC<ProfileProps> = ({
       <div className="ml-auto hidden h-full items-center lg:flex">
         <Button
           className={clsx(
-            "min-h-max hover:brightness-90 dark:hover:brightness-125",
+            "min-h-max hover:brightness-200 dark:hover:brightness-75",
             {
               "mr-4": marginRight === "4",
             },
           )}
           onClick={onClick}
         >
-          <img className="block h-[18px] w-[18px]" src={LeftIcon}></img>
+          <LeaveIcon
+            width={24}
+            height={24}
+            className="text-darkBlue-650 dark:text-blue-100"
+          />
         </Button>
       </div>
     </div>
