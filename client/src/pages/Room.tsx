@@ -5,8 +5,8 @@ import { RoomFooter } from "../components/room/RoomFooter";
 import { RoomHeader } from "../components/room/RoomHeader";
 import { RoomInfoEntry } from "../components/room/RoomInfoEntry";
 import { RoomV2Context } from "../context/RoomV2Context";
-import { ws } from "../services/ws";
 import { UserV2Context } from "../context/UserV2Context";
+import { ws } from "../services/ws";
 
 export const Room = () => {
   const { room, isEnteredRoom } = useContext(RoomV2Context);
@@ -29,7 +29,7 @@ export const Room = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="grid h-screen max-h-screen grid-rows-[6rem_1fr_8rem] font-medium text-white">
+    <div className="grid h-screen max-h-screen grid-rows-[5rem_1fr_5rem] font-medium text-white lg:grid-rows-[6rem_1fr_8rem]">
       <RoomHeader />
       <RoomContent />
       <RoomFooter />
