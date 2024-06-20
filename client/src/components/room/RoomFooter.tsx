@@ -18,8 +18,8 @@ export const RoomFooter: React.FC = () => {
           className="h-max rounded-full bg-red-600 p-3.5 hover:brightness-90 dark:bg-red-800 md:px-7 md:py-3 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
         >
           <LeaveIcon
-            width={25}
-            height={25}
+            width={20}
+            height={20}
             className="block brightness-200 invert-0 lg:hidden"
           />
           <span className="hidden lg:block ">Sair da reunião</span>
