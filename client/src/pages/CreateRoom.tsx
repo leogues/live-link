@@ -44,7 +44,7 @@ export const CreateRoom = () => {
           rightButtonText="Criar uma reunião"
           rightButtonHandle={createRoomHandle}
         />
-      </footer>{" "}
+      </footer>
     </Layout>
   );
 };
