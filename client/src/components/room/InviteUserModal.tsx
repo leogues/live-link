@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 
 import { ChatContext } from "../../context/ChatContext";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
+import { useNotification } from "../../hooks/useNotification";
 import { AddParticipantIcon } from "../../icons/AddParticipant";
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
@@ -12,6 +13,7 @@ import { FormHeader } from "../FormHeader";
 export const InviteUserModal: React.FC = () => {
   const roomUrl = window.location.href;
   const { menuRef } = useContext(ChatContext);
+  const notify = useNotification();
   const [isCopiedToClipboard, copyToClipboard] = useCopyToClipboard();
 
   const inputOnClickhandle: React.MouseEventHandler<HTMLInputElement> = (
@@ -19,6 +21,15 @@ export const InviteUserModal: React.FC = () => {
   ) => {
     const input = event.currentTarget;
     input.select();
+  };
+
+  const handleOnCopy = () => {
+    copyToClipboard(roomUrl);
+    notify({
+      message:
+        "Link da sala copiado com sucesso! Envie-o para que outra pessoa possa acessar.",
+      duration: 3000,
+    });
   };
 
   return (
@@ -57,7 +68,7 @@ export const InviteUserModal: React.FC = () => {
               <Input readonly value={roomUrl} onClick={inputOnClickhandle} />
               <Button
                 className="flex items-center justify-center text-gray-850 hover:text-opacity-80 dark:text-white hover:dark:text-gray-300"
-                onClick={() => copyToClipboard(roomUrl)}
+                onClick={handleOnCopy}
               >
                 <span className="min-w-[4rem] font-semibold">
                   {isCopiedToClipboard ? "Copiado" : "Copiar"}

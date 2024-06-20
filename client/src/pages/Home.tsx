@@ -7,12 +7,14 @@ import { MeetingInput } from "../components/home/MeetingInput";
 import Layout from "../components/layout/Layout";
 import { UserProfile } from "../components/UserProfile";
 import { UserV2Context } from "../context/UserV2Context";
+import { useNotification } from "../hooks/useNotification";
 import api from "../services/api";
 
 export const Home = () => {
   const { user } = useContext(UserV2Context);
   const inputRoomIdRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const notify = useNotification();
 
   const filterIdFromLink = (linkOrId: string) => {
     const parts = linkOrId.split("/");
@@ -25,16 +27,28 @@ export const Home = () => {
   const joinButtonHandle = async () => {
     const inputRoomIdValue = inputRoomIdRef.current?.value;
 
-    if (!inputRoomIdValue) return;
+    if (!inputRoomIdValue) {
+      notify({
+        message: "Insira o ID da reunião ou o link",
+        duration: 3000,
+      });
+      return;
+    }
 
     const roomId = filterIdFromLink(inputRoomIdValue);
+    try {
+      const response = await api.get("./room/" + roomId);
 
-    const response = await api.get("./room/" + roomId);
-    const room = response.data;
+      const room = response.data;
 
-    if (!room) return;
-
-    navigate("./room/" + room.id);
+      navigate("./room/" + room.id);
+    } catch (error) {
+      notify({
+        message: "A reunião não existe ou foi encerrada",
+        duration: 3000,
+        textColor: "error",
+      });
+    }
   };
 
   const createRoomHandle = () => {
