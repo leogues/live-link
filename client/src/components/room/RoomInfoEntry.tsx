@@ -6,15 +6,11 @@ import { formatDate } from "../../utils/dateUtils";
 import { MeetingButtons } from "../home/MeetingButtons";
 
 export const RoomInfoEntry: React.FC = () => {
-  const { room, setIsEnteredRoom } = useContext(RoomV2Context);
+  const { room, toggleEnteredRoom } = useContext(RoomV2Context);
   const navigate = useNavigate();
 
   const redirectHomeHandle = () => {
     navigate("../");
-  };
-
-  const enterRoomHandle = () => {
-    setIsEnteredRoom(true);
   };
 
   const createAtFormated = !!room ? formatDate(room.createdAt) : null;
@@ -34,7 +30,7 @@ export const RoomInfoEntry: React.FC = () => {
             leftButtonText="Voltar para home"
             leftButtonHandle={redirectHomeHandle}
             rightButtonText="Entrar"
-            rightButtonHandle={enterRoomHandle}
+            rightButtonHandle={toggleEnteredRoom}
           />
         </div>
       </div>
