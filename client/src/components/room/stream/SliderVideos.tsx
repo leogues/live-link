@@ -47,7 +47,7 @@ export const SliderVideos: React.FC<{
   return (
     <div
       data-testid="slider-videos"
-      className="slider box-border h-[calc(30%-(1.25rem)*0.30)]"
+      className="slider box-border h-[calc(30%-(1.25rem)*0.30)] min-h-[120px]"
     >
       <div className="slider-mask relative mx-auto h-full min-h-0 ">
         <div className="h-full min-h-0 overflow-x-hidden">
