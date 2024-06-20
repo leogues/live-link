@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useReducer } from "react";
 
 import { StreamContext } from "../../../context/StreamContext";
 import { UserV2Context } from "../../../context/UserV2Context";
@@ -18,7 +18,10 @@ export const FocusedVideoDisplay: React.FC<{
 }> = ({ focusedPeer }) => {
   const { user } = useContext(UserV2Context);
   const { localStream } = useContext(StreamContext);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, toggleFullScreen] = useReducer(
+    (isFullscreen) => !isFullscreen,
+    false,
+  );
 
   const videoOn = focusedPeer?.isWebCamOn || focusedPeer?.isSharingScreenOn;
 
@@ -31,10 +34,6 @@ export const FocusedVideoDisplay: React.FC<{
   }, [focusedPeer, localStream]);
 
   const isMyVideo = focusedPeer?.user?.id === user?.id;
-
-  const handleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
 
   return (
     <div className="box-border flex min-h-0 grow justify-center">
@@ -52,7 +51,7 @@ data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=tru
           )}
 
           <div className="absolute right-5 top-4 z-10">
-            <Button testid="fullscreen-toggle" onClick={handleFullscreen}>
+            <Button testid="fullscreen-toggle" onClick={toggleFullScreen}>
               <Label padding="rounded">
                 <MaximizeIcon height={20} width={20} />
               </Label>

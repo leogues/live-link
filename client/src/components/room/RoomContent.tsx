@@ -1,19 +1,11 @@
 import { useContext } from "react";
 
 import { ChatContext } from "../../context/ChatContext";
-import { useMultipleRefsClickOutside } from "../../hooks/useClickOutside";
 import { RoomSiderbar } from "./RoomSiderbar";
 import { StreamArea } from "./stream/StreamArea";
 
 export const RoomContent: React.FC = () => {
-  const { chat, menuRef, toggleChat } = useContext(ChatContext);
-
-  useMultipleRefsClickOutside(
-    [menuRef.chat, menuRef.chatInput, menuRef.inviteModal],
-    () => toggleChat(),
-    { breakpoint: 768 },
-  );
-
+  const { chat } = useContext(ChatContext);
   return (
     <>
       {chat.isChatOpen && (

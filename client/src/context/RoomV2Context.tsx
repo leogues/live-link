@@ -65,7 +65,7 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
   const { id } = useParams();
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
   const [isEnteredRoom, toggleEnteredRoom] = useReducer(
-    (previous) => !previous,
+    (isEnteredRoom) => !isEnteredRoom,
     false,
   );
 

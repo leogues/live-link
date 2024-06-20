@@ -7,7 +7,7 @@ export const Header: React.FC<{}> = ({}) => {
       <Switcher />
       <a
         data-testid="github"
-        href="https://github.com/leogues/"
+        href="https://github.com/leogues/live-link"
         target="_blank"
       >
         <GitHubIcon
