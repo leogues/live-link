@@ -1,7 +1,5 @@
 import { useContext, useMemo } from "react";
 
-import MicOffIcon from "../../../assets/micOff.png";
-import MicOnIcon from "../../../assets/micOn.png";
 import { StreamContext } from "../../../context/StreamContext";
 import { UserV2Context } from "../../../context/UserV2Context";
 import { IPeerState } from "../../../reducers/peersReducer";
@@ -9,6 +7,10 @@ import { Button } from "../../common/Button";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
 import { Label } from "./Label";
 import { VideoPlayer } from "./VideoPlayer";
+import {
+  MicrophoneOnIcon,
+  MicrophoneOffIcon,
+} from "../../../icons/stream/Microphone";
 
 export const SliderVideo: React.FC<{
   peer: IPeerState;
@@ -44,12 +46,11 @@ export const SliderVideo: React.FC<{
 
       <div className="absolute bottom-5 right-5 z-10">
         <UserMicrophoneVideoToggle bg="toggle" toggle={peer.isMicOn}>
-          <img
-            height={17}
-            width={17}
-            src={peer.isMicOn ? MicOnIcon : MicOffIcon}
-            alt="Microfone status"
-          />
+          {peer.isMicOn ? (
+            <MicrophoneOnIcon width={17} height={17} />
+          ) : (
+            <MicrophoneOffIcon width={17} height={17} />
+          )}
         </UserMicrophoneVideoToggle>
       </div>
 

@@ -1,17 +1,14 @@
 import { useContext } from "react";
 
-import chatOffIcon from "../../assets/chatOff.png";
-import chatOnIcon from "../../assets/chatOn.png";
-import micOffIcon from "../../assets/micOffControl.png";
-import micOnIcon from "../../assets/micOnControl.png";
-import screenSharingOffIcon from "../../assets/screensharingOff.png";
-import screenSharingOnIcon from "../../assets/screensharingOn.png";
-import videoOffIcon from "../../assets/videoOffControl.png";
-import videoOnIcon from "../../assets/videoOnControl.png";
 import { ChatContext } from "../../context/ChatContext";
 import { StreamContext } from "../../context/StreamContext";
+import { MicrophoneControlIcon } from "../../icons/stream/MicrophoneControl";
+import { SharingScreenControlIcon } from "../../icons/stream/SharingScreenControl";
+import { VideoControlIcon } from "../../icons/stream/VideoControl";
 import { ChatState } from "../../reducers/chatReduces";
+import { cn } from "../../utils/cn";
 import { ToggleButton } from "../ToggleButton";
+import { ChatControlIcon } from "../../icons/stream/ChatControl";
 
 export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
   const { mediaTracks, handleMicOn, handleScreenOn, handleWebCamOn } =
@@ -32,16 +29,25 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
   return (
     <div className="flex items-center gap-3">
       <ToggleButton testid="mic-toggle" enabled={isMicOn} onClick={handleMicOn}>
-        <img className="h-6 w-6" src={isMicOn ? micOnIcon : micOffIcon} />
+        <MicrophoneControlIcon
+          width={24}
+          height={24}
+          className={cn({
+            " text-blue-800": !isMicOn,
+          })}
+        />
       </ToggleButton>
       <ToggleButton
         testid="web-cam-toggle"
         enabled={isWebCamOn}
         onClick={handleWebCamOn}
       >
-        <img
-          className="h-6 w-6"
-          src={isWebCamOn ? videoOnIcon : videoOffIcon}
+        <VideoControlIcon
+          width={24}
+          height={24}
+          className={cn({
+            "text-blue-800": !isWebCamOn,
+          })}
         />
       </ToggleButton>
       <ToggleButton
@@ -49,9 +55,12 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
         enabled={isSharingScreenOn}
         onClick={handleScreenOn}
       >
-        <img
-          className="h-6 w-6"
-          src={isSharingScreenOn ? screenSharingOnIcon : screenSharingOffIcon}
+        <SharingScreenControlIcon
+          width={24}
+          height={24}
+          className={cn({
+            "text-blue-800": !isSharingScreenOn,
+          })}
         />
       </ToggleButton>
       <ToggleButton
@@ -59,9 +68,10 @@ export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
         enabled={chat.isChatOpen}
         onClick={handleToggleChat}
       >
-        <img
-          className="h-6 w-6"
-          src={chat.isChatOpen ? chatOnIcon : chatOffIcon}
+        <ChatControlIcon
+          width={24}
+          height={24}
+          className={cn({ "text-blue-800": !chat.isChatOpen })}
         />
       </ToggleButton>
     </div>

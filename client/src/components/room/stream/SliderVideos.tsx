@@ -1,8 +1,8 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 
-import ArrowIcon from "../../../assets/setaSlider.png";
 import { ChatContext } from "../../../context/ChatContext";
 import { RoomV2Context } from "../../../context/RoomV2Context";
+import { MinizarIcon } from "../../../icons/Minimizar";
 import { cssVariableHelper } from "../../../utils/cssVariableHelper";
 import { debounce } from "../../../utils/debounce";
 import { ISlider, Slider } from "../../../utils/slider/slider";
@@ -55,9 +55,10 @@ export const SliderVideos: React.FC<{
             className="slider-prev-button group absolute left-0 top-0 z-10 flex h-full w-7 -translate-x-full items-center justify-center  disabled:hidden"
             onClick={slider.current?.prevSliderItem}
           >
-            <img
-              className="h-5 w-4 -rotate-180 transition-all duration-500 group-hover:scale-125"
-              src={ArrowIcon}
+            <MinizarIcon
+              width={20}
+              height={20}
+              className="-rotate-90 transition-all duration-500 group-hover:scale-125"
             />
           </Button>
           <div className="slider-content flex h-full max-h-full transition-transform duration-300">
@@ -81,9 +82,10 @@ export const SliderVideos: React.FC<{
             className="slider-next-button group absolute right-0 top-0 z-10 flex h-full w-7 translate-x-full items-center justify-center disabled:hidden"
             onClick={slider.current?.nextSliderItem}
           >
-            <img
-              className="h-5 w-4 transition-all duration-500 group-hover:scale-125"
-              src={ArrowIcon}
+            <MinizarIcon
+              width={20}
+              height={20}
+              className="rotate-90 transition-all duration-500 group-hover:scale-125"
             />
           </Button>
         </div>

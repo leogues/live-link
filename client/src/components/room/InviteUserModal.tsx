@@ -2,9 +2,9 @@ import { useContext } from "react";
 
 import * as Dialog from "@radix-ui/react-dialog";
 
-import inviteUserIcon from "../../assets/userAdd.png";
 import { ChatContext } from "../../context/ChatContext";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
+import { AddParticipantIcon } from "../../icons/AddParticipant";
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
 import { FormHeader } from "../FormHeader";
@@ -26,7 +26,7 @@ export const InviteUserModal: React.FC = () => {
       <Dialog.Trigger asChild>
         <Button className="flex gap-2 bg-blue-50 px-5 py-[0.6rem] text-blue-800 hover:brightness-95 dark:bg-darkBlue-400 dark:text-blue-700 dark:hover:brightness-110">
           <span className="text-sm">Convidar</span>
-          <img width={18} src={inviteUserIcon} />
+          <AddParticipantIcon width={18} height={18} />
         </Button>
       </Dialog.Trigger>
       <Dialog.Portal>

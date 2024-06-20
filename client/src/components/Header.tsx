@@ -1,4 +1,4 @@
-import GithubIcon from "../assets/github.png";
+import { GitHubIcon } from "../icons/social/Github";
 import { Switcher } from "./Switcher";
 
 export const Header: React.FC<{}> = ({}) => {
@@ -10,9 +10,10 @@ export const Header: React.FC<{}> = ({}) => {
         href="https://github.com/leogues/"
         target="_blank"
       >
-        <img
-          className="block h-[1.4rem] max-w-full invert-[0.6] hover:invert-[0.3] dark:hover:invert-[0.8]"
-          src={GithubIcon}
+        <GitHubIcon
+          className="invert-[0.6] hover:invert-[0.3] dark:hover:invert-[0.8]"
+          width={24}
+          height={24}
         />
       </a>
     </div>
