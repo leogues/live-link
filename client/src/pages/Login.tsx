@@ -1,11 +1,10 @@
-import { Header } from "../components/Header";
+import Layout from "../components/layout/Layout";
 import { LoginForm } from "../components/LoginForm";
 
 export const Login = () => {
   return (
-    <div className="mx-auto my-0 flex h-screen flex-col">
-      <Header />
+    <Layout dataTestid="login-content" size="sm">
       <LoginForm />
-    </div>
+    </Layout>
   );
 };

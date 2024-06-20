@@ -2,9 +2,9 @@ import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FormHeader } from "../components/FormHeader";
-import { Header } from "../components/Header";
 import { MeetingButtons } from "../components/home/MeetingButtons";
 import { MeetingInput } from "../components/home/MeetingInput";
+import Layout from "../components/layout/Layout";
 import { UserProfile } from "../components/UserProfile";
 import { UserV2Context } from "../context/UserV2Context";
 import api from "../services/api";
@@ -42,24 +42,19 @@ export const Home = () => {
   };
 
   return (
-    <div className="mx-auto my-0 flex h-screen flex-col items-center">
-      <Header />
-      <div className="font-family flex w-[95%] flex-grow items-center justify-center text-gray-850 dark:text-gray-300">
-        <div className="w-full max-w-md rounded-md bg-white p-4 px-6 shadow-md dark:bg-darkBlue-900 sm:px-10 sm:py-8">
-          <FormHeader title="Entre em uma reunião" />
-          <MeetingInput
-            inputRef={inputRoomIdRef}
-            placeholder="Insira o ID da reunião ou o link"
-          />
-          <UserProfile user={user} className="mt-7" bgColor="transparent" />
-          <MeetingButtons
-            leftButtonHandle={createRoomHandle}
-            leftButtonText="Crie sua reunião"
-            rightButtonHandle={joinButtonHandle}
-            rightButtonText="Entrar na reunião"
-          />
-        </div>
-      </div>
-    </div>
+    <Layout>
+      <FormHeader title="Entre em uma reunião" />
+      <MeetingInput
+        inputRef={inputRoomIdRef}
+        placeholder="Insira o ID da reunião ou o link"
+      />
+      <UserProfile user={user} className="mt-7" bgColor="transparent" />
+      <MeetingButtons
+        leftButtonHandle={createRoomHandle}
+        leftButtonText="Crie sua reunião"
+        rightButtonHandle={joinButtonHandle}
+        rightButtonText="Entrar na reunião"
+      />
+    </Layout>
   );
 };

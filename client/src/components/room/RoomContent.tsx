@@ -11,7 +11,7 @@ export const RoomContent: React.FC = () => {
   useMultipleRefsClickOutside(
     [menuRef.chat, menuRef.chatInput, menuRef.inviteModal],
     () => toggleChat(),
-    768,
+    { breakpoint: 768 },
   );
 
   return (

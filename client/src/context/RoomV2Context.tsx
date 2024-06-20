@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +26,8 @@ export type IRoom = {
 
 export type RoomV2Value = {
   isEnteredRoom: boolean;
-  setIsEnteredRoom: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsEnteredRoom: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleEnteredRoom: React.DispatchWithoutAction;
   room?: IRoom;
   peers: PeerState;
   dispatchPeers: React.Dispatch<PeerAction>;
@@ -46,7 +47,7 @@ interface RoomV2ContextProps {
 
 export const RoomV2Context = createContext<RoomV2Value>({
   isEnteredRoom: false,
-  setIsEnteredRoom: () => {},
+  toggleEnteredRoom: () => {},
   room: {
     id: "",
     topic: "",
@@ -63,7 +64,10 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
 }) => {
   const { id } = useParams();
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
-  const [isEnteredRoom, setIsEnteredRoom] = useState<boolean>(false);
+  const [isEnteredRoom, toggleEnteredRoom] = useReducer(
+    (previous) => !previous,
+    false,
+  );
 
   const { data: room, isLoading } = useQuery<IRoom, AxiosError>({
     queryKey: ["roomData"],
@@ -141,7 +145,7 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
     <RoomV2Context.Provider
       value={{
         isEnteredRoom,
-        setIsEnteredRoom,
+        toggleEnteredRoom,
         room,
         peers,
         dispatchPeers,
