@@ -10,9 +10,10 @@ export const useClickOutside = <T extends HTMLElement>(
   options?: useClickOutsideOptions,
 ) => {
   useEffect(() => {
+    const { breakpoint } = options || {};
+
     const element = ref?.current;
     const handleClickOutside = (event: Event) => {
-      const { breakpoint } = options || {};
       if (breakpoint && window.innerWidth > breakpoint) return;
 
       if (element && !element.contains(event.target as Node)) {
@@ -21,7 +22,7 @@ export const useClickOutside = <T extends HTMLElement>(
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [ref, fn]);
+  }, [ref, fn, options]);
 };
 
 export const useMultipleRefsClickOutside = <T extends HTMLElement>(
@@ -30,8 +31,9 @@ export const useMultipleRefsClickOutside = <T extends HTMLElement>(
   options?: useClickOutsideOptions,
 ) => {
   useEffect(() => {
+    const { breakpoint } = options || {};
+
     const handleClickOutside = (event: Event) => {
-      const { breakpoint } = options || {};
       if (breakpoint && window.innerWidth > breakpoint) return;
 
       const isOutside = refs.every((ref) => {
@@ -46,5 +48,5 @@ export const useMultipleRefsClickOutside = <T extends HTMLElement>(
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [refs, fn]);
+  }, [refs, fn, options]);
 };
