@@ -38,7 +38,7 @@ export const StreamArea: React.FC = () => {
 
   return (
     <div className="flex h-full min-w-0 grow flex-col">
-      <div className="flex h-full flex-col gap-5 p-3 text-white">
+      <div className="flex h-full flex-col gap-5 overflow-y-auto p-3 text-white">
         {hasPeers && focusedPeer && (
           <>
             <FocusedVideoDisplay focusedPeer={focusedPeer} />
