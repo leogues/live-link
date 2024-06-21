@@ -62,7 +62,7 @@ export const Home = () => {
         inputRef={inputRoomIdRef}
         placeholder="Insira o ID da reunião ou o link"
       />
-      <UserProfile user={user} className="mt-7" bgColor="transparent" />
+      <UserProfile user={user} className="mt-2 md:mt-7" bgColor="transparent" />
       <MeetingButtons
         leftButtonHandle={createRoomHandle}
         leftButtonText="Crie sua reunião"

@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({
       >
         <div
           className={cn(
-            "w-full rounded-md bg-white p-5 shadow-md dark:bg-darkBlue-900 sm:px-10 sm:py-8",
+            "w-full rounded-md bg-white p-4 shadow-md dark:bg-darkBlue-900 md:px-10 md:py-8",
             {
               "max-w-xs sm:max-w-sm": size === "sm",
               "max-w-md": size === "md",
