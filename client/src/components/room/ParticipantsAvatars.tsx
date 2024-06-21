@@ -18,14 +18,14 @@ export const ParticipantAvatars: React.FC<{ peers?: PeerState }> = ({
           return (
             <div
               key={"avatar-" + peer.user?.id}
-              className="-m-[0.4rem] h-12 w-12 min-w-max overflow-hidden rounded-full border-[3px] border-white dark:border-darkBlue-900"
+              className="-m-[0.4rem] h-10 w-10 min-w-max overflow-hidden rounded-full border-[3px] border-white dark:border-darkBlue-900 lg:h-12 lg:w-12"
             >
               <img className="block h-full" src={peer.user?.picture} />
             </div>
           );
         })}
       {hasRemainingPeers && (
-        <div className="-m-[0.4rem] flex h-12 w-12 min-w-max items-center justify-center overflow-hidden rounded-full border-[3px] border-white bg-blue-50 dark:border-darkBlue-900 dark:bg-darkBlue-400">
+        <div className="-m-[0.4rem] flex h-10 w-10 min-w-max items-center justify-center overflow-hidden rounded-full border-[3px] border-white bg-blue-50 dark:border-darkBlue-900 dark:bg-darkBlue-400 lg:h-12 lg:w-12">
           <span className="-ml-1 text-sm font-semibold text-blue-700">
             +{remainingPeers.length}
           </span>

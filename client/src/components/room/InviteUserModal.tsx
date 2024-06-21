@@ -44,7 +44,7 @@ export const InviteUserModal: React.FC = () => {
         <Dialog.Overlay className="fixed inset-0 z-50 animate-overlayShow bg-black bg-opacity-30" />
         <Dialog.Content
           ref={menuRef.inviteModal}
-          className="fixed left-1/2 top-1/2 z-50 w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-6 py-6 text-gray-850 shadow-md dark:bg-darkBlue-900 dark:text-gray-300"
+          className="fixed left-1/2 top-1/2 z-50 w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-6 py-6 text-gray-850 shadow-md dark:bg-darkBlue-900 dark:text-gray-300 md:w-[30rem]"
         >
           <header>
             <FormHeader title="Convidar" fontWeight="semibold" />

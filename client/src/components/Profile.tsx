@@ -31,15 +31,15 @@ export const Profile: React.FC<ProfileProps> = ({
 }) => {
   return (
     <div
-      className={cn("flex items-center gap-4 rounded-full p-2 md:py-2", {
+      className={cn("flex items-center gap-4 rounded-full p-1.5 md:py-1.5", {
         "flex w-full px-3": hiddenBreakpoint === "none",
         "bg-gray-100 dark:bg-darkBlue-600": bgColor === "default",
       })}
     >
       <div
         className={clsx("min-w-max overflow-hidden rounded-full", {
-          "h-10 w-10": imageSize === "sm",
-          "h-12 w-12": imageSize === "md",
+          "h-[1.675rem] w-[1.675rem] lg:h-10 lg:w-10": imageSize === "sm",
+          " h-12 w-12": imageSize === "md",
         })}
       >
         <img className="block h-full" src={picture} />
