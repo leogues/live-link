@@ -14,7 +14,7 @@ export const MeetingButtons: React.FC<MeetingHeaderProps> = ({
   rightButtonText,
 }) => {
   return (
-    <div className="mt-8 flex items-center gap-2 text-sm font-semibold">
+    <div className="mt-3 flex items-center gap-2 text-sm font-semibold md:mt-8">
       <div className="flex flex-1 flex-col gap-2">
         <Button
           onClick={leftButtonHandle}

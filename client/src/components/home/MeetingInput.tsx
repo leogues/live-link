@@ -12,7 +12,7 @@ export const MeetingInput: React.FC<MeetingInputProps> = ({
   placeholder,
 }) => {
   return (
-    <div className="mt-5">
+    <div className="mt-2 md:mt-5">
       <Input inputRef={inputRef} placeholder={placeholder} />
     </div>
   );
