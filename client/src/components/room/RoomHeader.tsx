@@ -14,7 +14,7 @@ export const RoomHeader: React.FC = () => {
   return (
     <header className=" flex items-center border border-[rgba(217,217,217,0.29)] bg-white dark:border-[#3333] dark:border-opacity-30 dark:bg-darkBlue-900">
       <RoomInfo room={room} />
-      <div className="ml-auto flex items-center px-7 lg:basis-[32rem]">
+      <div className="ml-auto flex items-center px-3 lg:basis-[32rem] lg:px-7">
         <ParticipantAvatars peers={peers} />
 
         <UserProfile

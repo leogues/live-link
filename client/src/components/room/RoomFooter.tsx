@@ -29,7 +29,7 @@ export const RoomFooter: React.FC = () => {
       {chat.isChatOpen && (
         <div
           ref={menuRef.chatInput}
-          className="absolute right-0 z-40 flex h-full w-[18rem] shrink-0 items-center justify-center border border-[#EDF0F6] bg-white dark:border-[#1F2335] dark:bg-darkBlue-900 sm:w-[24rem] md:static"
+          className="absolute right-0 z-40 flex h-full w-[20rem] shrink-0 items-center justify-center border border-[#EDF0F6] bg-white dark:border-[#1F2335] dark:bg-darkBlue-900 sm:w-[24rem] md:static"
         >
           <ChatInput />
         </div>

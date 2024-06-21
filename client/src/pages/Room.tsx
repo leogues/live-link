@@ -29,7 +29,7 @@ export const Room = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="grid h-[100dvh] max-h-[100dvh] grid-rows-[5rem_1fr_5rem] font-medium text-white lg:grid-rows-[6rem_1fr_8rem]">
+    <div className="grid h-[100dvh] max-h-[100dvh] grid-rows-[3rem_1fr_4rem] font-medium text-white lg:grid-rows-[6rem_1fr_8rem]">
       <RoomHeader />
       <RoomContent />
       <RoomFooter />

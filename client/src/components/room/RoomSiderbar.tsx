@@ -26,7 +26,7 @@ export const RoomSiderbar: React.FC = () => {
       {chat.isChatOpen && (
         <div
           ref={menuRef.chat}
-          className="absolute right-0 z-50 flex h-full w-[18rem] shrink-0 flex-col border-l border-[#EDF0F6] bg-gray-100 shadow-md dark:border-[#1F2335] dark:bg-darkBlue-600 sm:w-[24rem] md:static"
+          className="absolute right-0 z-50 flex h-full w-[20rem] shrink-0 flex-col border-l border-[#EDF0F6] bg-gray-100 shadow-md dark:border-[#1F2335] dark:bg-darkBlue-600 sm:w-[24rem] md:static"
         >
           <ParticipantsListSidebar handleMinimizar={handleMinimizar} />
           <ChatSidebar handleMinimizar={handleMinimizar} />
