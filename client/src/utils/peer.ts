@@ -107,7 +107,6 @@ export const Peer = (options: PeerProps) => {
   }
 
   if (state.isInitiator) {
-    console.log("isInitiator", state.isInitiator);
     state._peerConn.createDataChannel("stream");
   }
 
@@ -470,7 +469,6 @@ export const Peer = (options: PeerProps) => {
   }
 
   function _onTrack(event: RTCTrackEvent) {
-    console.log({ event });
     if (state.isDestroyed) return;
 
     event.streams.forEach((eventStream) => {
