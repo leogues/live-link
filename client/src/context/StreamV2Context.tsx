@@ -25,7 +25,7 @@ type IMediaTracks = {
   videoTrack: MediaStreamTrack | undefined;
 };
 
-type StreamContextValue = {
+export type StreamContextValue = {
   localStream: MutableRefObject<MediaStream | undefined>;
   mediaTracks: IMediaTracks;
   handleMicOn: () => void;

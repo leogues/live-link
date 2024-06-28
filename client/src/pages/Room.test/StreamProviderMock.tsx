@@ -1,6 +1,9 @@
-import { StreamContext, StreamValue } from "../../context/StreamContext";
+import {
+  StreamContext,
+  StreamContextValue,
+} from "../../context/StreamV2Context";
 
-export type IStreamProviderProps = StreamValue;
+export type IStreamProviderProps = StreamContextValue;
 
 export type StreamCustomProviderProps = {
   children: any;
@@ -16,10 +19,10 @@ export const streamCustomProviderProps = ({
       current: {} as MediaStream,
     },
     mediaTracks: {
-      audioTrack: null,
-      screenAudioTrack: null,
-      screenTrack: null,
-      videoTrack: null,
+      audioTrack: undefined,
+      screenAudioTrack: undefined,
+      screenTrack: undefined,
+      videoTrack: undefined,
     },
     handleMicOn: () => {},
     handleScreenOn: () => {},
