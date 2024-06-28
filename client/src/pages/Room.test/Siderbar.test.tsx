@@ -3,10 +3,9 @@ import { describe, expect, test } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { ChatProvider } from "../../context/ChatContext";
+import { ChatStoreProvider } from "../../context/ChatStoreContext";
 import { ChatState } from "../../reducers/chatReduces";
 import { Room } from "../Room";
-import { chatCustomProviderProps } from "./ChatProviderMock";
 import { roomCustomProviderProps } from "./RoomProviderMock";
 import { userCustomProviderProps } from "./UserProviderMock";
 
@@ -34,11 +33,11 @@ describe("room siderbar tests", () => {
   test("renders participant for every peer", () => {
     render(
       <MemoryRouter>
-        <ChatProvider>
+        <ChatStoreProvider initialIsChatOpen={true}>
           {roomCustomProviderProps({
             children: <Room />,
           })}
-        </ChatProvider>
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 
@@ -53,10 +52,11 @@ describe("room siderbar tests", () => {
     render(
       <MemoryRouter>
         {userCustomProviderProps({
-          children: chatCustomProviderProps({
-            children: <Room />,
-            providerProps: { chat: chatMock },
-          }),
+          children: (
+            <ChatStoreProvider initialIsChatOpen>
+              <Room />
+            </ChatStoreProvider>
+          ),
           providerProps: { user },
         })}
       </MemoryRouter>,
@@ -98,10 +98,9 @@ describe("room siderbar tests", () => {
 
     render(
       <MemoryRouter>
-        {chatCustomProviderProps({
-          children: <Room />,
-          providerProps: { chat },
-        })}
+        <ChatStoreProvider initialIsChatOpen>
+          <Room />
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 
@@ -125,9 +124,9 @@ describe("room siderbar tests", () => {
   test("participants expand button toggle aria-expand state", () => {
     render(
       <MemoryRouter>
-        <ChatProvider>
+        <ChatStoreProvider initialIsChatOpen>
           <Room />
-        </ChatProvider>
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 
@@ -151,9 +150,9 @@ describe("room siderbar tests", () => {
   test("chat expand button toggle expand state", () => {
     render(
       <MemoryRouter>
-        <ChatProvider>
+        <ChatStoreProvider initialIsChatOpen>
           <Room />
-        </ChatProvider>
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 

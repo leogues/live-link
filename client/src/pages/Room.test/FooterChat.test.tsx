@@ -3,8 +3,8 @@ import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
+import { ChatStoreProvider } from "../../context/ChatStoreContext";
 import { Room } from "../Room";
-import { chatCustomProviderProps } from "./ChatProviderMock";
 
 describe("room footer chat tests", () => {
   test("send message button call the function", () => {
@@ -12,10 +12,9 @@ describe("room footer chat tests", () => {
 
     render(
       <MemoryRouter>
-        {chatCustomProviderProps({
-          children: <Room />,
-          providerProps: { sendMessage },
-        })}
+        <ChatStoreProvider initialIsChatOpen>
+          <Room />,
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 

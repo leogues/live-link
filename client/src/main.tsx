@@ -48,7 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 element={
                   <UserV2Provider>
                     <RoomV2Provider>
-                      <ChatStoreProvider>
+                      <ChatStoreProvider initialIsChatOpen={false}>
                         <StreamProvider>
                           <Room />
                         </StreamProvider>

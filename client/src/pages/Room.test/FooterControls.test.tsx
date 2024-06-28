@@ -3,7 +3,7 @@ import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { ChatProvider } from "../../context/ChatContext";
+import { ChatStoreProvider } from "../../context/ChatStoreContext";
 import { Room } from "../Room";
 import { streamCustomProviderProps } from "./StreamProviderMock";
 
@@ -113,9 +113,9 @@ describe("Room footer controls tests", () => {
   test("chat button toggles chat", () => {
     render(
       <MemoryRouter>
-        <ChatProvider>
+        <ChatStoreProvider initialIsChatOpen>
           <Room />
-        </ChatProvider>
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 

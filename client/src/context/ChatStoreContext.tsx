@@ -9,7 +9,7 @@ import {
 import { StoreApi, createStore } from "zustand";
 import { ws } from "../services/ws";
 
-type ChatStoreContextType = StoreApi<ChatStoreState> | null;
+export type ChatStoreContextType = StoreApi<ChatStoreState> | null;
 
 export const ChatStoreContext = createContext<ChatStoreContextType>(null);
 
@@ -28,11 +28,18 @@ export type ChatStoreState = {
   };
 };
 
-export const ChatStoreProvider: FC<PropsWithChildren> = ({ children }) => {
+type ChatStoreProps = {
+  initialIsChatOpen: boolean;
+};
+
+export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
+  children,
+  initialIsChatOpen,
+}) => {
   const [store] = useState(() =>
     createStore<ChatStoreState>((set) => ({
       messages: [],
-      isChatOpen: false,
+      isChatOpen: initialIsChatOpen,
       menuRef: {
         chatInput: useRef<HTMLInputElement>(null),
         chat: useRef<HTMLDivElement>(null),
