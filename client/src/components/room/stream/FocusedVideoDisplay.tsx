@@ -1,7 +1,7 @@
 import { useContext, useMemo, useReducer } from "react";
 
 import { StreamContext } from "../../../context/StreamV2Context";
-import { UserV2Context } from "../../../context/UserV2Context";
+import { useMeQuery } from "../../../hooks/useUser";
 import { MaximizeIcon } from "../../../icons/stream/Maximize";
 import {
   MicrophoneOffIcon,
@@ -17,7 +17,7 @@ import { VideoPlayer } from "./VideoPlayer";
 export const FocusedVideoDisplay: React.FC<{
   focusedPeer: Peer;
 }> = ({ focusedPeer }) => {
-  const { user } = useContext(UserV2Context);
+  const { data: user } = useMeQuery();
   const { localStream } = useContext(StreamContext);
   const [isFullscreen, toggleFullScreen] = useReducer(
     (isFullscreen) => !isFullscreen,

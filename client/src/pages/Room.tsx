@@ -1,17 +1,17 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import { RoomContent } from "../components/room/RoomContent";
 import { RoomFooter } from "../components/room/RoomFooter";
 import { RoomHeader } from "../components/room/RoomHeader";
 import { RoomInfoEntry } from "../components/room/RoomInfoEntry";
-import { UserV2Context } from "../context/UserV2Context";
 import { useThisRoom } from "../hooks/useRoom";
 import { useIsEnteredRoom } from "../hooks/useRoomStore";
+import { useMeQuery } from "../hooks/useUser";
 import { ws } from "../services/ws";
 
 export const Room = () => {
   const { data: room, isLoading: roomIsLoading } = useThisRoom();
-  const { isLoading: userIsLoading } = useContext(UserV2Context);
+  const { isLoading: userIsLoading } = useMeQuery();
   const isEnteredRoom = useIsEnteredRoom();
   console.log("re-render Room");
 
@@ -28,7 +28,7 @@ export const Room = () => {
   }, [room, isEnteredRoom]);
 
   //TODO: Chrome autoplay videos https://developer.chrome.com/blog/autoplay/
-  if (userIsLoading || roomIsLoading) return <div>Loading...</div>;
+  if (userIsLoading || roomIsLoading) return null;
   if (!isEnteredRoom) return <RoomInfoEntry />;
 
   return (

@@ -1,8 +1,6 @@
-import { useContext } from "react";
-
-import { UserV2Context } from "../../context/UserV2Context";
 import { useThisRoom } from "../../hooks/useRoom";
 import { useRoomPeers } from "../../hooks/useRoomStore";
+import { useMeQuery } from "../../hooks/useUser";
 import { Switcher } from "../Switcher";
 import { UserProfile } from "../UserProfile";
 import { ParticipantAvatars } from "./ParticipantsAvatars";
@@ -11,8 +9,7 @@ import { RoomInfo } from "./RoomInfo";
 export const RoomHeader: React.FC = () => {
   const { data: room } = useThisRoom();
   const peers = useRoomPeers();
-  const { user } = useContext(UserV2Context);
-
+  const { data: user } = useMeQuery();
   return (
     <header className=" flex items-center border border-[rgba(217,217,217,0.29)] bg-white dark:border-[#3333] dark:border-opacity-30 dark:bg-darkBlue-900">
       <RoomInfo room={room} />

@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 
 import { StreamContext } from "../../../context/StreamV2Context";
-import { UserV2Context } from "../../../context/UserV2Context";
+import { useMeQuery } from "../../../hooks/useUser";
 import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
@@ -19,7 +19,7 @@ export const SliderVideo: React.FC<{
   handleSetFocusedVideoPeerId: (peerId?: string) => void;
 }> = ({ peer, focusedPeerId, handleSetFocusedVideoPeerId }) => {
   const { localStream } = useContext(StreamContext);
-  const { user } = useContext(UserV2Context);
+  const { data: user } = useMeQuery();
 
   if (peer.user?.id === focusedPeerId) {
     return null;
