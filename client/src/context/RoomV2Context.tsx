@@ -138,8 +138,13 @@ export const RoomV2Provider: React.FunctionComponent<RoomV2ContextProps> = ({
       ws.off("get-users");
       ws.off("user-joined");
       ws.off("user-disconnected");
+      ws.off("mediaDeviceStatusNotification");
     };
   }, []);
+
+  if (!room) {
+    return null;
+  }
 
   return (
     <RoomV2Context.Provider

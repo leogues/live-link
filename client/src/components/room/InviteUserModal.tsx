@@ -1,18 +1,16 @@
-import { useContext } from "react";
-
 import * as Dialog from "@radix-ui/react-dialog";
 
-import { ChatContext } from "../../context/ChatContext";
+import { useChatMenuRefs } from "../../hooks/useChatStore";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 import { useNotification } from "../../hooks/useNotification";
 import { AddParticipantIcon } from "../../icons/AddParticipant";
+import { FormHeader } from "../FormHeader";
 import { Button } from "../common/Button";
 import { Input } from "../common/Input";
-import { FormHeader } from "../FormHeader";
 
 export const InviteUserModal: React.FC = () => {
   const roomUrl = window.location.href;
-  const { menuRef } = useContext(ChatContext);
+  const { inviteModal } = useChatMenuRefs();
   const notify = useNotification();
   const [isCopiedToClipboard, copyToClipboard] = useCopyToClipboard();
 
@@ -43,7 +41,7 @@ export const InviteUserModal: React.FC = () => {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 animate-overlayShow bg-black bg-opacity-30" />
         <Dialog.Content
-          ref={menuRef.inviteModal}
+          ref={inviteModal}
           className="fixed left-1/2 top-1/2 z-50 w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white px-6 py-6 text-gray-850 shadow-md dark:bg-darkBlue-900 dark:text-gray-300 md:w-[30rem]"
         >
           <header>

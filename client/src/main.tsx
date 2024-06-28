@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import { ChatProvider } from "./context/ChatContext.tsx";
+import { ChatStoreProvider } from "./context/ChatStoreContext.tsx";
 import { NotificationProvider } from "./context/NotificationContext.tsx";
 import { RoomV2Provider } from "./context/RoomV2Context.tsx";
 import { StreamProvider } from "./context/StreamV2Context.tsx";
@@ -48,11 +48,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 element={
                   <UserV2Provider>
                     <RoomV2Provider>
-                      <ChatProvider>
+                      <ChatStoreProvider>
                         <StreamProvider>
                           <Room />
                         </StreamProvider>
-                      </ChatProvider>
+                      </ChatStoreProvider>
                     </RoomV2Provider>
                   </UserV2Provider>
                 }

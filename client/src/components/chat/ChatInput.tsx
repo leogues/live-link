@@ -1,14 +1,16 @@
 import { useContext, useState } from "react";
 
-import { ChatContext } from "../../context/ChatContext";
 import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
+import { useChatActions } from "../../hooks/useChatStore";
 import { SendIcon } from "../../icons/Send";
+import { ws } from "../../services/ws";
 import { Button } from "../common/Button";
 
 export const ChatInput: React.FC = () => {
   const [message, setMessage] = useState("");
-  const { sendMessage } = useContext(ChatContext);
+  const { addMessage } = useChatActions();
+
   const { user } = useContext(UserV2Context);
   const { room } = useContext(RoomV2Context);
 
@@ -17,14 +19,18 @@ export const ChatInput: React.FC = () => {
 
     if (message === "") return;
 
-    sendMessage({
+    const messageData = {
       roomId: room.id,
       content: message,
       userId: user.id,
       name: user.name,
       lastName: user.lastName,
       picture: user.picture,
-    });
+      timestamp: new Date().getTime(),
+    };
+
+    addMessage(messageData);
+    ws.emit("send-message", room.id, messageData);
     setMessage("");
   };
 
