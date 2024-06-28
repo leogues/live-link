@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { IRoom } from "../context/RoomV2Context";
 import api from "../services/api";
+import { IRoom } from "../types/room";
 
 const getRoom = async (roomId: string) => {
   const response = await api.get<IRoom>(`/room/${roomId}`);

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { IRoom } from "../../context/RoomV2Context";
 import { LogoIcon } from "../../icons/Logo";
+import { IRoom } from "../../types/room";
 import { formatDate } from "../../utils/dateUtils";
 
 export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {

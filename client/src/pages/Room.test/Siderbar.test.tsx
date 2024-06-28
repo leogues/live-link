@@ -5,17 +5,13 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import { ChatStoreProvider } from "../../context/ChatStoreContext";
 import { Room } from "../Room";
-import { roomCustomProviderProps } from "./RoomProviderMock";
-import { userCustomProviderProps } from "./UserProviderMock";
 
 describe("room siderbar tests", () => {
   test("renders participant for every peer", () => {
     render(
       <MemoryRouter>
         <ChatStoreProvider initialIsChatOpen={true}>
-          {roomCustomProviderProps({
-            children: <Room />,
-          })}
+          <Room />
         </ChatStoreProvider>
       </MemoryRouter>,
     );
@@ -30,14 +26,9 @@ describe("room siderbar tests", () => {
 
     render(
       <MemoryRouter>
-        {userCustomProviderProps({
-          children: (
-            <ChatStoreProvider initialIsChatOpen>
-              <Room />
-            </ChatStoreProvider>
-          ),
-          providerProps: { user },
-        })}
+        <ChatStoreProvider initialIsChatOpen>
+          <Room />
+        </ChatStoreProvider>
       </MemoryRouter>,
     );
 
