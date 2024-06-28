@@ -24,7 +24,8 @@
     "react-router-dom": "^6.16.0",
     "socket.io-client": "^4.7.2",
     "tailwind-variants": "^0.1.16",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.36.1",
