@@ -1,8 +1,21 @@
+import { useEffect } from "react";
 import { useMessages } from "../../hooks/useChatStore";
 import { ChatBubble } from "./ChatBubble";
 
 export const Chat: React.FC = () => {
   const messages = useMessages();
+
+  function scrollToBottom() {
+    const chatContainer = document.querySelector(".chat-container");
+
+    if (!chatContainer) return;
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <>
