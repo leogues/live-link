@@ -33,7 +33,7 @@ export const SwitcherDarkIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
       className="fill-sky-500"
     ></path>
     <path
-      fill-fillRule="evenodd"
+      fillRule="evenodd"
       clipRule="evenodd"
       d="M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z"
       className="fill-sky-500"

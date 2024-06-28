@@ -9,7 +9,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ChatProvider } from "./context/ChatContext.tsx";
 import { NotificationProvider } from "./context/NotificationContext.tsx";
 import { RoomV2Provider } from "./context/RoomV2Context.tsx";
-import { StreamProvider } from "./context/StreamContext.tsx";
+import { StreamProvider } from "./context/StreamV2Context.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { UserV2Provider } from "./context/UserV2Context.tsx";
 import { CreateRoom } from "./pages/CreateRoom.tsx";

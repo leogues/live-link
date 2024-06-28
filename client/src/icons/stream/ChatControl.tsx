@@ -13,9 +13,9 @@ export const ChatControlIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
       d="M9.91683 22.1666H9.3335C4.66683 22.1666 2.3335 21 2.3335 15.1666V9.33331C2.3335 4.66665 4.66683 2.33331 9.3335 2.33331H18.6668C23.3335 2.33331 25.6668 4.66665 25.6668 9.33331V15.1666C25.6668 19.8333 23.3335 22.1666 18.6668 22.1666H18.0835C17.7218 22.1666 17.3718 22.3416 17.1502 22.6333L15.4002 24.9666C14.6302 25.9933 13.3702 25.9933 12.6002 24.9666L10.8502 22.6333C10.6635 22.3766 10.2318 22.1666 9.91683 22.1666Z"
       stroke="currentColor"
       strokeWidth="2.25"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
       strokeLinecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     />
     <path
       d="M18.6629 12.8334H18.6733"

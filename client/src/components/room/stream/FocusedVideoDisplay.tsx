@@ -1,6 +1,6 @@
 import { useContext, useMemo, useReducer } from "react";
 
-import { StreamContext } from "../../../context/StreamContext";
+import { StreamContext } from "../../../context/StreamV2Context";
 import { UserV2Context } from "../../../context/UserV2Context";
 import { MaximizeIcon } from "../../../icons/stream/Maximize";
 import {
@@ -8,8 +8,9 @@ import {
   MicrophoneOnIcon,
 } from "../../../icons/stream/Microphone";
 import { IPeerState } from "../../../reducers/peersReducer";
-import { Button } from "../../common/Button";
+import { cn } from "../../../utils/cn";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
+import { Button } from "../../common/Button";
 import { Label } from "./Label";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -23,6 +24,7 @@ export const FocusedVideoDisplay: React.FC<{
     false,
   );
 
+  const audioOn = focusedPeer?.isMicOn;
   const videoOn = focusedPeer?.isWebCamOn || focusedPeer?.isSharingScreenOn;
 
   const stream = useMemo<MediaStream | undefined>(() => {
@@ -41,13 +43,19 @@ export const FocusedVideoDisplay: React.FC<{
         <div
           data-testid="focused-peer-video"
           data-fullscreen={isFullscreen}
-          className="relative flex aspect-[21/9] h-full max-h-full  max-w-full
+          className="relative flex aspect-[21/9] h-full max-h-full max-w-full
 justify-center overflow-hidden rounded-xl bg-black data-[fullscreen=true]:fixed 
 data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-[100] 
 data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:rounded-none"
         >
-          {stream && videoOn && (
-            <VideoPlayer stream={stream} muted={isMyVideo} />
+          {stream && (videoOn || audioOn) && (
+            <VideoPlayer
+              stream={stream}
+              muted={isMyVideo}
+              className={cn({
+                invisible: !videoOn,
+              })}
+            />
           )}
 
           <div className="absolute right-5 top-4 z-10">
