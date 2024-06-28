@@ -107,6 +107,7 @@ export const Peer = (options: PeerProps) => {
   }
 
   if (state.isInitiator) {
+    console.log("isInitiator", state.isInitiator);
     state._peerConn.createDataChannel("stream");
   }
 
@@ -205,6 +206,8 @@ export const Peer = (options: PeerProps) => {
       state._localTracks.delete(oldTrack);
       state._localTracks.set(newTrack, sender);
       sender.replaceTrack(newTrack);
+      // _logs("replace track call needsNegotiation");
+      // _needsNegotiation();
     } else {
       destroy(
         errCode(
@@ -371,7 +374,7 @@ export const Peer = (options: PeerProps) => {
           offerToReceiveVideo: true,
         });
       } else if (messageType === "answer") {
-        sessionDescription = await state._peerConn.createAnswer({});
+        sessionDescription = await state._peerConn.createAnswer();
       }
     } catch (err) {
       destroy(errCode(err, "ERR_CREATE_" + messageType));
@@ -467,17 +470,18 @@ export const Peer = (options: PeerProps) => {
   }
 
   function _onTrack(event: RTCTrackEvent) {
+    console.log({ event });
     if (state.isDestroyed) return;
 
     event.streams.forEach((eventStream) => {
-      if (
-        state._remoteStreams.some((remoteStream) => {
-          return remoteStream.id === eventStream.id;
-        })
-      )
-        return;
+      // if (
+      //   state._remoteStreams.some((remoteStream) => {
+      //     return remoteStream.id === eventStream.id;
+      //   })
+      // )
+      //   return;
 
-      state._remoteStreams.push(eventStream);
+      // state._remoteStreams.push(eventStream);
 
       _logs("on stream");
       queueMicrotask(() => {

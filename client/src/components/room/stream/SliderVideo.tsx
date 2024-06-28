@@ -1,16 +1,17 @@
 import { useContext, useMemo } from "react";
 
-import { StreamContext } from "../../../context/StreamContext";
+import { StreamContext } from "../../../context/StreamV2Context";
 import { UserV2Context } from "../../../context/UserV2Context";
+import {
+  MicrophoneOffIcon,
+  MicrophoneOnIcon,
+} from "../../../icons/stream/Microphone";
 import { IPeerState } from "../../../reducers/peersReducer";
-import { Button } from "../../common/Button";
+import { cn } from "../../../utils/cn";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
+import { Button } from "../../common/Button";
 import { Label } from "./Label";
 import { VideoPlayer } from "./VideoPlayer";
-import {
-  MicrophoneOnIcon,
-  MicrophoneOffIcon,
-} from "../../../icons/stream/Microphone";
 
 export const SliderVideo: React.FC<{
   peer: IPeerState;
@@ -24,6 +25,7 @@ export const SliderVideo: React.FC<{
     return null;
   }
 
+  const audioOn = peer.isMicOn;
   const videoOn = peer.isWebCamOn || peer.isSharingScreenOn;
   const stream = useMemo<MediaStream | undefined>(() => {
     if (peer.user?.id === user?.id) {
@@ -42,7 +44,15 @@ export const SliderVideo: React.FC<{
       onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
       key={peer.user?.id}
     >
-      {stream && videoOn && <VideoPlayer stream={stream} muted={isMyVideo} />}
+      {stream && (videoOn || audioOn) && (
+        <VideoPlayer
+          stream={stream}
+          muted={isMyVideo}
+          className={cn("aspect-video", {
+            invisible: !videoOn,
+          })}
+        />
+      )}
 
       <div className="absolute bottom-5 right-5 z-10">
         <UserMicrophoneVideoToggle bg="toggle" toggle={peer.isMicOn}>

@@ -1,14 +1,14 @@
 import { useContext } from "react";
 
 import { ChatContext } from "../../context/ChatContext";
-import { StreamContext } from "../../context/StreamContext";
+import { StreamContext } from "../../context/StreamV2Context";
+import { ChatControlIcon } from "../../icons/stream/ChatControl";
 import { MicrophoneControlIcon } from "../../icons/stream/MicrophoneControl";
 import { SharingScreenControlIcon } from "../../icons/stream/SharingScreenControl";
 import { VideoControlIcon } from "../../icons/stream/VideoControl";
 import { ChatState } from "../../reducers/chatReduces";
 import { cn } from "../../utils/cn";
 import { ToggleButton } from "../ToggleButton";
-import { ChatControlIcon } from "../../icons/stream/ChatControl";
 
 export const RoomControlButtons: React.FC<{ chat: ChatState }> = ({ chat }) => {
   const { mediaTracks, handleMicOn, handleScreenOn, handleWebCamOn } =

@@ -12,7 +12,7 @@ import {
   updateSharingScreenStateAction,
   updateWebCamStateAction,
 } from "../reducers/peersActions";
-import { PeerAction, peersReducer, PeerState } from "../reducers/peersReducer";
+import { PeerAction, PeerState, peersReducer } from "../reducers/peersReducer";
 import api from "../services/api";
 import { ws } from "../services/ws";
 import { IPeer } from "../types/peer";
