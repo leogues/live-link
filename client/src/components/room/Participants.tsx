@@ -4,8 +4,6 @@ import { Participant } from "../Partipant";
 export const Participants: React.FC = () => {
   const peers = useRoomPeers();
 
-  console.log(peers);
-
   return (
     <div className="hidden max-h-[calc(100%-3.5rem)] grow group-aria-[expanded=true]:block">
       <div className=" box-border flex h-full max-h-full flex-col gap-2 overflow-auto p-4">

@@ -13,7 +13,6 @@ export const Room = () => {
   const { data: room, isLoading: roomIsLoading } = useThisRoom();
   const { isLoading: userIsLoading } = useMeQuery();
   const isEnteredRoom = useIsEnteredRoom();
-  console.log("re-render Room");
 
   useEffect(() => {
     if (room && isEnteredRoom) {
