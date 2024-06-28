@@ -3,7 +3,6 @@ import {
   PropsWithChildren,
   createContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { StoreApi, createStore } from "zustand";
@@ -41,9 +40,11 @@ export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
       messages: [],
       isChatOpen: initialIsChatOpen,
       menuRef: {
-        chatInput: useRef<HTMLInputElement>(null),
-        chat: useRef<HTMLDivElement>(null),
-        inviteModal: useRef<HTMLDivElement>(null),
+        chatInput: {
+          current: null,
+        },
+        chat: { current: null },
+        inviteModal: { current: null },
       },
       actions: {
         toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),

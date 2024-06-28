@@ -1,10 +1,10 @@
-import { useContext } from "react";
-
-import { RoomV2Context } from "../../context/RoomV2Context";
+import { useRoomPeers } from "../../hooks/useRoomStore";
 import { Participant } from "../Partipant";
 
 export const Participants: React.FC = () => {
-  const { peers } = useContext(RoomV2Context);
+  const peers = useRoomPeers();
+
+  console.log(peers);
 
   return (
     <div className="hidden max-h-[calc(100%-3.5rem)] grow group-aria-[expanded=true]:block">

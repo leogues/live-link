@@ -4,13 +4,16 @@ import { RoomContent } from "../components/room/RoomContent";
 import { RoomFooter } from "../components/room/RoomFooter";
 import { RoomHeader } from "../components/room/RoomHeader";
 import { RoomInfoEntry } from "../components/room/RoomInfoEntry";
-import { RoomV2Context } from "../context/RoomV2Context";
 import { UserV2Context } from "../context/UserV2Context";
+import { useThisRoom } from "../hooks/useRoom";
+import { useIsEnteredRoom } from "../hooks/useRoomStore";
 import { ws } from "../services/ws";
 
 export const Room = () => {
-  const { room, isEnteredRoom } = useContext(RoomV2Context);
-  const { isLoading } = useContext(UserV2Context);
+  const { data: room, isLoading: roomIsLoading } = useThisRoom();
+  const { isLoading: userIsLoading } = useContext(UserV2Context);
+  const isEnteredRoom = useIsEnteredRoom();
+  console.log("re-render Room");
 
   useEffect(() => {
     if (room && isEnteredRoom) {
@@ -25,8 +28,8 @@ export const Room = () => {
   }, [room, isEnteredRoom]);
 
   //TODO: Chrome autoplay videos https://developer.chrome.com/blog/autoplay/
+  if (userIsLoading || roomIsLoading) return <div>Loading...</div>;
   if (!isEnteredRoom) return <RoomInfoEntry />;
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="grid h-[100dvh] max-h-[100dvh] grid-rows-[3rem_1fr_4rem] font-medium text-white lg:grid-rows-[6rem_1fr_8rem]">

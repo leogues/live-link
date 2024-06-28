@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
 
-import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
 import { useChatActions } from "../../hooks/useChatStore";
+import { useThisRoom } from "../../hooks/useRoom";
 import { SendIcon } from "../../icons/Send";
 import { ws } from "../../services/ws";
 import { Button } from "../common/Button";
 
 export const ChatInput: React.FC = () => {
+  const { data: room } = useThisRoom();
+
   const [message, setMessage] = useState("");
   const { addMessage } = useChatActions();
 
   const { user } = useContext(UserV2Context);
-  const { room } = useContext(RoomV2Context);
 
   const handleSendMessage = () => {
     if (!room || !user) return;

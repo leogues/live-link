@@ -1,14 +1,16 @@
 import { useContext } from "react";
 
-import { RoomV2Context } from "../../context/RoomV2Context";
 import { UserV2Context } from "../../context/UserV2Context";
+import { useThisRoom } from "../../hooks/useRoom";
+import { useRoomPeers } from "../../hooks/useRoomStore";
 import { Switcher } from "../Switcher";
 import { UserProfile } from "../UserProfile";
 import { ParticipantAvatars } from "./ParticipantsAvatars";
 import { RoomInfo } from "./RoomInfo";
 
 export const RoomHeader: React.FC = () => {
-  const { room, peers } = useContext(RoomV2Context);
+  const { data: room } = useThisRoom();
+  const peers = useRoomPeers();
   const { user } = useContext(UserV2Context);
 
   return (

@@ -1,11 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { RoomV2Context } from "../../../context/RoomV2Context";
+import { useThisRoom } from "../../../hooks/useRoom";
+import { useRoomPeers } from "../../../hooks/useRoomStore";
 import { FocusedVideoDisplay } from "./FocusedVideoDisplay";
 import { SliderVideos } from "./SliderVideos";
 
 export const StreamArea: React.FC = () => {
-  const { peers, room } = useContext(RoomV2Context);
+  const { data: room } = useThisRoom();
+  const peers = useRoomPeers();
   const [focusedPeerId, setFocusedPeerId] = useState<string>();
 
   useEffect(() => {

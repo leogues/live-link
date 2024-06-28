@@ -7,7 +7,7 @@ import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
 } from "../../../icons/stream/Microphone";
-import { IPeerState } from "../../../reducers/peersReducer";
+import { Peer } from "../../../types/peer";
 import { cn } from "../../../utils/cn";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
 import { Button } from "../../common/Button";
@@ -15,7 +15,7 @@ import { Label } from "./Label";
 import { VideoPlayer } from "./VideoPlayer";
 
 export const FocusedVideoDisplay: React.FC<{
-  focusedPeer: IPeerState | undefined;
+  focusedPeer: Peer;
 }> = ({ focusedPeer }) => {
   const { user } = useContext(UserV2Context);
   const { localStream } = useContext(StreamContext);

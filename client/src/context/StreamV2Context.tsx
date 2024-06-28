@@ -3,7 +3,6 @@ import {
   FC,
   MutableRefObject,
   PropsWithChildren,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -12,11 +11,11 @@ import {
   useDisplayMediaControls,
   useUserMediaControls,
 } from "../hooks/useMediaControls";
-import { addPeerStreamAction } from "../reducers/peersActions";
+import { useThisRoom } from "../hooks/useRoom";
+import { useRoomActions } from "../hooks/useRoomStore";
 import { ws } from "../services/ws";
 import { IPeer } from "../types/peer";
 import { IPeers, Peers } from "../utils/multiPeerManager";
-import { RoomV2Context } from "./RoomV2Context";
 
 type IMediaTracks = {
   audioTrack: MediaStreamTrack | undefined;
@@ -47,9 +46,10 @@ export const StreamContext = createContext<StreamContextValue>({
 });
 
 export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { addPeerStream } = useRoomActions();
+  const { data: room } = useThisRoom();
   const multiPeersManager = useRef<IPeers | null>(null);
   const localStream = useRef<MediaStream>(new MediaStream());
-  const { room, dispatchPeers } = useContext(RoomV2Context);
   const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
     audioTrack: undefined,
     screenTrack: undefined,
@@ -111,7 +111,8 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     stream: MediaStream;
     remotePeerId: string;
   }) => {
-    dispatchPeers(addPeerStreamAction(remotePeerId, stream));
+    // dispatchPeers(addPeerStreamAction(remotePeerId, stream));
+    addPeerStream(remotePeerId, stream);
   };
 
   const peerJoined = async (peer: IPeer) => {
