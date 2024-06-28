@@ -1,8 +1,8 @@
-import { PeerState } from "../../reducers/peersReducer";
+import { PeerMap } from "../../types/peer";
 
 const maxPeersAvatars = 4;
 
-export const ParticipantAvatars: React.FC<{ peers?: PeerState }> = ({
+export const ParticipantAvatars: React.FC<{ peers?: PeerMap }> = ({
   peers,
 }) => {
   if (!peers) return null;

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
-import { IUser } from "../context/UserV2Context";
 import baseUrl from "../services/apiUrl";
+import { IUser } from "../types/peer";
 import { Profile, ProfileProps } from "./Profile";
 
 type UserProfileProps = Omit<ProfileProps, "name" | "lastName" | "picture"> & {

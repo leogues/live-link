@@ -1,17 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-import { ChatContext } from "../../context/ChatContext";
+import { useChatMenuRefs, useIsChatOpen } from "../../hooks/useChatStore";
 import { LeaveIcon } from "../../icons/Leave";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
 
 export const RoomFooter: React.FC = () => {
-  const { chat, menuRef } = useContext(ChatContext);
+  const isChatOpen = useIsChatOpen();
+  const { chatInput } = useChatMenuRefs();
   return (
     <footer className="relative flex flex-shrink-0 grow basis-auto  bg-white dark:bg-darkBlue-900">
       <div className="relative flex h-full grow items-center  justify-between border border-[#EDF0F6] px-2 dark:border-[#1F2335] sm:px-4 lg:justify-center">
-        <RoomControlButtons chat={chat} />
+        <RoomControlButtons />
 
         <Link
           to=".."
@@ -26,9 +27,9 @@ export const RoomFooter: React.FC = () => {
         </Link>
       </div>
 
-      {chat.isChatOpen && (
+      {isChatOpen && (
         <div
-          ref={menuRef.chatInput}
+          ref={chatInput}
           className="absolute right-0 z-40 flex h-full w-[20rem] shrink-0 items-center justify-center border border-[#EDF0F6] bg-white dark:border-[#1F2335] dark:bg-darkBlue-900 sm:w-[24rem] md:static"
         >
           <ChatInput />

@@ -47,7 +47,7 @@ export const VideoOffIcon = (props: SVGProps<SVGSVGElement>) => (
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     />
     <path
       d="M16.7398 10.95V16.21C16.7398 19.37 15.6898 20.42 12.5298 20.42H7.25977"

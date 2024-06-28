@@ -1,15 +1,14 @@
 import clsx from "clsx";
-import { useContext } from "react";
 
-import { RoomV2Context } from "../../context/RoomV2Context";
-import { UserV2Context } from "../../context/UserV2Context";
+import { useRoomPeers } from "../../hooks/useRoomStore";
+import { useMeQuery } from "../../hooks/useUser";
 
 export const ChatBubble: React.FC<{
   message: IMessage;
   prevMessage: IMessage;
 }> = ({ message, prevMessage }) => {
-  const { peers } = useContext(RoomV2Context);
-  const { user } = useContext(UserV2Context);
+  const peers = useRoomPeers();
+  const { data: user } = useMeQuery();
   const peerExists = peers[message.userId];
 
   const name = (peerExists && peerExists.user?.name) || message.name;

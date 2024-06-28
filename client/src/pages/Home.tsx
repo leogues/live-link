@@ -1,17 +1,17 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FormHeader } from "../components/FormHeader";
+import { UserProfile } from "../components/UserProfile";
 import { MeetingButtons } from "../components/home/MeetingButtons";
 import { MeetingInput } from "../components/home/MeetingInput";
 import Layout from "../components/layout/Layout";
-import { UserProfile } from "../components/UserProfile";
-import { UserV2Context } from "../context/UserV2Context";
 import { useNotification } from "../hooks/useNotification";
+import { useMeQuery } from "../hooks/useUser";
 import api from "../services/api";
 
 export const Home = () => {
-  const { user } = useContext(UserV2Context);
+  const { data: user, isLoading } = useMeQuery();
   const inputRoomIdRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const notify = useNotification();
@@ -54,6 +54,8 @@ export const Home = () => {
   const createRoomHandle = () => {
     navigate("./createRoom");
   };
+
+  if (isLoading) return null;
 
   return (
     <Layout>

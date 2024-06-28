@@ -1,7 +1,7 @@
-import { useContext, useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
-import { ChatContext } from "../../../context/ChatContext";
-import { RoomV2Context } from "../../../context/RoomV2Context";
+import { useIsChatOpen } from "../../../hooks/useChatStore";
+import { useRoomPeers } from "../../../hooks/useRoomStore";
 import { MinizarIcon } from "../../../icons/Minimizar";
 import { cssVariableHelper } from "../../../utils/cssVariableHelper";
 import { debounce } from "../../../utils/debounce";
@@ -14,8 +14,8 @@ export const SliderVideos: React.FC<{
   remaingPeerLength: number;
   handleSetFocusedVideoPeerId: (peerId?: string) => void;
 }> = ({ focusedPeerId, remaingPeerLength, handleSetFocusedVideoPeerId }) => {
-  const { chat } = useContext(ChatContext);
-  const { peers } = useContext(RoomV2Context);
+  const isChatOpen = useIsChatOpen();
+  const peers = useRoomPeers();
 
   const slider = useRef<ISlider | null>(null);
 
@@ -31,7 +31,7 @@ export const SliderVideos: React.FC<{
 
   useLayoutEffect(() => {
     slider.current?.updateSlider();
-  }, [remaingPeerLength, chat.isChatOpen]);
+  }, [remaingPeerLength, isChatOpen]);
 
   useEffect(() => {
     slider.current?.updateSlider();

@@ -1,12 +1,14 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { RoomV2Context } from "../../context/RoomV2Context";
+import { useThisRoom } from "../../hooks/useRoom";
+import { useRoomActions } from "../../hooks/useRoomStore";
 import { formatDate } from "../../utils/dateUtils";
 import { MeetingButtons } from "../home/MeetingButtons";
 
 export const RoomInfoEntry: React.FC = () => {
-  const { room, toggleEnteredRoom } = useContext(RoomV2Context);
+  const { data: room } = useThisRoom();
+  const { toggleEnteredRoom } = useRoomActions();
+
   const navigate = useNavigate();
 
   const redirectHomeHandle = () => {

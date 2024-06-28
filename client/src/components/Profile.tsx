@@ -6,7 +6,7 @@ import { Button } from "./common/Button";
 
 export interface ProfileProps {
   name: string;
-  lastName: string;
+  lastName?: string;
   picture: string;
   role?: string;
   hiddenBreakpoint?: "lg" | "none";

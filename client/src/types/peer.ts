@@ -1,8 +1,8 @@
 export interface IUser {
   id: string;
   name: string;
-  lastname?: string | null;
-  picture?: string | null;
+  lastName?: string;
+  picture: string;
 }
 
 export interface IPeer {
@@ -11,3 +11,18 @@ export interface IPeer {
   isMuted: boolean;
   isSharingScreen: boolean;
 }
+
+export type Peer = {
+  user: IUser;
+  stream?: MediaStream;
+  isMicOn: boolean;
+  isWebCamOn: boolean;
+  isSharingScreenOn: boolean;
+};
+
+export type PeerMap = Record<string, Peer>;
+
+export type PeersResponse = {
+  participants: PeerMap;
+  roomId: string;
+};

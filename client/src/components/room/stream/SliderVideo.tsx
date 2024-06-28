@@ -1,12 +1,12 @@
 import { useContext, useMemo } from "react";
 
 import { StreamContext } from "../../../context/StreamV2Context";
-import { UserV2Context } from "../../../context/UserV2Context";
+import { useMeQuery } from "../../../hooks/useUser";
 import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
 } from "../../../icons/stream/Microphone";
-import { IPeerState } from "../../../reducers/peersReducer";
+import { Peer } from "../../../types/peer";
 import { cn } from "../../../utils/cn";
 import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
 import { Button } from "../../common/Button";
@@ -14,12 +14,12 @@ import { Label } from "./Label";
 import { VideoPlayer } from "./VideoPlayer";
 
 export const SliderVideo: React.FC<{
-  peer: IPeerState;
+  peer: Peer;
   focusedPeerId?: string;
   handleSetFocusedVideoPeerId: (peerId?: string) => void;
 }> = ({ peer, focusedPeerId, handleSetFocusedVideoPeerId }) => {
   const { localStream } = useContext(StreamContext);
-  const { user } = useContext(UserV2Context);
+  const { data: user } = useMeQuery();
 
   if (peer.user?.id === focusedPeerId) {
     return null;

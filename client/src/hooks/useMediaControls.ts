@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { RoomV2Context } from "../context/RoomV2Context";
+import { useEffect, useState } from "react";
 import { useDisplayMediaTracks } from "./useDisplayMedia";
+import { useIsEnteredRoom } from "./useRoomStore";
 import { useUserMediaTracks } from "./useUserMedia";
 
 export const useUserMediaControls = () => {
   const [enabledUserAudio, setEnabledUserAudio] = useState<boolean>(true);
   const [enabledUserVideo, setEnabledUserVideo] = useState<boolean>(false);
-  const { isEnteredRoom } = useContext(RoomV2Context);
+  const isEnteredRoom = useIsEnteredRoom();
 
   const toggleUserAudio = () => {
     setEnabledUserAudio((prev) => !prev);
@@ -50,7 +50,7 @@ export const useUserMediaControls = () => {
 export const useDisplayMediaControls = () => {
   const [enabledSharingScreen, setEnabledSharingScreen] =
     useState<boolean>(false);
-  const { isEnteredRoom } = useContext(RoomV2Context);
+  const isEnteredRoom = useIsEnteredRoom();
 
   const toggleSharingScreen = () => {
     setEnabledSharingScreen((prev) => !prev);
