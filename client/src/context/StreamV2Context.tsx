@@ -47,6 +47,8 @@ export const StreamContext = createContext<StreamContextValue>({
 });
 
 export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
+  const multiPeersManager = useRef<IPeers | null>(null);
+  const localStream = useRef<MediaStream>(new MediaStream());
   const { room, dispatchPeers } = useContext(RoomV2Context);
   const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
     audioTrack: undefined,
@@ -54,6 +56,13 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     screenAudioTrack: undefined,
     videoTrack: undefined,
   });
+  const mediaTracksServeState = useRef<IMediaTracks>({
+    audioTrack: undefined,
+    screenTrack: undefined,
+    screenAudioTrack: undefined,
+    videoTrack: undefined,
+  });
+
   const {
     userMediaTracks,
     toggleUserAudio,
@@ -65,14 +74,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     toggleSharingScreen,
     isLoading: displayMediaIsLoading,
   } = useDisplayMediaControls();
-  const multiPeersManager = useRef<IPeers | null>(null);
-  const localStream = useRef<MediaStream>(new MediaStream());
-  const mediaTracksServeState = useRef<IMediaTracks>({
-    audioTrack: undefined,
-    screenTrack: undefined,
-    screenAudioTrack: undefined,
-    videoTrack: undefined,
-  });
 
   const determineVideoTrack = (
     screenTrack: MediaStreamTrack | undefined,
@@ -110,7 +111,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     stream: MediaStream;
     remotePeerId: string;
   }) => {
-    console.log({ remotePeerId, stream });
     dispatchPeers(addPeerStreamAction(remotePeerId, stream));
   };
 
