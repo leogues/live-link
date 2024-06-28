@@ -20,13 +20,6 @@ export const SliderVideo: React.FC<{
 }> = ({ peer, focusedPeerId, handleSetFocusedVideoPeerId }) => {
   const { localStream } = useContext(StreamContext);
   const { data: user } = useMeQuery();
-
-  if (peer.user?.id === focusedPeerId) {
-    return null;
-  }
-
-  const audioOn = peer.isMicOn;
-  const videoOn = peer.isWebCamOn || peer.isSharingScreenOn;
   const stream = useMemo<MediaStream | undefined>(() => {
     if (peer.user?.id === user?.id) {
       return localStream.current;
@@ -35,7 +28,14 @@ export const SliderVideo: React.FC<{
     return peer.stream;
   }, [localStream, peer]);
 
+  const audioOn = peer.isMicOn;
+  const videoOn = peer.isWebCamOn || peer.isSharingScreenOn;
+
   const isMyVideo = peer.user?.id === user?.id;
+
+  if (peer.user?.id === focusedPeerId) {
+    return null;
+  }
 
   return (
     <Button
