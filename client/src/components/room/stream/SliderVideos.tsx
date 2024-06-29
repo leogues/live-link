@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-import { useIsChatOpen } from "../../../hooks/useChatStore";
+import { useChatIsOpen } from "../../../hooks/useChatStore";
 import { useRoomPeers } from "../../../hooks/useRoomStore";
 import { MinizarIcon } from "../../../icons/Minimizar";
 import { cssVariableHelper } from "../../../utils/cssVariableHelper";
@@ -14,7 +14,7 @@ export const SliderVideos: React.FC<{
   remaingPeerLength: number;
   handleSetFocusedVideoPeerId: (peerId?: string) => void;
 }> = ({ focusedPeerId, remaingPeerLength, handleSetFocusedVideoPeerId }) => {
-  const isChatOpen = useIsChatOpen();
+  const isChatOpen = useChatIsOpen();
   const peers = useRoomPeers();
 
   const slider = useRef<ISlider | null>(null);

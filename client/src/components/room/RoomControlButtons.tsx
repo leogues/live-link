@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 
 import { StreamContext } from "../../context/StreamV2Context";
-import { useChatActions, useIsChatOpen } from "../../hooks/useChatStore";
+import { useChatActions, useChatIsOpen } from "../../hooks/useChatStore";
 import { ChatControlIcon } from "../../icons/stream/ChatControl";
 import { MicrophoneControlIcon } from "../../icons/stream/MicrophoneControl";
 import { SharingScreenControlIcon } from "../../icons/stream/SharingScreenControl";
@@ -14,7 +14,7 @@ export const RoomControlButtons: FC = () => {
     useContext(StreamContext);
 
   const { toggleChat } = useChatActions();
-  const isChatOpen = useIsChatOpen();
+  const isChatOpen = useChatIsOpen();
 
   const isMicOn = mediaTracks.audioTrack?.enabled;
   const isWebCamOn = mediaTracks.videoTrack?.enabled;
