@@ -5,7 +5,7 @@ import { ChatStoreContext, ChatStoreState } from "../context/ChatStoreContext";
 const useChatStore = <T>(selector: StateSelector<ChatStoreState, T>): T => {
   const store = useContext(ChatStoreContext);
   if (!store) {
-    throw new Error("Missing BearStoreProvider");
+    throw new Error("Missing ChatStoreProvider");
   }
 
   return useStore(store, selector);
