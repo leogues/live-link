@@ -47,7 +47,7 @@ export const SliderVideos: React.FC<{
   return (
     <div
       data-testid="slider-videos"
-      className="slider box-border h-[calc(30%-(1.25rem)*0.30)] min-h-[120px]"
+      className="slider box-border min-h-[120px]"
     >
       <div className="slider-mask relative mx-auto h-full min-h-0 ">
         <div className="h-full min-h-0 overflow-x-hidden">
@@ -74,8 +74,8 @@ export const SliderVideos: React.FC<{
             })}
           </div>
 
-          <div className="slider-indicator absolute -bottom-1.5 left-1/2 h-1 w-80 max-w-[50%] -translate-x-1/2 translate-y-1/2 overflow-hidden rounded-[3rem] bg-[#DEE1E7] ">
-            <div className="slider-indicator-progress-bar h-full rounded-[3rem] bg-blue-800 px-[2px] transition-transform duration-300"></div>
+          <div className="slider-indicator absolute -bottom-1.5 left-1/2 h-1 w-80 max-w-[50%] -translate-x-1/2 translate-y-1/2 overflow-hidden bg-[#DEE1E7] ">
+            <div className="slider-indicator-progress-bar h-full bg-blue-800 px-[2px] transition-transform duration-300"></div>
           </div>
 
           <Button

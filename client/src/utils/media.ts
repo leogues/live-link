@@ -9,6 +9,7 @@ export const applyMediaConstraintsTransformations = (
       echoCancellation: true,
     };
   }
+
   return constraints;
 };
 
