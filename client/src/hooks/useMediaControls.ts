@@ -7,15 +7,6 @@ export const useUserMediaControls = () => {
   const [enabledUserAudio, setEnabledUserAudio] = useState<boolean>(true);
   const [enabledUserVideo, setEnabledUserVideo] = useState<boolean>(false);
   const isEnteredRoom = useIsEnteredRoom();
-
-  const toggleUserAudio = () => {
-    setEnabledUserAudio((prev) => !prev);
-  };
-
-  const toggleUserVideo = () => {
-    setEnabledUserVideo((prev) => !prev);
-  };
-
   const {
     data: userMediaTracks,
     error: userMediaError,
@@ -39,9 +30,9 @@ export const useUserMediaControls = () => {
   return {
     isLoading,
     enabledUserAudio,
-    toggleUserAudio,
+    toggleUserAudio: () => setEnabledUserAudio((prev) => !prev),
     enabledUserVideo,
-    toggleUserVideo,
+    toggleUserVideo: () => setEnabledUserVideo((prev) => !prev),
     userMediaTracks,
     userMediaError,
   };

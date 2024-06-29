@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { StateSelector, useStore } from "zustand";
+import { useStore } from "zustand";
 import { RoomStoreContext, RoomStoreState } from "../context/RoomStoreContext";
+import { StateSelector } from "../types/store";
 
 const useRoomStore = <T>(selector: StateSelector<RoomStoreState, T>): T => {
   const store = useContext(RoomStoreContext);
