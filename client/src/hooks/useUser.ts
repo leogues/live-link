@@ -2,10 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../services/api";
 import { IUser } from "../types/peer";
 
-const getMe = async () => {
-  const response = await api.get<IUser>("/user");
-  return response.data;
-};
+const getMe = () => api.get<IUser>("/user").then((res) => res.data);
 
 export const useMeQuery = () =>
   useQuery({

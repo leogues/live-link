@@ -128,40 +128,31 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (userMediaIsLoading || displayMediaIsLoading) return;
     const { audioTrack, videoTrack, screenTrack } = mediaTracks;
-    const prevAudioTrack = mediaTracksServeState.current.audioTrack;
-    const prevVideoTrack = mediaTracksServeState.current.videoTrack;
-    const prevScreenTrack = mediaTracksServeState.current.screenTrack;
+    const {
+      audioTrack: prevAudioTrack,
+      videoTrack: prevVideoTrack,
+      screenTrack: prevScreenTrack,
+    } = mediaTracksServeState.current;
 
-    const isMicEnabled = audioTrack !== undefined;
-    const wasMicEnabled = prevAudioTrack !== undefined;
-    const isWebCamEnabled = videoTrack !== undefined;
-    const wasWebCamEnabled = prevVideoTrack !== undefined;
-    const screenTrackEnabled = screenTrack !== undefined;
-    const wasScreenTrackEnabled = prevScreenTrack !== undefined;
+    const checkAndEmitStatusUpdate = (
+      type: string,
+      prevTrack: MediaStreamTrack | undefined,
+      currentTrack: MediaStreamTrack | undefined,
+    ) => {
+      const isEnabled = currentTrack !== undefined;
+      const wasEnabled = prevTrack !== undefined;
 
-    if (isMicEnabled !== wasMicEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "microphone",
-        enabled: isMicEnabled,
-      });
-    }
-
-    if (isWebCamEnabled !== wasWebCamEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "web-cam",
-        enabled: isWebCamEnabled,
-      });
-    }
-
-    if (screenTrackEnabled !== wasScreenTrackEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "sharing-screen",
-        enabled: screenTrackEnabled,
-      });
-    }
+      if (isEnabled !== wasEnabled) {
+        ws.emit("mediaDeviceStatusUpdate", {
+          roomId: room?.id,
+          type,
+          enabled: isEnabled,
+        });
+      }
+    };
+    checkAndEmitStatusUpdate("microphone", prevAudioTrack, audioTrack);
+    checkAndEmitStatusUpdate("web-cam", prevVideoTrack, videoTrack);
+    checkAndEmitStatusUpdate("sharing-screen", prevScreenTrack, screenTrack);
 
     mediaTracksServeState.current = mediaTracks;
   }, [mediaTracks, room?.id, userMediaIsLoading, displayMediaIsLoading]);
