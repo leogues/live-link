@@ -1,12 +1,9 @@
-import { useContext } from "react";
-
-import { ThemeContext } from "../context/ThemeContext";
+import { useDarkMode } from "../hooks/useDarkMode";
 import { SwitcherDarkIcon, SwitcherLightIcon } from "../icons/Switcher";
 import { Button } from "./common/Button";
 
 export const Switcher: React.FC = () => {
-  const { theme, switchTheme } = useContext(ThemeContext);
-  const darkSide = theme === "dark" ? true : false;
+  const { switchTheme, darkSide } = useDarkMode();
 
   return (
     <Button testid="switcher" className="" onClick={switchTheme}>

@@ -3,7 +3,6 @@ import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { ThemeContext } from "../../context/ThemeContext";
 import { Room } from "../Room";
 
 describe("Room header tests", () => {
@@ -45,11 +44,9 @@ describe("Room header tests", () => {
     const switchTheme = vitest.fn();
 
     render(
-      <ThemeContext.Provider value={{ theme: "light", switchTheme }}>
-        <MemoryRouter>
-          <Room />,
-        </MemoryRouter>
-      </ThemeContext.Provider>,
+      <MemoryRouter>
+        <Room />,
+      </MemoryRouter>,
     );
 
     const themaButton = screen.getByTestId("switcher");
