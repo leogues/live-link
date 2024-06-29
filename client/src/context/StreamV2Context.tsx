@@ -14,15 +14,10 @@ import {
 import { useThisRoom } from "../hooks/useRoom";
 import { useRoomActions } from "../hooks/useRoomStore";
 import { ws } from "../services/ws";
+import { IMediaTracks } from "../types/media";
 import { IPeer } from "../types/peer";
+import { formatMediaTracks } from "../utils/media";
 import { IPeers, Peers } from "../utils/multiPeerManager";
-
-type IMediaTracks = {
-  audioTrack: MediaStreamTrack | undefined;
-  screenTrack: MediaStreamTrack | undefined;
-  screenAudioTrack: MediaStreamTrack | undefined;
-  videoTrack: MediaStreamTrack | undefined;
-};
 
 export type StreamContextValue = {
   localStream: MutableRefObject<MediaStream | undefined>;
@@ -83,33 +78,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     userMediaIsLoading,
     displayMediaIsLoading,
   ]);
-
-  const determineVideoTrack = (
-    screenTrack: MediaStreamTrack | undefined,
-    videoTrack: MediaStreamTrack | undefined,
-  ) => {
-    if (screenTrack && screenTrack.enabled) {
-      return screenTrack;
-    } else {
-      return videoTrack;
-    }
-  };
-
-  const formatMediaTracks = (mediaTracks: IMediaTracks) => {
-    const audioTrack = mediaTracks.audioTrack || null;
-    const screenAudioTrack = mediaTracks.screenAudioTrack || null;
-    const screenTrack = mediaTracks.screenTrack;
-    const videoTrack = mediaTracks.videoTrack;
-
-    const principalVideoTrack =
-      determineVideoTrack(screenTrack, videoTrack) || null;
-
-    return {
-      audioTrack,
-      screenAudioTrack,
-      videoTrack: principalVideoTrack,
-    };
-  };
 
   const updateUserMediaTracks = () => {
     return multiPeersManager.current!.updateMediaTracks({
