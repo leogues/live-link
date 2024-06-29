@@ -28,12 +28,12 @@ export type ChatStoreState = {
 };
 
 type ChatStoreProps = {
-  initialIsChatOpen: boolean;
+  initialIsChatOpen?: boolean;
 };
 
 export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
   children,
-  initialIsChatOpen,
+  initialIsChatOpen = false,
 }) => {
   const [store] = useState(() =>
     createStore<ChatStoreState>((set) => ({

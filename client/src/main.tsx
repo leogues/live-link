@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/room/:id"
               element={
                 <RoomStoreProvider>
-                  <ChatStoreProvider initialIsChatOpen={false}>
+                  <ChatStoreProvider>
                     <StreamProvider>
                       <Room />
                     </StreamProvider>
