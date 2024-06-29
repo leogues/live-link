@@ -16,10 +16,7 @@ export const VideoPlayer: React.FC<{
 
   return (
     <video
-      className={cn(
-        "max-h-full max-w-full object-cover object-center",
-        className,
-      )}
+      className={cn("h-full max-h-full w-full max-w-full ", className)}
       ref={videoRef}
       autoPlay
       muted={muted}
