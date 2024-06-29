@@ -40,7 +40,7 @@ export const SliderVideo: React.FC<{
   return (
     <Button
       testid="peer-video"
-      className="slider-item relative flex h-full shrink-0 justify-center  rounded-xl bg-black"
+      className="slider-item relative flex aspect-video h-full shrink-0 justify-center overflow-hidden  rounded-xl bg-black"
       onClick={() => handleSetFocusedVideoPeerId(peer.user?.id)}
       key={peer.user?.id}
     >
