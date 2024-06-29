@@ -1,10 +1,10 @@
-import { PeerMap } from "../../types/peer";
+import { FC } from "react";
+import { useRoomPeers } from "../../hooks/useRoomStore";
 
 const maxPeersAvatars = 4;
 
-export const ParticipantAvatars: React.FC<{ peers?: PeerMap }> = ({
-  peers,
-}) => {
+export const ParticipantAvatars: FC = () => {
+  const peers = useRoomPeers();
   if (!peers) return null;
 
   const renderedPeersImg = Object.values(peers).slice(0, maxPeersAvatars);

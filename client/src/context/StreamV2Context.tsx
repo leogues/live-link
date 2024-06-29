@@ -4,8 +4,8 @@ import {
   MutableRefObject,
   PropsWithChildren,
   useEffect,
+  useMemo,
   useRef,
-  useState,
 } from "react";
 import {
   useDisplayMediaControls,
@@ -50,19 +50,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: room } = useThisRoom();
   const multiPeersManager = useRef<IPeers | null>(null);
   const localStream = useRef<MediaStream>(new MediaStream());
-  const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
-    audioTrack: undefined,
-    screenTrack: undefined,
-    screenAudioTrack: undefined,
-    videoTrack: undefined,
-  });
-  const mediaTracksServeState = useRef<IMediaTracks>({
-    audioTrack: undefined,
-    screenTrack: undefined,
-    screenAudioTrack: undefined,
-    videoTrack: undefined,
-  });
-
   const {
     userMediaTracks,
     toggleUserAudio,
@@ -74,6 +61,28 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     toggleSharingScreen,
     isLoading: displayMediaIsLoading,
   } = useDisplayMediaControls();
+  const mediaTracksServeState = useRef<IMediaTracks>({
+    audioTrack: undefined,
+    screenTrack: undefined,
+    screenAudioTrack: undefined,
+    videoTrack: undefined,
+  });
+
+  const mediaTracks = useMemo(() => {
+    if (userMediaIsLoading || displayMediaIsLoading)
+      return mediaTracksServeState.current;
+    return {
+      audioTrack: userMediaTracks?.audio,
+      videoTrack: userMediaTracks?.video,
+      screenTrack: displayMediaTracks?.video,
+      screenAudioTrack: displayMediaTracks?.audio,
+    };
+  }, [
+    userMediaTracks,
+    displayMediaTracks,
+    userMediaIsLoading,
+    displayMediaIsLoading,
+  ]);
 
   const determineVideoTrack = (
     screenTrack: MediaStreamTrack | undefined,
@@ -115,7 +124,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     stream: MediaStream;
     remotePeerId: string;
   }) => {
-    // dispatchPeers(addPeerStreamAction(remotePeerId, stream));
     addPeerStream(remotePeerId, stream);
   };
 
@@ -143,22 +151,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
       multiPeersManager.current?.destroy();
     };
   }, []);
-
-  useEffect(() => {
-    if (userMediaIsLoading || displayMediaIsLoading) return;
-
-    setMediaTracks({
-      audioTrack: userMediaTracks?.audio,
-      videoTrack: userMediaTracks?.video,
-      screenTrack: displayMediaTracks?.video,
-      screenAudioTrack: displayMediaTracks?.audio,
-    });
-  }, [
-    userMediaTracks,
-    displayMediaTracks,
-    userMediaIsLoading,
-    displayMediaIsLoading,
-  ]);
 
   useEffect(() => {
     if (userMediaIsLoading || displayMediaIsLoading) return;
