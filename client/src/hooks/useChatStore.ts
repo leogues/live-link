@@ -12,11 +12,9 @@ const useChatStore = <T>(selector: StateSelector<ChatStoreState, T>): T => {
   return useStore(store, selector);
 };
 
-export const useChatIsOpen = (): boolean =>
-  useChatStore((state) => state.isChatOpen);
+export const useChatIsOpen = () => useChatStore((state) => state.isChatOpen);
 
-export const useChatMessages = (): IMessage[] =>
-  useChatStore((state) => state.messages);
+export const useChatMessages = () => useChatStore((state) => state.messages);
 
 export const useChatMenuRefs = () => useChatStore((state) => state.menuRef);
 

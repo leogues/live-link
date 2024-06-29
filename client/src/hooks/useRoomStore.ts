@@ -12,7 +12,7 @@ const useRoomStore = <T>(selector: StateSelector<RoomStoreState, T>): T => {
   return useStore(store, selector);
 };
 
-export const useIsEnteredRoom = (): boolean =>
+export const useIsEnteredRoom = () =>
   useRoomStore((state) => state.isEnteredRoom);
 
 export const useRoomPeers = () => useRoomStore((state) => state.peers);
