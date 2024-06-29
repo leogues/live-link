@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useThisRoom } from "../../../hooks/useRoom";
 import { useRoomPeers } from "../../../hooks/useRoomStore";
+import { cn } from "../../../utils/cn";
 import { FocusedVideoDisplay } from "./FocusedVideoDisplay";
 import { SliderVideos } from "./SliderVideos";
 
@@ -40,7 +41,14 @@ export const StreamArea: React.FC = () => {
 
   return (
     <div className="flex h-full min-w-0 grow flex-col">
-      <div className="grid h-full  grid-rows-[2fr_1fr] flex-col gap-5 overflow-y-auto p-3 text-white">
+      <div
+        className={cn(
+          "grid h-full grid-rows-1   flex-col gap-5 overflow-y-auto p-3 text-white",
+          {
+            "grid-rows-[2fr_1fr]": hasRemaingPeer,
+          },
+        )}
+      >
         {hasPeers && focusedPeer && (
           <>
             <FocusedVideoDisplay focusedPeer={focusedPeer} />

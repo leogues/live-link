@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDisplayMediaTracks } from "./useDisplayMedia";
 import { useIsEnteredRoom } from "./useRoomStore";
 import { useUserMediaTracks } from "./useUserMedia";
@@ -64,13 +64,6 @@ export const useDisplayMediaControls = () => {
     if (!!displayMediaTracks?.video != enabledSharingScreen)
       setEnabledSharingScreen(!!displayMediaTracks?.video);
   }
-
-  useEffect(() => {
-    if (!enabledSharingScreen) {
-      displayMediaTracks?.audio?.stop();
-      displayMediaTracks?.video?.stop();
-    }
-  }, [displayMediaTracks, enabledSharingScreen]);
 
   return {
     isLoading,
