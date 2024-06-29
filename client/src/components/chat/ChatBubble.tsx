@@ -1,7 +1,6 @@
-import clsx from "clsx";
-
 import { useRoomPeers } from "../../hooks/useRoomStore";
 import { useMeQuery } from "../../hooks/useUser";
+import { cn } from "../../utils/cn";
 
 export const ChatBubble: React.FC<{
   message: IMessage;
@@ -37,7 +36,7 @@ export const ChatBubble: React.FC<{
   return (
     <div
       data-testid="message"
-      className={clsx("flex w-full ", {
+      className={cn("flex w-full ", {
         "flex-row-reverse": isSelf,
       })}
     >
@@ -45,7 +44,7 @@ export const ChatBubble: React.FC<{
         {!isPrevMessageSameAuthor && <img src={picture} />}
       </div>
       <div
-        className={clsx(
+        className={cn(
           " flex min-w-0 grow flex-col gap-1 break-words rounded-xl bg-white px-3 py-2 dark:bg-darkBlue-900",
           {
             "mr-4": isSelf,
@@ -54,7 +53,7 @@ export const ChatBubble: React.FC<{
         )}
       >
         {!isPrevMessageSameAuthor && (
-          <div className={clsx("text-xs text-[#AFAFAF]")}>
+          <div className={cn("text-xs text-[#AFAFAF]")}>
             {isSelf ? (
               <span>Você</span>
             ) : (
@@ -69,7 +68,7 @@ export const ChatBubble: React.FC<{
         </div>
       </div>
       <div
-        className={clsx("mb-auto mt-auto w-[3ch] shrink-0", {
+        className={cn("mb-auto mt-auto w-[3ch] shrink-0", {
           "mr-3": isSelf,
           "ml-3": !isSelf,
         })}

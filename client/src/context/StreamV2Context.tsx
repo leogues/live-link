@@ -4,8 +4,8 @@ import {
   MutableRefObject,
   PropsWithChildren,
   useEffect,
+  useMemo,
   useRef,
-  useState,
 } from "react";
 import {
   useDisplayMediaControls,
@@ -14,15 +14,10 @@ import {
 import { useThisRoom } from "../hooks/useRoom";
 import { useRoomActions } from "../hooks/useRoomStore";
 import { ws } from "../services/ws";
+import { IMediaTracks } from "../types/media";
 import { IPeer } from "../types/peer";
+import { formatMediaTracks } from "../utils/media";
 import { IPeers, Peers } from "../utils/multiPeerManager";
-
-type IMediaTracks = {
-  audioTrack: MediaStreamTrack | undefined;
-  screenTrack: MediaStreamTrack | undefined;
-  screenAudioTrack: MediaStreamTrack | undefined;
-  videoTrack: MediaStreamTrack | undefined;
-};
 
 export type StreamContextValue = {
   localStream: MutableRefObject<MediaStream | undefined>;
@@ -50,19 +45,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: room } = useThisRoom();
   const multiPeersManager = useRef<IPeers | null>(null);
   const localStream = useRef<MediaStream>(new MediaStream());
-  const [mediaTracks, setMediaTracks] = useState<IMediaTracks>({
-    audioTrack: undefined,
-    screenTrack: undefined,
-    screenAudioTrack: undefined,
-    videoTrack: undefined,
-  });
-  const mediaTracksServeState = useRef<IMediaTracks>({
-    audioTrack: undefined,
-    screenTrack: undefined,
-    screenAudioTrack: undefined,
-    videoTrack: undefined,
-  });
-
   const {
     userMediaTracks,
     toggleUserAudio,
@@ -74,33 +56,28 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     toggleSharingScreen,
     isLoading: displayMediaIsLoading,
   } = useDisplayMediaControls();
+  const mediaTracksServeState = useRef<IMediaTracks>({
+    audioTrack: undefined,
+    screenTrack: undefined,
+    screenAudioTrack: undefined,
+    videoTrack: undefined,
+  });
 
-  const determineVideoTrack = (
-    screenTrack: MediaStreamTrack | undefined,
-    videoTrack: MediaStreamTrack | undefined,
-  ) => {
-    if (screenTrack && screenTrack.enabled) {
-      return screenTrack;
-    } else {
-      return videoTrack;
-    }
-  };
-
-  const formatMediaTracks = (mediaTracks: IMediaTracks) => {
-    const audioTrack = mediaTracks.audioTrack || null;
-    const screenAudioTrack = mediaTracks.screenAudioTrack || null;
-    const screenTrack = mediaTracks.screenTrack;
-    const videoTrack = mediaTracks.videoTrack;
-
-    const principalVideoTrack =
-      determineVideoTrack(screenTrack, videoTrack) || null;
-
+  const mediaTracks = useMemo(() => {
+    if (userMediaIsLoading || displayMediaIsLoading)
+      return mediaTracksServeState.current;
     return {
-      audioTrack,
-      screenAudioTrack,
-      videoTrack: principalVideoTrack,
+      audioTrack: userMediaTracks?.audio,
+      videoTrack: userMediaTracks?.video,
+      screenTrack: displayMediaTracks?.video,
+      screenAudioTrack: displayMediaTracks?.audio,
     };
-  };
+  }, [
+    userMediaTracks,
+    displayMediaTracks,
+    userMediaIsLoading,
+    displayMediaIsLoading,
+  ]);
 
   const updateUserMediaTracks = () => {
     return multiPeersManager.current!.updateMediaTracks({
@@ -115,7 +92,6 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     stream: MediaStream;
     remotePeerId: string;
   }) => {
-    // dispatchPeers(addPeerStreamAction(remotePeerId, stream));
     addPeerStream(remotePeerId, stream);
   };
 
@@ -146,62 +122,37 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (userMediaIsLoading || displayMediaIsLoading) return;
-
-    setMediaTracks({
-      audioTrack: userMediaTracks?.audio,
-      videoTrack: userMediaTracks?.video,
-      screenTrack: displayMediaTracks?.video,
-      screenAudioTrack: displayMediaTracks?.audio,
-    });
-  }, [
-    userMediaTracks,
-    displayMediaTracks,
-    userMediaIsLoading,
-    displayMediaIsLoading,
-  ]);
-
-  useEffect(() => {
-    if (userMediaIsLoading || displayMediaIsLoading) return;
     localStream.current = updateUserMediaTracks();
   }, [mediaTracks, userMediaIsLoading, displayMediaIsLoading]);
 
   useEffect(() => {
     if (userMediaIsLoading || displayMediaIsLoading) return;
     const { audioTrack, videoTrack, screenTrack } = mediaTracks;
-    const prevAudioTrack = mediaTracksServeState.current.audioTrack;
-    const prevVideoTrack = mediaTracksServeState.current.videoTrack;
-    const prevScreenTrack = mediaTracksServeState.current.screenTrack;
+    const {
+      audioTrack: prevAudioTrack,
+      videoTrack: prevVideoTrack,
+      screenTrack: prevScreenTrack,
+    } = mediaTracksServeState.current;
 
-    const isMicEnabled = audioTrack !== undefined;
-    const wasMicEnabled = prevAudioTrack !== undefined;
-    const isWebCamEnabled = videoTrack !== undefined;
-    const wasWebCamEnabled = prevVideoTrack !== undefined;
-    const screenTrackEnabled = screenTrack !== undefined;
-    const wasScreenTrackEnabled = prevScreenTrack !== undefined;
+    const checkAndEmitStatusUpdate = (
+      type: string,
+      prevTrack: MediaStreamTrack | undefined,
+      currentTrack: MediaStreamTrack | undefined,
+    ) => {
+      const isEnabled = currentTrack !== undefined;
+      const wasEnabled = prevTrack !== undefined;
 
-    if (isMicEnabled !== wasMicEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "microphone",
-        enabled: isMicEnabled,
-      });
-    }
-
-    if (isWebCamEnabled !== wasWebCamEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "web-cam",
-        enabled: isWebCamEnabled,
-      });
-    }
-
-    if (screenTrackEnabled !== wasScreenTrackEnabled) {
-      ws.emit("mediaDeviceStatusUpdate", {
-        roomId: room?.id,
-        type: "sharing-screen",
-        enabled: screenTrackEnabled,
-      });
-    }
+      if (isEnabled !== wasEnabled) {
+        ws.emit("mediaDeviceStatusUpdate", {
+          roomId: room?.id,
+          type,
+          enabled: isEnabled,
+        });
+      }
+    };
+    checkAndEmitStatusUpdate("microphone", prevAudioTrack, audioTrack);
+    checkAndEmitStatusUpdate("web-cam", prevVideoTrack, videoTrack);
+    checkAndEmitStatusUpdate("sharing-screen", prevScreenTrack, screenTrack);
 
     mediaTracksServeState.current = mediaTracks;
   }, [mediaTracks, room?.id, userMediaIsLoading, displayMediaIsLoading]);
