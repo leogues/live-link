@@ -1,7 +1,7 @@
-import clsx from "clsx";
 import { ReactNode } from "react";
 
 import { MinizarIcon } from "../../icons/Minimizar";
+import { cn } from "../../utils/cn";
 import { Button } from "../common/Button";
 
 export const SiderbarHeader: React.FC<{
@@ -13,7 +13,7 @@ export const SiderbarHeader: React.FC<{
 }> = ({ children, name, className, handleMinimizar, buttonTestId }) => {
   return (
     <header
-      className={clsx(
+      className={cn(
         "flex h-14 items-center justify-between bg-white px-6 py-2 text-gray-900 dark:bg-darkBlue-900 dark:text-white",
         className,
       )}

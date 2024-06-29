@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "../utils/cn";
 
 type FormHeaderProps = {
   title: string;
@@ -12,7 +12,7 @@ export const FormHeader: React.FC<FormHeaderProps> = ({
   return (
     <header className="flex justify-center border-b border-gray-300 pb-3">
       <h3
-        className={clsx("text-2xl font-medium", {
+        className={cn("text-2xl font-medium", {
           "font-medium": fontWeight === "md",
           "font-semibold": fontWeight === "semibold",
         })}

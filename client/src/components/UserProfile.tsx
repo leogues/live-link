@@ -1,7 +1,6 @@
-import clsx from "clsx";
-
 import baseUrl from "../services/apiUrl";
 import { IUser } from "../types/peer";
+import { cn } from "../utils/cn";
 import { Profile, ProfileProps } from "./Profile";
 
 type UserProfileProps = Omit<ProfileProps, "name" | "lastName" | "picture"> & {
@@ -24,7 +23,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   };
 
   return (
-    <div className={clsx("lg:grow", className)}>
+    <div className={cn("lg:grow", className)}>
       {user && (
         <Profile
           name={user.name}

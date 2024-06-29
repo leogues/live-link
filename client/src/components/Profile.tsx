@@ -1,5 +1,3 @@
-import clsx from "clsx";
-
 import { LeaveIcon } from "../icons/Leave";
 import { cn } from "../utils/cn";
 import { Button } from "./common/Button";
@@ -37,7 +35,7 @@ export const Profile: React.FC<ProfileProps> = ({
       })}
     >
       <div
-        className={clsx("min-w-max overflow-hidden rounded-full", {
+        className={cn("min-w-max overflow-hidden rounded-full", {
           "h-[1.675rem] w-[1.675rem] lg:h-10 lg:w-10": imageSize === "sm",
           " h-12 w-12": imageSize === "md",
         })}
@@ -51,7 +49,7 @@ export const Profile: React.FC<ProfileProps> = ({
       >
         <div className="flex flex-col">
           <div
-            className={clsx(
+            className={cn(
               "flex gap-1 font-medium text-darkBlue-650 dark:text-blue-100",
               {
                 "text-sm": fontSize === "sm",
@@ -67,7 +65,7 @@ export const Profile: React.FC<ProfileProps> = ({
       </div>
       <div className="ml-auto hidden h-full items-center lg:flex">
         <Button
-          className={clsx(
+          className={cn(
             "min-h-max hover:brightness-200 dark:hover:brightness-75",
             {
               "mr-4": marginRight === "4",
