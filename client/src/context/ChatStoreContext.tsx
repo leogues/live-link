@@ -55,11 +55,11 @@ export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
     })),
   );
 
-  const { actions } = store.getState();
+  const { addHistory, addMessage } = store.getState().actions;
 
   useEffect(() => {
-    ws.on("add-message", actions.addMessage);
-    ws.on("get-messages", actions.addHistory);
+    ws.on("add-message", addMessage);
+    ws.on("get-messages", addHistory);
     return () => {
       ws.off("add-message");
       ws.off("get-messages");

@@ -1,9 +1,9 @@
-import { useChatMenuRefs, useIsChatOpen } from "../../hooks/useChatStore";
+import { useChatIsOpen, useChatMenuRefs } from "../../hooks/useChatStore";
 import { ChatSidebar } from "./ChatSidebar";
 import { ParticipantsListSidebar } from "./ParticipantsListSidebar";
 
 export const RoomSiderbar: React.FC = () => {
-  const isChatOpen = useIsChatOpen();
+  const isChatOpen = useChatIsOpen();
   const { chat } = useChatMenuRefs();
 
   const handleMinimizar = (event: React.MouseEvent<HTMLButtonElement>) => {

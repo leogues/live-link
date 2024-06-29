@@ -2,18 +2,13 @@ import { describe, expect, test, vitest } from "vitest";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { ThemeContext } from "../../context/ThemeContext";
 import { Login } from "../Login";
 
 describe("Login header tests", () => {
   test("thema button toggle thema", () => {
     const switchTheme = vitest.fn();
 
-    render(
-      <ThemeContext.Provider value={{ theme: "light", switchTheme }}>
-        <Login />
-      </ThemeContext.Provider>,
-    );
+    render(<Login />);
 
     const themaButton = screen.getByTestId("switcher");
 

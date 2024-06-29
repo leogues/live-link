@@ -86,7 +86,7 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const updateUserMediaTracks = () => {
+  const formatMediaTracks = (mediaTracks: IMediaTracks) => {
     const audioTrack = mediaTracks.audioTrack || null;
     const screenAudioTrack = mediaTracks.screenAudioTrack || null;
     const screenTrack = mediaTracks.screenTrack;
@@ -95,12 +95,16 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     const principalVideoTrack =
       determineVideoTrack(screenTrack, videoTrack) || null;
 
+    return {
+      audioTrack,
+      screenAudioTrack,
+      videoTrack: principalVideoTrack,
+    };
+  };
+
+  const updateUserMediaTracks = () => {
     return multiPeersManager.current!.updateMediaTracks({
-      mediaTracks: {
-        audioTrack,
-        screenAudioTrack,
-        videoTrack: principalVideoTrack,
-      },
+      mediaTracks: formatMediaTracks(mediaTracks),
     });
   };
 
@@ -118,16 +122,7 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
   const peerJoined = async (peer: IPeer) => {
     multiPeersManager.current?.startCall({
       remotePeerId: peer.user.id,
-      mediaTracks: {
-        audioTrack: mediaTracks.audioTrack || null,
-        videoTrack:
-          determineVideoTrack(
-            mediaTracks.screenTrack,
-            mediaTracks.videoTrack,
-          ) || null,
-
-        screenAudioTrack: mediaTracks.screenAudioTrack || null,
-      },
+      mediaTracks: formatMediaTracks(mediaTracks),
     });
   };
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { useChatMenuRefs, useIsChatOpen } from "../../hooks/useChatStore";
+import { useChatIsOpen, useChatMenuRefs } from "../../hooks/useChatStore";
 import { LeaveIcon } from "../../icons/Leave";
 import { ChatInput } from "../chat/ChatInput";
 import { RoomControlButtons } from "./RoomControlButtons";
 
 export const RoomFooter: React.FC = () => {
-  const isChatOpen = useIsChatOpen();
+  const isChatOpen = useChatIsOpen();
   const { chatInput } = useChatMenuRefs();
   return (
     <footer className="relative flex flex-shrink-0 grow basis-auto  bg-white dark:bg-darkBlue-900">
