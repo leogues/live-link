@@ -43,7 +43,7 @@ export const StreamArea: React.FC = () => {
     <div className="flex h-full min-w-0 grow flex-col">
       <div
         className={cn(
-          "grid h-full grid-rows-1 gap-5 overflow-y-auto p-3 text-white",
+          "grid h-full grid-rows-[2fr_1fr] gap-5 overflow-y-auto p-4 text-white md:p-3 lg:grid-rows-1",
           {
             "grid-rows-[2fr_1fr]": hasRemaingPeer,
           },
