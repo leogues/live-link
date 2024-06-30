@@ -64,12 +64,26 @@ export const SliderVideos: React.FC<{
           <div className="slider-content flex h-full max-h-full transition-transform duration-300">
             {Object.values(peers).map((peer) => {
               return (
-                <SliderVideo
-                  key={peer.user?.id}
-                  peer={peer}
-                  focusedPeerId={focusedPeerId}
-                  handleSetFocusedVideoPeerId={handleSetFocusedVideoPeerId}
-                />
+                <>
+                  <SliderVideo
+                    key={peer.user?.id}
+                    peer={peer}
+                    focusedPeerId={focusedPeerId}
+                    handleSetFocusedVideoPeerId={handleSetFocusedVideoPeerId}
+                  />
+                  <SliderVideo
+                    key={peer.user?.id}
+                    peer={peer}
+                    focusedPeerId={focusedPeerId}
+                    handleSetFocusedVideoPeerId={handleSetFocusedVideoPeerId}
+                  />
+                  <SliderVideo
+                    key={peer.user?.id}
+                    peer={peer}
+                    focusedPeerId={focusedPeerId}
+                    handleSetFocusedVideoPeerId={handleSetFocusedVideoPeerId}
+                  />
+                </>
               );
             })}
           </div>
