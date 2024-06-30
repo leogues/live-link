@@ -38,12 +38,12 @@ export const FocusedVideoDisplay: React.FC<{
   const isMyVideo = focusedPeer?.user?.id === user?.id;
 
   return (
-    <div className="box-border flex min-h-[150px] justify-center">
+    <div className="flex min-h-[150px] min-w-0 justify-center">
       {focusedPeer && (
         <div
           data-testid="focused-peer-video"
           data-fullscreen={isFullscreen}
-          className="relative flex aspect-[21/9] h-full max-h-full min-h-0 max-w-full
+          className="relative aspect-[21/9] max-h-full max-w-full
 justify-center overflow-hidden rounded-xl bg-black data-[fullscreen=true]:fixed 
 data-[fullscreen=true]:left-0 data-[fullscreen=true]:top-0 data-[fullscreen=true]:z-[100] 
 data-[fullscreen=true]:h-full data-[fullscreen=true]:w-full data-[fullscreen=true]:rounded-none"
