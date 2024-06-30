@@ -45,7 +45,7 @@ export const StreamArea: React.FC = () => {
         className={cn(
           "grid h-full grid-rows-[2fr_1fr] gap-5 overflow-y-auto p-4 text-white md:p-3 lg:grid-rows-1",
           {
-            "grid-rows-[2fr_1fr]": hasRemaingPeer,
+            "grid-rows-[2fr_1fr] lg:grid-rows-[2fr_1fr]": hasRemaingPeer,
           },
         )}
       >
