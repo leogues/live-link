@@ -1,4 +1,4 @@
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { SelectFunc } from "./useUserMedia";
 
 const getDisplayMediaStream = async (
@@ -18,7 +18,7 @@ export const useDisplayMedia = <TResult>({
   constraints,
   enabled,
   select,
-}: DisplayMediaOptions<TResult>): UseQueryResult<TResult> =>
+}: DisplayMediaOptions<TResult>) =>
   useQuery({
     queryKey: ["displayMedia", constraints],
     queryFn: () => getDisplayMediaStream(constraints),

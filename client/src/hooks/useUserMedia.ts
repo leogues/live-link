@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { applyMediaConstraintsTransformations } from "../utils/media";
 
 export type SelectFunc<TData, TResult> = (data: TData) => TResult;
@@ -20,7 +20,7 @@ export const useUserMedia = <TResult>({
   constraints,
   enabled,
   select,
-}: UserMediaOptions<TResult>): UseQueryResult<TResult> =>
+}: UserMediaOptions<TResult>) =>
   useQuery({
     queryKey: ["userMedia", constraints],
     queryFn: () => getUserMediaStream(constraints),
