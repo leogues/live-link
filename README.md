@@ -24,7 +24,7 @@ Este é um exemplo de como você pode dar instruções sobre como configurar seu
 
 Este é um exemplo de como listar os itens necessários para usar o software e como instalá-los.
 
-1. npm
+1. NPM
 
 ```sh
 npm install npm@latest -g
@@ -46,13 +46,13 @@ git clone https://github.com/leogues/live-link.git
 npm install
 ```
 
-3. execute o docker compose
+3. Execute o docker compose
 
 ```sh
  docker compose up -d
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
 
 ## 📄 Licença
 
