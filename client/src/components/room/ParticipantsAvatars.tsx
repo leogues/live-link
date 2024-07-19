@@ -5,11 +5,12 @@ const maxPeersAvatars = 4;
 
 export const ParticipantAvatars: FC = () => {
   const peers = useRoomPeers();
-  if (!peers) return null;
 
   const renderedPeersImg = Object.values(peers).slice(0, maxPeersAvatars);
   const remainingPeers = Object.values(peers).slice(maxPeersAvatars);
   const hasRemainingPeers = remainingPeers.length > 0;
+
+  if (!peers) return null;
 
   return (
     <div data-testid="participants-avatars" className="flex">
