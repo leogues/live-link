@@ -12,6 +12,10 @@
   </a>
 </p>
 
-# project-webrtc
+## SOBRE O PROJETO
 
-Video chat app
+O Live Link proporciona uma maneira prática de criar pequenas salas de reunião e conectar pessoas, permitindo comunicação através de texto, áudio e vídeo.
+
+## 📄 Licença
+
+Este projeto está sob a licença (sua licença) - veja o arquivo [LICENSE.md](https://github.com/leogues/live-link/LICENSE) para detalhes.
