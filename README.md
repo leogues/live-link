@@ -14,7 +14,7 @@
 
 ## Sobre o projeto
 
-[![Texto Alternativo][id-da-imagem]](URL-do-link)
+[![Demo][https://raw.githubusercontent.com/leogues/live-link/dev/client/public/demo.png]](https://live.leogues.com.br/)
 
 O Live Link proporciona uma maneira prática de criar pequenas salas de reunião e conectar pessoas, permitindo comunicação através de texto, áudio e vídeo.
 
