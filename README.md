@@ -18,6 +18,8 @@
 
 [demo-image]: https://raw.githubusercontent.com/leogues/live-link/dev/client/public/demo.png
 
+Design: [Yosep Rendi](https://www.figma.com/@yoseprendi) [Link](https://www.figma.com/community/file/1133694020756461030/video-call-apps)
+
 O Live Link proporciona uma maneira prática de criar pequenas salas de reunião e conectar pessoas, permitindo comunicação através de texto, áudio e vídeo.
 
 ## 🚀 Começando
