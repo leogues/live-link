@@ -1,4 +1,4 @@
-<h1 align="center">
+<h1 align="center" id="readme-top">
   <img alt="live-link" title="Live Link" src="https://raw.githubusercontent.com/leogues/live-link/dev/client/public/title.png" width="500px">
 </h1>
 
