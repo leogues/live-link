@@ -48,7 +48,7 @@ npm install
 
 3. execute o docker compose
 
-````sh
+```sh
  docker compose up -d
 ```
 
@@ -57,4 +57,3 @@ npm install
 ## 📄 Licença
 
 Este projeto está sob a licença (sua licença) - veja o arquivo [LICENSE.md](https://github.com/leogues/live-link/blob/dev/LICENSE) para detalhes.
-````
