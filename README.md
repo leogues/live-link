@@ -22,21 +22,25 @@ O Live Link proporciona uma maneira prática de criar pequenas salas de reunião
 
 ## 🚀 Começando
 
-Este é um exemplo de como você pode dar instruções sobre como configurar seu projeto localmente. Para obter uma cópia local instalada e funcionando, siga estas etapas simples de exemplo.
+Este guia fornecerá instruções detalhadas sobre como configurar e rodar o projeto "Live Link" localmente. Siga os passos abaixo para ter uma cópia local instalada e funcionando.
 
 ### Pre-requisites
 
-Este é um exemplo de como listar os itens necessários para usar o software e como instalá-los.
+Antes de começar, certifique-se de ter os seguintes softwares instalados:
 
-1. NPM
+1. NPM: O gerenciador de pacotes do Node.js.
 
 ```sh
 npm install npm@latest -g
 ```
 
-2. [Docker](https://www.docker.com/)
+2. Docker: Plataforma para desenvolvimento e execução de aplicações em containers.
+
+[Docker](https://www.docker.com/)
 
 ### Instalação
+
+Siga os passos abaixo para configurar o ambiente de desenvolvimento local:
 
 1. Clone o repositorio
 
