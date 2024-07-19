@@ -50,7 +50,7 @@ npm install
 
 ````sh
  docker compose up -d
-```sh
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
