@@ -24,7 +24,7 @@ O Live Link proporciona uma maneira prática de criar pequenas salas de reunião
 
 Este é um exemplo de como você pode dar instruções sobre como configurar seu projeto localmente. Para obter uma cópia local instalada e funcionando, siga estas etapas simples de exemplo.
 
-### Prerequisites
+### Pre-requisites
 
 Este é um exemplo de como listar os itens necessários para usar o software e como instalá-los.
 
@@ -36,7 +36,7 @@ npm install npm@latest -g
 
 2. [Docker](https://www.docker.com/)
 
-### Installation
+### Instalação
 
 1. Clone o repositorio
 
