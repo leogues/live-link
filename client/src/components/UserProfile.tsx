@@ -1,9 +1,9 @@
-import baseUrl from "../services/apiUrl";
-import { IUser } from "../types/peer";
-import { cn } from "../utils/cn";
-import { Profile, ProfileProps } from "./Profile";
+import baseUrl from '../services/apiUrl';
+import { IUser } from '../types/peer';
+import { cn } from '../utils/cn';
+import { Profile, ProfileProps } from './Profile';
 
-type UserProfileProps = Omit<ProfileProps, "name" | "lastName" | "picture"> & {
+type UserProfileProps = Omit<ProfileProps, 'name' | 'lastName' | 'picture'> & {
   user?: IUser;
   className?: string;
 };
@@ -23,7 +23,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   };
 
   return (
-    <div className={cn("lg:grow", className)}>
+    <div className={cn('lg:grow', className)}>
       {user && (
         <Profile
           name={user.name}

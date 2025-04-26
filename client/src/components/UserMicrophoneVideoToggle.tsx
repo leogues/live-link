@@ -1,23 +1,23 @@
-import { tv, VariantProps } from "tailwind-variants";
+import { tv, VariantProps } from 'tailwind-variants';
 
 const userMicrophoneVideoToggle = tv({
-  base: "rounded-full",
+  base: 'rounded-full',
   variants: {
     bg: {
-      default: "",
-      toggle: "bg-red-600",
+      default: '',
+      toggle: 'bg-red-600',
     },
     toggle: {
-      true: "bg-blue-800",
+      true: 'bg-blue-800',
     },
     padding: {
-      sm: "p-0",
-      md: "p-2",
+      sm: 'p-0',
+      md: 'p-2',
     },
   },
   defaultVariants: {
-    bg: "default",
-    padding: "md",
+    bg: 'default',
+    padding: 'md',
   },
 });
 

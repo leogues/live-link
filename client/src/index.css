@@ -87,7 +87,7 @@
   --slider-end-index: 0;
   --slider-index: 0;
 
-  --slider-indicator-display: "none";
+  --slider-indicator-display: 'none';
 }
 
 .slider-mask {

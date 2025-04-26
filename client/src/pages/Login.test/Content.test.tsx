@@ -1,15 +1,15 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from '@testing-library/react';
 
-import { Login } from "../Login";
+import { Login } from '../Login';
 
-describe("Login form tests", () => {
+describe('Login form tests', () => {
   test("Renders 'Continue com o Google' button", () => {
     render(<Login />);
 
-    const loginWithGoogleButton = screen.getByRole("button", {
-      name: "Continue com o Google",
+    const loginWithGoogleButton = screen.getByRole('button', {
+      name: 'Continue com o Google',
     });
 
     expect(loginWithGoogleButton).toBeInTheDocument();
@@ -18,8 +18,8 @@ describe("Login form tests", () => {
   test("Renders 'Continue como anônimo' button", () => {
     render(<Login />);
 
-    const loginWithAnonymousButton = screen.getByRole("button", {
-      name: "Continue como anônimo",
+    const loginWithAnonymousButton = screen.getByRole('button', {
+      name: 'Continue como anônimo',
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();

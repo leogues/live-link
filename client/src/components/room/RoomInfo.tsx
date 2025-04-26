@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { LogoIcon } from "../../icons/Logo";
-import { IRoom } from "../../types/room";
-import { formatDate } from "../../utils/dateUtils";
+import { LogoIcon } from '../../icons/Logo';
+import { IRoom } from '../../types/room';
+import { formatDate } from '../../utils/dateUtils';
 
 export const RoomInfo: React.FC<{ room?: IRoom }> = ({ room }) => {
   if (!room) return null;

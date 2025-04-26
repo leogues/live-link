@@ -1,6 +1,6 @@
-import type { FC, SVGProps } from "react";
+import type { FC, SVGProps } from 'react';
 
-export const GitHubIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const GitHubIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="20"
     height="20"

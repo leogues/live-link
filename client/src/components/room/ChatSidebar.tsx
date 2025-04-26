@@ -1,7 +1,7 @@
-import { useChatActions, useChatMenuRefs } from "../../hooks/useChatStore";
-import { useMultipleRefsClickOutside } from "../../hooks/useClickOutside";
-import { Chat } from "../chat/Chat";
-import { SiderbarHeader } from "./SiderbarHeader";
+import { useChatActions, useChatMenuRefs } from '../../hooks/useChatStore';
+import { useMultipleRefsClickOutside } from '../../hooks/useClickOutside';
+import { Chat } from '../chat/Chat';
+import { SiderbarHeader } from './SiderbarHeader';
 
 export const ChatSidebar: React.FC<{
   handleMinimizar: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -11,7 +11,7 @@ export const ChatSidebar: React.FC<{
   useMultipleRefsClickOutside(
     [menuRef.chat, menuRef.chatInput, menuRef.inviteModal],
     () => toggleChat(),
-    { breakpoint: 768 },
+    { breakpoint: 768 }
   );
 
   return (

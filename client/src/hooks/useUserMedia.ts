@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { applyMediaConstraintsTransformations } from "../utils/media";
+import { useQuery } from '@tanstack/react-query';
+import { applyMediaConstraintsTransformations } from '../utils/media';
 
 export type SelectFunc<TData, TResult> = (data: TData) => TResult;
 
 const getUserMediaStream = async (
-  constraints: MediaStreamConstraints,
+  constraints: MediaStreamConstraints
 ): Promise<MediaStream> => {
   const stream = await navigator.mediaDevices.getUserMedia(constraints);
   return stream;
@@ -22,7 +22,7 @@ export const useUserMedia = <TResult>({
   select,
 }: UserMediaOptions<TResult>) =>
   useQuery({
-    queryKey: ["userMedia", constraints],
+    queryKey: ['userMedia', constraints],
     queryFn: () => getUserMediaStream(constraints),
     select,
     enabled,
@@ -44,7 +44,7 @@ export const useUserMediaTracks = ({
   return useUserMedia({
     constraints,
     enabled,
-    select: (data) => ({
+    select: data => ({
       audio: data.getAudioTracks()[0],
       video: data.getVideoTracks()[0],
     }),

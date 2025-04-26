@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useThisRoom } from "../../../hooks/useRoom";
-import { useRoomPeers } from "../../../hooks/useRoomStore";
-import { cn } from "../../../utils/cn";
-import { FocusedVideoDisplay } from "./FocusedVideoDisplay";
-import { SliderVideos } from "./SliderVideos";
+import { useThisRoom } from '../../../hooks/useRoom';
+import { useRoomPeers } from '../../../hooks/useRoomStore';
+import { cn } from '../../../utils/cn';
+import { FocusedVideoDisplay } from './FocusedVideoDisplay';
+import { SliderVideos } from './SliderVideos';
 
 export const StreamArea: React.FC = () => {
   const { data: room } = useThisRoom();
@@ -14,7 +14,7 @@ export const StreamArea: React.FC = () => {
   useEffect(() => {
     if (!focusedPeerId || !peers[focusedPeerId]?.user?.id) {
       const focusedPeerIdFromPeers =
-        Object.keys(peers).find((peerId) => peerId === room?.userId) ||
+        Object.keys(peers).find(peerId => peerId === room?.userId) ||
         Object.keys(peers)[0];
 
       if (focusedPeerIdFromPeers && peers[focusedPeerIdFromPeers]) {
@@ -28,7 +28,7 @@ export const StreamArea: React.FC = () => {
   const focusedPeer = focusedPeerId ? peers[focusedPeerId] : undefined;
 
   const remaingPeerLength = Object.keys(peers).filter(
-    (peerId) => peerId !== focusedPeerId,
+    peerId => peerId !== focusedPeerId
   ).length;
 
   const hasRemaingPeer = remaingPeerLength > 0;
@@ -43,10 +43,10 @@ export const StreamArea: React.FC = () => {
     <div className="flex h-full min-w-0 grow flex-col">
       <div
         className={cn(
-          "grid h-full grid-rows-[16fr_6fr] gap-5 overflow-y-auto p-3 text-white lg:grid-rows-1",
+          'grid h-full grid-rows-[16fr_6fr] gap-5 overflow-y-auto p-3 text-white lg:grid-rows-1',
           {
-            "grid-rows-[16fr_6fr] lg:grid-rows-[16fr_6fr]": hasRemaingPeer,
-          },
+            'grid-rows-[16fr_6fr] lg:grid-rows-[16fr_6fr]': hasRemaingPeer,
+          }
         )}
       >
         {hasPeers && focusedPeer && (

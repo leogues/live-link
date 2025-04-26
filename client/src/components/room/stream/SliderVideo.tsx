@@ -1,17 +1,17 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo } from 'react';
 
-import { StreamContext } from "../../../context/StreamV2Context";
-import { useMeQuery } from "../../../hooks/useUser";
+import { StreamContext } from '../../../context/StreamV2Context';
+import { useMeQuery } from '../../../hooks/useUser';
 import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
-} from "../../../icons/stream/Microphone";
-import { Peer } from "../../../types/peer";
-import { cn } from "../../../utils/cn";
-import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
-import { Button } from "../../common/Button";
-import { Label } from "./Label";
-import { VideoPlayer } from "./VideoPlayer";
+} from '../../../icons/stream/Microphone';
+import { Peer } from '../../../types/peer';
+import { cn } from '../../../utils/cn';
+import { UserMicrophoneVideoToggle } from '../../UserMicrophoneVideoToggle';
+import { Button } from '../../common/Button';
+import { Label } from './Label';
+import { VideoPlayer } from './VideoPlayer';
 
 export const SliderVideo: React.FC<{
   peer: Peer;
@@ -48,7 +48,7 @@ export const SliderVideo: React.FC<{
         <VideoPlayer
           stream={stream}
           muted={isMyVideo}
-          className={cn("aspect-video", {
+          className={cn('aspect-video', {
             invisible: !videoOn,
           })}
         />
@@ -75,7 +75,7 @@ export const SliderVideo: React.FC<{
       <div className="absolute bottom-5 left-5 z-10">
         <Label size="sm">
           <span>{peer?.user?.name}</span>
-          <span>{peer?.user?.lastName}</span>{" "}
+          <span>{peer?.user?.lastName}</span>{' '}
         </Label>
       </div>
     </Button>

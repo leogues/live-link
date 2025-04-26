@@ -1,6 +1,6 @@
-import { FC, SVGProps } from "react";
+import { FC, SVGProps } from 'react';
 
-export const MicrophoneOnIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const MicrophoneOnIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="24"
     height="24"
@@ -47,7 +47,7 @@ export const MicrophoneOnIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-export const MicrophoneOffIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const MicrophoneOffIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="24"
     height="24"

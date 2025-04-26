@@ -1,6 +1,6 @@
-import { FC, SVGProps } from "react";
+import { FC, SVGProps } from 'react';
 
-export const VideoControlIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const VideoControlIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="28"
     height="28"

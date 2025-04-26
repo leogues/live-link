@@ -1,20 +1,20 @@
-import { MemoryRouter } from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, test } from 'vitest';
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from '@testing-library/react';
 
-import { Home } from "../Home";
+import { Home } from '../Home';
 
-describe("Home content tests", () => {
+describe('Home content tests', () => {
   test("Renders 'Insira o ID da reunião ou o link' input", () => {
     render(
       <MemoryRouter>
         <Home />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
     const input = screen.getByPlaceholderText(
-      "Insira o ID da reunião ou o link",
+      'Insira o ID da reunião ou o link'
     );
     expect(input).toBeInTheDocument();
   });
@@ -23,11 +23,11 @@ describe("Home content tests", () => {
     render(
       <MemoryRouter>
         <Home />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    const loginWithAnonymousButton = screen.getByRole("button", {
-      name: "Crie sua reunião",
+    const loginWithAnonymousButton = screen.getByRole('button', {
+      name: 'Crie sua reunião',
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();
@@ -37,11 +37,11 @@ describe("Home content tests", () => {
     render(
       <MemoryRouter>
         <Home />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    const loginWithAnonymousButton = screen.getByRole("button", {
-      name: "Entrar na reunião",
+    const loginWithAnonymousButton = screen.getByRole('button', {
+      name: 'Entrar na reunião',
     });
 
     expect(loginWithAnonymousButton).toBeInTheDocument();

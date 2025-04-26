@@ -4,9 +4,9 @@ import {
   createContext,
   useEffect,
   useState,
-} from "react";
-import { StoreApi, createStore } from "zustand";
-import { ws } from "../services/ws";
+} from 'react';
+import { StoreApi, createStore } from 'zustand';
+import { ws } from '../services/ws';
 
 export type ChatStoreContextType = StoreApi<ChatStoreState> | null;
 
@@ -36,7 +36,7 @@ export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
   initialIsChatOpen = false,
 }) => {
   const [store] = useState(() =>
-    createStore<ChatStoreState>((set) => ({
+    createStore<ChatStoreState>(set => ({
       messages: [],
       isChatOpen: initialIsChatOpen,
       menuRef: {
@@ -47,22 +47,22 @@ export const ChatStoreProvider: FC<PropsWithChildren<ChatStoreProps>> = ({
         inviteModal: { current: null },
       },
       actions: {
-        toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
-        addHistory: (history) => set({ messages: history }),
-        addMessage: (message) =>
-          set((state) => ({ messages: [...state.messages, message] })),
+        toggleChat: () => set(state => ({ isChatOpen: !state.isChatOpen })),
+        addHistory: history => set({ messages: history }),
+        addMessage: message =>
+          set(state => ({ messages: [...state.messages, message] })),
       },
-    })),
+    }))
   );
 
   const { addHistory, addMessage } = store.getState().actions;
 
   useEffect(() => {
-    ws.on("add-message", addMessage);
-    ws.on("get-messages", addHistory);
+    ws.on('add-message', addMessage);
+    ws.on('get-messages', addHistory);
     return () => {
-      ws.off("add-message");
-      ws.off("get-messages");
+      ws.off('add-message');
+      ws.off('get-messages');
     };
   }, []);
 

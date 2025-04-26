@@ -1,8 +1,8 @@
 import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
-} from "../icons/stream/Microphone";
-import { VideoOffIcon, VideoOnIcon } from "../icons/stream/Video";
+} from '../icons/stream/Microphone';
+import { VideoOffIcon, VideoOnIcon } from '../icons/stream/Video';
 
 export const Participant: React.FC<{
   picture?: string;

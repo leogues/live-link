@@ -1,6 +1,6 @@
-import type { FC, SVGProps } from "react";
+import type { FC, SVGProps } from 'react';
 
-export const SwitcherLightIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const SwitcherLightIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -20,7 +20,7 @@ export const SwitcherLightIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-export const SwitcherDarkIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const SwitcherDarkIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path
       fillRule="evenodd"

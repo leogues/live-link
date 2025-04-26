@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const copyToClipboard = (value: string | undefined) => {
-  if (!value || typeof navigator === "undefined") {
+  if (!value || typeof navigator === 'undefined') {
     return Promise.resolve(false);
   }
 

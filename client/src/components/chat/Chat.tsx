@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import { useChatMessages } from "../../hooks/useChatStore";
-import { ChatBubble } from "./ChatBubble";
+import { useEffect } from 'react';
+import { useChatMessages } from '../../hooks/useChatStore';
+import { ChatBubble } from './ChatBubble';
 
 export const Chat: React.FC = () => {
   const messages = useChatMessages();
 
   function scrollToBottom() {
-    const chatContainer = document.querySelector(".chat-container");
+    const chatContainer = document.querySelector('.chat-container');
 
     if (!chatContainer) return;
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDisplayMediaTracks } from "./useDisplayMedia";
-import { useIsEnteredRoom } from "./useRoomStore";
-import { useUserMediaTracks } from "./useUserMedia";
+import { useState } from 'react';
+import { useDisplayMediaTracks } from './useDisplayMedia';
+import { useIsEnteredRoom } from './useRoomStore';
+import { useUserMediaTracks } from './useUserMedia';
 
 export const useUserMediaControls = () => {
   const [enabledUserAudio, setEnabledUserAudio] = useState<boolean>(true);
@@ -20,7 +20,7 @@ export const useUserMediaControls = () => {
   });
 
   if (userMediaError) {
-    console.error("Failed to get user media", userMediaError);
+    console.error('Failed to get user media', userMediaError);
     if (!!userMediaTracks?.audio != enabledUserAudio)
       setEnabledUserAudio(!!userMediaTracks?.audio);
     if (!!userMediaTracks?.video != enabledUserVideo)
@@ -30,9 +30,9 @@ export const useUserMediaControls = () => {
   return {
     isLoading,
     enabledUserAudio,
-    toggleUserAudio: () => setEnabledUserAudio((prev) => !prev),
+    toggleUserAudio: () => setEnabledUserAudio(prev => !prev),
     enabledUserVideo,
-    toggleUserVideo: () => setEnabledUserVideo((prev) => !prev),
+    toggleUserVideo: () => setEnabledUserVideo(prev => !prev),
     userMediaTracks,
     userMediaError,
   };
@@ -44,7 +44,7 @@ export const useDisplayMediaControls = () => {
   const isEnteredRoom = useIsEnteredRoom();
 
   const toggleSharingScreen = () => {
-    setEnabledSharingScreen((prev) => !prev);
+    setEnabledSharingScreen(prev => !prev);
   };
 
   const {
@@ -60,7 +60,7 @@ export const useDisplayMediaControls = () => {
   });
 
   if (displayMediaError) {
-    console.error("Failed to get display media", displayMediaError);
+    console.error('Failed to get display media', displayMediaError);
     if (!!displayMediaTracks?.video != enabledSharingScreen)
       setEnabledSharingScreen(!!displayMediaTracks?.video);
   }

@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { RoomContent } from "../components/room/RoomContent";
-import { RoomFooter } from "../components/room/RoomFooter";
-import { RoomHeader } from "../components/room/RoomHeader";
-import { RoomInfoEntry } from "../components/room/RoomInfoEntry";
-import { useThisRoom } from "../hooks/useRoom";
-import { useIsEnteredRoom } from "../hooks/useRoomStore";
-import { useMeQuery } from "../hooks/useUser";
-import { ws } from "../services/ws";
+import { RoomContent } from '../components/room/RoomContent';
+import { RoomFooter } from '../components/room/RoomFooter';
+import { RoomHeader } from '../components/room/RoomHeader';
+import { RoomInfoEntry } from '../components/room/RoomInfoEntry';
+import { useThisRoom } from '../hooks/useRoom';
+import { useIsEnteredRoom } from '../hooks/useRoomStore';
+import { useMeQuery } from '../hooks/useUser';
+import { ws } from '../services/ws';
 
 export const Room = () => {
   const { data: room, isLoading: roomIsLoading } = useThisRoom();
@@ -16,12 +16,12 @@ export const Room = () => {
 
   useEffect(() => {
     if (room && isEnteredRoom) {
-      ws.emit("join-room", {
+      ws.emit('join-room', {
         roomId: room?.id,
       });
 
       return () => {
-        ws.emit("leave-room", { roomId: room.id });
+        ws.emit('leave-room', { roomId: room.id });
       };
     }
   }, [room, isEnteredRoom]);

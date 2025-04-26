@@ -1,7 +1,7 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 
-import { ISlider, Slider } from "../slider";
-import { variableHelper, variableMock } from "./variableHelperMock";
+import { ISlider, Slider } from '../slider';
+import { variableHelper, variableMock } from './variableHelperMock';
 
 type mockPropertyProps = {
   element: HTMLElement;
@@ -50,7 +50,7 @@ const mockElementProperties = () => {
           value: originalPropertyValue,
           configurable: true,
         });
-      },
+      }
     );
     originalProperties.length = 0;
   };
@@ -58,7 +58,7 @@ const mockElementProperties = () => {
   return { mockElementProperty, restoreElementProperties };
 };
 
-describe("slider", () => {
+describe('slider', () => {
   let slider: ISlider;
   let sliderElement: HTMLElement;
   let sliderPrevButtonElement: HTMLButtonElement;
@@ -73,19 +73,19 @@ describe("slider", () => {
     mockElementProperties();
 
   beforeEach(() => {
-    sliderElement = document.createElement("div");
-    sliderElement.className = "slider";
+    sliderElement = document.createElement('div');
+    sliderElement.className = 'slider';
 
-    sliderPrevButtonElement = document.createElement("button");
-    sliderPrevButtonElement.className = "slider-prev-button";
+    sliderPrevButtonElement = document.createElement('button');
+    sliderPrevButtonElement.className = 'slider-prev-button';
     sliderElement.appendChild(sliderPrevButtonElement);
 
-    sliderNextButtonElement = document.createElement("button");
-    sliderNextButtonElement.className = "slider-next-button";
+    sliderNextButtonElement = document.createElement('button');
+    sliderNextButtonElement.className = 'slider-next-button';
     sliderElement.appendChild(sliderNextButtonElement);
 
-    sliderContentElement = document.createElement("div");
-    sliderContentElement.className = "slider-content";
+    sliderContentElement = document.createElement('div');
+    sliderContentElement.className = 'slider-content';
     sliderElement.appendChild(sliderContentElement);
 
     document.body.appendChild(sliderElement);
@@ -100,11 +100,11 @@ describe("slider", () => {
     restoreElementProperties();
   });
 
-  test("slider buttons are disabled with only one item", () => {
+  test('slider buttons are disabled with only one item', () => {
     sliderChildCount = 1;
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
@@ -114,7 +114,7 @@ describe("slider", () => {
     expect(sliderNextButtonElement).toBeDisabled();
   });
 
-  test("slider buttons are disabled when the total size of items is smaller than the slider width", () => {
+  test('slider buttons are disabled when the total size of items is smaller than the slider width', () => {
     sliderWidth = 1000;
     sliderHeight = 150;
     sliderChildCount = 3;
@@ -123,19 +123,19 @@ describe("slider", () => {
     // In this case: (150(height) * 16/9(aspect-ratio) + 20px) * 3(quantity of items) = 860(total size of items) which is less than 1000(width)
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
@@ -145,7 +145,7 @@ describe("slider", () => {
     expect(sliderNextButtonElement).toBeDisabled();
   });
 
-  test("slider next button are enabled when total item size exceeds slider width", () => {
+  test('slider next button are enabled when total item size exceeds slider width', () => {
     // Calculation: (sliderHeight * aspect ratio + itemMargin) * sliderChildCount = total size of items
     //In this case: (150(height) * 16/9(aspect-ratio) + 20px(itemMargin)) * 4(quantity of items) = 1146.67(total size of items) which exceeds the 1000(width)
 
@@ -155,19 +155,19 @@ describe("slider", () => {
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
@@ -177,26 +177,26 @@ describe("slider", () => {
     expect(sliderNextButtonElement).toBeEnabled();
   });
 
-  test("handles next button behavior when items exceed slider width", () => {
+  test('handles next button behavior when items exceed slider width', () => {
     sliderWidth = 1000;
     sliderHeight = 150;
     sliderChildCount = 4;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
@@ -204,60 +204,60 @@ describe("slider", () => {
 
     expect(slider.endIndex).toEqual(1);
 
-    expect(variableMock["slider-index"]).equal("0");
+    expect(variableMock['slider-index']).equal('0');
     expect(sliderNextButtonElement).toBeEnabled();
 
     slider.nextSliderItem();
 
-    expect(variableMock["slider-index"]).equal("1");
+    expect(variableMock['slider-index']).equal('1');
     expect(sliderNextButtonElement).toBeDisabled();
 
     slider.nextSliderItem();
 
-    expect(variableMock["slider-index"]).equal("1");
+    expect(variableMock['slider-index']).equal('1');
     expect(sliderNextButtonElement).toBeDisabled();
   });
 
-  test("handles prev button behavior when items exceed slider width", () => {
+  test('handles prev button behavior when items exceed slider width', () => {
     sliderWidth = 1000;
     sliderHeight = 150;
     sliderChildCount = 4;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-index"]).equal("1");
+    expect(variableMock['slider-index']).equal('1');
     expect(sliderPrevButtonElement).toBeEnabled();
 
     slider.prevSliderItem();
 
-    expect(variableMock["slider-index"]).equal("0");
+    expect(variableMock['slider-index']).equal('0');
     expect(sliderPrevButtonElement).toBeDisabled();
 
     slider.prevSliderItem();
 
-    expect(variableMock["slider-index"]).equal("0");
+    expect(variableMock['slider-index']).equal('0');
     expect(sliderPrevButtonElement).toBeDisabled();
   });
 
-  test("slider responsively adjusts its height", () => {
+  test('slider responsively adjusts its height', () => {
     // Calculation: (sliderHeight * aspect ratio + itemMargin) = item size
     // Explanation: Calculate the size of each item considering the slider's height, aspect ratio, and item margin.
 
@@ -275,68 +275,68 @@ describe("slider", () => {
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("3");
+    expect(variableMock['slider-items-per-row']).equal('3');
     expect(slider.endIndex).equal(7);
 
     sliderHeight = 100;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("5");
+    expect(variableMock['slider-items-per-row']).equal('5');
     expect(slider.endIndex).equal(5);
 
     sliderHeight = 50;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("9");
+    expect(variableMock['slider-items-per-row']).equal('9');
     expect(slider.endIndex).equal(1);
 
     sliderHeight = 25;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("10");
+    expect(variableMock['slider-items-per-row']).equal('10');
     expect(slider.endIndex).equal(0);
   });
 
-  test("slider responsively adjusts its width", () => {
+  test('slider responsively adjusts its width', () => {
     // Calculation: (sliderHeight * aspect ratio + itemMargin) = item size
     // Explanation: Calculate the size of each item considering the slider's height, aspect ratio, and item margin.
 
@@ -354,90 +354,90 @@ describe("slider", () => {
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientHeight",
+      propertyName: 'clientHeight',
       propertyValue: sliderHeight,
     });
 
     mockElementProperty({
       element: sliderContentElement,
-      propertyName: "childElementCount",
+      propertyName: 'childElementCount',
       propertyValue: sliderChildCount,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("6");
+    expect(variableMock['slider-items-per-row']).equal('6');
     expect(slider.endIndex).equal(4);
 
     sliderWidth = 1000;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("3");
+    expect(variableMock['slider-items-per-row']).equal('3');
     expect(slider.endIndex).equal(7);
 
     sliderWidth = 750;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("2");
+    expect(variableMock['slider-items-per-row']).equal('2');
     expect(slider.endIndex).equal(8);
 
     sliderWidth = 500;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("1");
+    expect(variableMock['slider-items-per-row']).equal('1');
     expect(slider.endIndex).equal(9);
 
     sliderWidth = 250;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("1");
+    expect(variableMock['slider-items-per-row']).equal('1');
     expect(slider.endIndex).equal(9);
 
     sliderWidth = 1;
 
     mockElementProperty({
       element: sliderElement,
-      propertyName: "clientWidth",
+      propertyName: 'clientWidth',
       propertyValue: sliderWidth,
     });
 
     slider.updateSlider();
 
-    expect(variableMock["slider-items-per-row"]).equal("1");
+    expect(variableMock['slider-items-per-row']).equal('1');
     expect(slider.endIndex).equal(9);
   });
 });

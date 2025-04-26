@@ -1,12 +1,12 @@
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from '@radix-ui/react-dialog';
 
-import { useChatMenuRefs } from "../../hooks/useChatStore";
-import useCopyToClipboard from "../../hooks/useCopyToClipboard";
-import { useNotification } from "../../hooks/useNotification";
-import { AddParticipantIcon } from "../../icons/AddParticipant";
-import { FormHeader } from "../FormHeader";
-import { Button } from "../common/Button";
-import { Input } from "../common/Input";
+import { useChatMenuRefs } from '../../hooks/useChatStore';
+import useCopyToClipboard from '../../hooks/useCopyToClipboard';
+import { useNotification } from '../../hooks/useNotification';
+import { AddParticipantIcon } from '../../icons/AddParticipant';
+import { FormHeader } from '../FormHeader';
+import { Button } from '../common/Button';
+import { Input } from '../common/Input';
 
 export const InviteUserModal: React.FC = () => {
   const roomUrl = window.location.href;
@@ -14,9 +14,9 @@ export const InviteUserModal: React.FC = () => {
   const notify = useNotification();
   const [isCopiedToClipboard, copyToClipboard] = useCopyToClipboard();
 
-  const inputOnClickhandle: React.MouseEventHandler<HTMLInputElement> = (
-    event,
-  ) => {
+  const inputOnClickhandle: React.MouseEventHandler<
+    HTMLInputElement
+  > = event => {
     const input = event.currentTarget;
     input.select();
   };
@@ -25,7 +25,7 @@ export const InviteUserModal: React.FC = () => {
     copyToClipboard(roomUrl);
     notify({
       message:
-        "Link da sala copiado com sucesso! Envie-o para que outra pessoa possa acessar.",
+        'Link da sala copiado com sucesso! Envie-o para que outra pessoa possa acessar.',
       duration: 3000,
     });
   };
@@ -69,7 +69,7 @@ export const InviteUserModal: React.FC = () => {
                 onClick={handleOnCopy}
               >
                 <span className="min-w-[4rem] font-semibold">
-                  {isCopiedToClipboard ? "Copiado" : "Copiar"}
+                  {isCopiedToClipboard ? 'Copiado' : 'Copiar'}
                 </span>
               </Button>
             </div>
