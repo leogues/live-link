@@ -9,8 +9,6 @@ import {
   validateRoomTopic,
 } from "./middleware/ValidationMiddleware";
 import { AuthController } from "./controllers/AuthController";
-import { metricsEndpoint } from "./metrics";
-
 export const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 // export const frontendUrl = 'http://localhost:5173'
 
