@@ -2,7 +2,7 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v5
         with:
-          context: '{{defaultContext}}:server'
+          context: "{{defaultContext}}:server"
           push: true
           tags: leogues/video-chat-backend:latest, leogues/video-chat-backend:${{ github.run_number }}
           cache-from: type=gha
@@ -29,7 +29,7 @@ jobs:
       - name: Build and push frontend Docker image
         uses: docker/build-push-action@v5
         with:
-          context: '{{defaultContext}}:client'
+          context: "{{defaultContext}}:client"
           push: true
           tags: leogues/video-chat-frontend:latest, leogues/video-chat-frontend:${{ github.run_number }}
           cache-from: type=gha
@@ -38,19 +38,19 @@ jobs:
       - name: Build and push proxy Docker image
         uses: docker/build-push-action@v5
         with:
-          context: '{{defaultContext}}:proxy'
+          context: "{{defaultContext}}:proxy"
           push: true
           tags: leogues/video-chat-proxy:latest, leogues/video-chat-proxy:${{ github.run_number }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: SSH Deploy script
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST}}
-          username: ${{ secrets.SSH_USERNAME}}
-          password: ${{ secrets.SSH_PASSWORD}}
-          script: |
-            cd ../srv/video-chat
-            chmod +x deploy-script
-            ./deploy-script
+      # - name: SSH Deploy script
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST}}
+      #     username: ${{ secrets.SSH_USERNAME}}
+      #     password: ${{ secrets.SSH_PASSWORD}}
+      #     script: |
+      #       cd ../srv/video-chat
+      #       chmod +x deploy-script
+      #       ./deploy-script

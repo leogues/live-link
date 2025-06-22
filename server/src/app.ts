@@ -16,10 +16,17 @@ import { streamHandler } from "./websocket/stream";
 import { webrtcCallHandler } from "./websocket/webrtcCall";
 import { configureWebSocket } from "./websocketConfig";
 import { metricsHandler } from "./websocket/metrics";
+import { metricsEndpoint } from "./metrics";
 
 const sessionStore = new MemoryStore();
 
 export const app = express();
+
+app.get("/metrics", metricsEndpoint);
+
+app.get("/healthz", (_req, res) => {
+  res.send("ok");
+});
 
 configureMiddleware(app, sessionStore);
 
