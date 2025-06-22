@@ -1,14 +1,14 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { FormHeader } from "../components/FormHeader";
-import { UserProfile } from "../components/UserProfile";
-import { MeetingButtons } from "../components/home/MeetingButtons";
-import { MeetingInput } from "../components/home/MeetingInput";
-import Layout from "../components/layout/Layout";
-import { useNotification } from "../hooks/useNotification";
-import { useMeQuery } from "../hooks/useUser";
-import api from "../services/api";
+import { FormHeader } from '../components/FormHeader';
+import { UserProfile } from '../components/UserProfile';
+import { MeetingButtons } from '../components/home/MeetingButtons';
+import { MeetingInput } from '../components/home/MeetingInput';
+import Layout from '../components/layout/Layout';
+import { useNotification } from '../hooks/useNotification';
+import { useMeQuery } from '../hooks/useUser';
+import api from '../services/api';
 
 export const Home = () => {
   const { data: user, isLoading } = useMeQuery();
@@ -17,7 +17,7 @@ export const Home = () => {
   const notify = useNotification();
 
   const filterIdFromLink = (linkOrId: string) => {
-    const parts = linkOrId.split("/");
+    const parts = linkOrId.split('/');
 
     const id = parts[parts.length - 1];
 
@@ -29,7 +29,7 @@ export const Home = () => {
 
     if (!inputRoomIdValue) {
       notify({
-        message: "Insira o ID da reunião ou o link",
+        message: 'Insira o ID da reunião ou o link',
         duration: 3000,
       });
       return;
@@ -37,22 +37,22 @@ export const Home = () => {
 
     const roomId = filterIdFromLink(inputRoomIdValue);
     try {
-      const response = await api.get("./room/" + roomId);
+      const response = await api.get('./room/' + roomId);
 
       const room = response.data;
 
-      navigate("./room/" + room.id);
+      navigate('./room/' + room.id);
     } catch (error) {
       notify({
-        message: "A reunião não existe ou foi encerrada",
+        message: 'A reunião não existe ou foi encerrada',
         duration: 3000,
-        textColor: "error",
+        textColor: 'error',
       });
     }
   };
 
   const createRoomHandle = () => {
-    navigate("./createRoom");
+    navigate('./createRoom');
   };
 
   if (isLoading) return null;

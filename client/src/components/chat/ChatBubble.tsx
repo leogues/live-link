@@ -1,6 +1,6 @@
-import { useRoomPeers } from "../../hooks/useRoomStore";
-import { useMeQuery } from "../../hooks/useUser";
-import { cn } from "../../utils/cn";
+import { useRoomPeers } from '../../hooks/useRoomStore';
+import { useMeQuery } from '../../hooks/useUser';
+import { cn } from '../../utils/cn';
 
 export const ChatBubble: React.FC<{
   message: IMessage;
@@ -21,14 +21,14 @@ export const ChatBubble: React.FC<{
 
   const prevMessageTime =
     prevMessage &&
-    new Date(prevMessage.timestamp).toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
+    new Date(prevMessage.timestamp).toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
     });
 
-  const time = new Date(message.timestamp).toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
+  const time = new Date(message.timestamp).toLocaleTimeString('pt-BR', {
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   const isPrevMessageSameTime = prevMessageTime === time;
@@ -36,8 +36,8 @@ export const ChatBubble: React.FC<{
   return (
     <div
       data-testid="message"
-      className={cn("flex w-full ", {
-        "flex-row-reverse": isSelf,
+      className={cn('flex w-full ', {
+        'flex-row-reverse': isSelf,
       })}
     >
       <div className="mt-2 max-h-11 w-11 shrink-0 overflow-hidden rounded-full">
@@ -45,15 +45,15 @@ export const ChatBubble: React.FC<{
       </div>
       <div
         className={cn(
-          " flex min-w-0 grow flex-col gap-1 break-words rounded-xl bg-white px-3 py-2 dark:bg-darkBlue-900",
+          ' flex min-w-0 grow flex-col gap-1 break-words rounded-xl bg-white px-3 py-2 dark:bg-darkBlue-900',
           {
-            "mr-4": isSelf,
-            "ml-4": !isSelf,
-          },
+            'mr-4': isSelf,
+            'ml-4': !isSelf,
+          }
         )}
       >
         {!isPrevMessageSameAuthor && (
-          <div className={cn("text-xs text-[#AFAFAF]")}>
+          <div className={cn('text-xs text-[#AFAFAF]')}>
             {isSelf ? (
               <span>Você</span>
             ) : (
@@ -68,9 +68,9 @@ export const ChatBubble: React.FC<{
         </div>
       </div>
       <div
-        className={cn("mb-auto mt-auto w-[3ch] shrink-0", {
-          "mr-3": isSelf,
-          "ml-3": !isSelf,
+        className={cn('mb-auto mt-auto w-[3ch] shrink-0', {
+          'mr-3': isSelf,
+          'ml-3': !isSelf,
         })}
       >
         <span className="text-xs text-gray-500">

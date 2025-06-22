@@ -1,13 +1,13 @@
-import { FC, useContext } from "react";
+import { FC, useContext } from 'react';
 
-import { StreamContext } from "../../context/StreamV2Context";
-import { useChatActions, useChatIsOpen } from "../../hooks/useChatStore";
-import { ChatControlIcon } from "../../icons/stream/ChatControl";
-import { MicrophoneControlIcon } from "../../icons/stream/MicrophoneControl";
-import { SharingScreenControlIcon } from "../../icons/stream/SharingScreenControl";
-import { VideoControlIcon } from "../../icons/stream/VideoControl";
-import { cn } from "../../utils/cn";
-import { ToggleButton } from "../ToggleButton";
+import { StreamContext } from '../../context/StreamV2Context';
+import { useChatActions, useChatIsOpen } from '../../hooks/useChatStore';
+import { ChatControlIcon } from '../../icons/stream/ChatControl';
+import { MicrophoneControlIcon } from '../../icons/stream/MicrophoneControl';
+import { SharingScreenControlIcon } from '../../icons/stream/SharingScreenControl';
+import { VideoControlIcon } from '../../icons/stream/VideoControl';
+import { cn } from '../../utils/cn';
+import { ToggleButton } from '../ToggleButton';
 
 export const RoomControlButtons: FC = () => {
   const { mediaTracks, handleMicOn, handleScreenOn, handleWebCamOn } =
@@ -33,7 +33,7 @@ export const RoomControlButtons: FC = () => {
           width={24}
           height={24}
           className={cn({
-            " text-blue-800": !isMicOn,
+            ' text-blue-800': !isMicOn,
           })}
         />
       </ToggleButton>
@@ -46,7 +46,7 @@ export const RoomControlButtons: FC = () => {
           width={24}
           height={24}
           className={cn({
-            "text-blue-800": !isWebCamOn,
+            'text-blue-800': !isWebCamOn,
           })}
         />
       </ToggleButton>
@@ -59,7 +59,7 @@ export const RoomControlButtons: FC = () => {
           width={24}
           height={24}
           className={cn({
-            "text-blue-800": !isSharingScreenOn,
+            'text-blue-800': !isSharingScreenOn,
           })}
         />
       </ToggleButton>
@@ -71,7 +71,7 @@ export const RoomControlButtons: FC = () => {
         <ChatControlIcon
           width={24}
           height={24}
-          className={cn({ "text-blue-800": !isChatOpen })}
+          className={cn({ 'text-blue-800': !isChatOpen })}
         />
       </ToggleButton>
     </div>

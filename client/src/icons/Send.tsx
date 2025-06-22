@@ -1,6 +1,6 @@
-import { FC, SVGProps } from "react";
+import { FC, SVGProps } from 'react';
 
-export const SendIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const SendIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="30"
     height="30"

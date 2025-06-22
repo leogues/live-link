@@ -1,16 +1,16 @@
-import { AnonymousIcon } from "../icons/social/Anonymous";
-import apiUrl from "../services/apiUrl";
-import { Button } from "./common/Button";
-import { FormHeader } from "./FormHeader";
-import { GoogleButton } from "./GoogleButton";
+import { AnonymousIcon } from '../icons/social/Anonymous';
+import apiUrl from '../services/apiUrl';
+import { Button } from './common/Button';
+import { FormHeader } from './FormHeader';
+import { GoogleButton } from './GoogleButton';
 
 export const LoginForm: React.FC = () => {
   const loginGoogleHandle = async () => {
-    window.location.href = apiUrl + "/auth/google";
+    window.location.href = apiUrl + '/auth/google';
   };
 
   const loginLocalHandle = async () => {
-    window.location.href = apiUrl + "/auth/local";
+    window.location.href = apiUrl + '/auth/local';
   };
 
   return (

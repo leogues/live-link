@@ -1,13 +1,13 @@
-import { MemoryRouter } from "react-router-dom";
-import { describe, expect, test, vitest } from "vitest";
+import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, test, vitest } from 'vitest';
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from '@testing-library/react';
 
-import { ChatStoreProvider } from "../../context/ChatStoreContext";
-import { Room } from "../Room";
+import { ChatStoreProvider } from '../../context/ChatStoreContext';
+import { Room } from '../Room';
 
-describe("room footer chat tests", () => {
-  test("send message button call the function", () => {
+describe('room footer chat tests', () => {
+  test('send message button call the function', () => {
     const sendMessage = vitest.fn();
 
     render(
@@ -15,14 +15,14 @@ describe("room footer chat tests", () => {
         <ChatStoreProvider initialIsChatOpen>
           <Room />,
         </ChatStoreProvider>
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    const sendMessageButton = screen.getByTestId("send-message");
+    const sendMessageButton = screen.getByTestId('send-message');
 
-    const chatTextArea = screen.getByPlaceholderText("Digite uma mensagem...");
+    const chatTextArea = screen.getByPlaceholderText('Digite uma mensagem...');
 
-    fireEvent.change(chatTextArea, { target: { value: "testid" } });
+    fireEvent.change(chatTextArea, { target: { value: 'testid' } });
 
     fireEvent.click(sendMessageButton);
 

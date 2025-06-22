@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from 'react';
 
-import * as Toast from "@radix-ui/react-toast";
+import * as Toast from '@radix-ui/react-toast';
 
-import { Notification } from "../components/common/Notification";
+import { Notification } from '../components/common/Notification';
 
 import type {
   Dispatch,
@@ -10,11 +10,11 @@ import type {
   PropsWithChildren,
   ReactNode,
   SetStateAction,
-} from "react";
+} from 'react';
 type NotificationContextType = {
   message: string | ReactNode;
   duration: number;
-  textColor?: "default" | "error";
+  textColor?: 'default' | 'error';
 } | null;
 
 type NotificationProps = { viewportClassName?: string };

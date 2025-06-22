@@ -1,13 +1,13 @@
-import { tv, VariantProps } from "tailwind-variants";
+import { tv, VariantProps } from 'tailwind-variants';
 
-import { Button } from "./common/Button";
+import { Button } from './common/Button';
 
 const toggleButton = tv({
-  base: "p-3 hover:brightness-90",
+  base: 'p-3 hover:brightness-90',
   variants: {
     enabled: {
-      true: "bg-blue-800  dark:bg-blue-700 ",
-      false: "bg-blue-50  dark:bg-darkBlue-400 ",
+      true: 'bg-blue-800  dark:bg-blue-700 ',
+      false: 'bg-blue-50  dark:bg-darkBlue-400 ',
     },
   },
   defaultVariants: {

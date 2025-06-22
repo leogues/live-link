@@ -4,12 +4,12 @@ import {
   createContext,
   useEffect,
   useState,
-} from "react";
-import { StoreApi, createStore } from "zustand";
-import { ws } from "../services/ws";
-import { Peer, PeerMap, PeersResponse } from "../types/peer";
+} from 'react';
+import { StoreApi, createStore } from 'zustand';
+import { ws } from '../services/ws';
+import { Peer, PeerMap, PeersResponse } from '../types/peer';
 
-type MediaDeviceAccepted = "microphone" | "web-cam" | "sharing-screen";
+type MediaDeviceAccepted = 'microphone' | 'web-cam' | 'sharing-screen';
 
 export type RoomStoreContextType = StoreApi<RoomStoreState> | null;
 
@@ -33,26 +33,26 @@ export type RoomStoreState = {
 
 export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
   const [store] = useState(() =>
-    createStore<RoomStoreState>((set) => ({
+    createStore<RoomStoreState>(set => ({
       isEnteredRoom: false,
       peers: {},
       actions: {
         toggleEnteredRoom: () =>
-          set((state) => ({ isEnteredRoom: !state.isEnteredRoom })),
-        addPeer: (peer) =>
-          set((state) => ({
+          set(state => ({ isEnteredRoom: !state.isEnteredRoom })),
+        addPeer: peer =>
+          set(state => ({
             peers: {
               ...state.peers,
               [peer.user.id]: peer,
             },
           })),
-        removePeer: (userId) =>
-          set((state) => {
+        removePeer: userId =>
+          set(state => {
             const { [userId]: _, ...rest } = state.peers;
             return { peers: rest };
           }),
         addPeerStream: (userId, stream) =>
-          set((state) => ({
+          set(state => ({
             peers: {
               ...state.peers,
               [userId]: {
@@ -61,8 +61,8 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
               },
             },
           })),
-        removePeerStream: (userId) =>
-          set((state) => ({
+        removePeerStream: userId =>
+          set(state => ({
             peers: {
               ...state.peers,
               [userId]: {
@@ -71,10 +71,10 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
               },
             },
           })),
-        addAllPeers: (peersResponse) =>
+        addAllPeers: peersResponse =>
           set({ peers: peersResponse.participants }),
         updateIsMicOn: (peerId, enabled) =>
-          set((state) => ({
+          set(state => ({
             peers: {
               ...state.peers,
               [peerId]: {
@@ -84,7 +84,7 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
             },
           })),
         updateIsWebCamOn: (peerId, enabled) =>
-          set((state) => ({
+          set(state => ({
             peers: {
               ...state.peers,
               [peerId]: {
@@ -94,7 +94,7 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
             },
           })),
         updateIsSharingScreenOn: (peerId, enabled) =>
-          set((state) => ({
+          set(state => ({
             peers: {
               ...state.peers,
               [peerId]: {
@@ -104,7 +104,7 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
             },
           })),
       },
-    })),
+    }))
   );
 
   const {
@@ -130,15 +130,15 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
       (peerId: string, enabled: boolean) => void
     > = {
       microphone: updateIsMicOn,
-      "web-cam": updateIsWebCamOn,
-      "sharing-screen": updateIsSharingScreenOn,
+      'web-cam': updateIsWebCamOn,
+      'sharing-screen': updateIsSharingScreenOn,
     };
 
     const mediaDeviceStateDispatch = mediaDeviceStatusUpdateAccepted[type];
 
     if (!mediaDeviceStateDispatch) {
       throw new Error(
-        "Função de dispatch não encontrada para esse dispositivo de mídia",
+        'Função de dispatch não encontrada para esse dispositivo de mídia'
       );
     }
 
@@ -146,16 +146,16 @@ export const RoomStoreProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    ws.on("get-users", addAllPeers);
-    ws.on("user-joined", addPeer);
-    ws.on("user-disconnected", removePeer);
-    ws.on("mediaDeviceStatusNotification", mediaDeviceStatusUpdate);
+    ws.on('get-users', addAllPeers);
+    ws.on('user-joined', addPeer);
+    ws.on('user-disconnected', removePeer);
+    ws.on('mediaDeviceStatusNotification', mediaDeviceStatusUpdate);
 
     return () => {
-      ws.off("get-users");
-      ws.off("user-joined");
-      ws.off("user-disconnected");
-      ws.off("mediaDeviceStatusNotification");
+      ws.off('get-users');
+      ws.off('user-joined');
+      ws.off('user-disconnected');
+      ws.off('mediaDeviceStatusNotification');
     };
   }, []);
 

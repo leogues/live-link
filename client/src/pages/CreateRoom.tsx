@@ -1,12 +1,12 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { FormHeader } from "../components/FormHeader";
-import { MeetingButtons } from "../components/home/MeetingButtons";
-import { MeetingInput } from "../components/home/MeetingInput";
-import Layout from "../components/layout/Layout";
-import { useNotification } from "../hooks/useNotification";
-import api from "../services/api";
+import { FormHeader } from '../components/FormHeader';
+import { MeetingButtons } from '../components/home/MeetingButtons';
+import { MeetingInput } from '../components/home/MeetingInput';
+import Layout from '../components/layout/Layout';
+import { useNotification } from '../hooks/useNotification';
+import api from '../services/api';
 
 export const CreateRoom = () => {
   const inputRoomTopicRef = useRef<HTMLInputElement>(null);
@@ -14,7 +14,7 @@ export const CreateRoom = () => {
   const notify = useNotification();
 
   const redirectHomeHandle = () => {
-    navigate("../");
+    navigate('../');
   };
 
   const createRoomHandle = async () => {
@@ -22,17 +22,17 @@ export const CreateRoom = () => {
 
     if (!topic) {
       notify({
-        message: "Insira o tópico da reunião",
+        message: 'Insira o tópico da reunião',
         duration: 3000,
       });
     }
 
-    const response = await api.post("./room", { topic });
+    const response = await api.post('./room', { topic });
     const room = response.data;
 
     if (!room) return;
 
-    navigate("../room/" + room.id);
+    navigate('../room/' + room.id);
   };
 
   return (

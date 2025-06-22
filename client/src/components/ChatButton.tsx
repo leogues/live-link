@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import ChatIcon from "../assets/chat.png";
-import { Button } from "./common/Button";
+import ChatIcon from '../assets/chat.png';
+import { Button } from './common/Button';
 
 export const ChatButton: FC<{ onClick: () => void }> = ({ onClick }) => {
   return (

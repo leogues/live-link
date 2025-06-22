@@ -1,5 +1,5 @@
-import ScreenIcon from "../assets/screen.png";
-import { Button } from "./common/Button";
+import ScreenIcon from '../assets/screen.png';
+import { Button } from './common/Button';
 
 export const ShareScreenButton: React.FC<{ onClick: () => void }> = ({
   onClick,

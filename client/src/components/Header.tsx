@@ -1,5 +1,5 @@
-import { GitHubIcon } from "../icons/social/Github";
-import { Switcher } from "./Switcher";
+import { GitHubIcon } from '../icons/social/Github';
+import { Switcher } from './Switcher';
 
 export const Header: React.FC<{}> = ({}) => {
   return (

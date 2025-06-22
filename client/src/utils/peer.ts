@@ -46,29 +46,29 @@ interface IState extends PeerProps {
 }
 
 interface createSessionDescriptionProps {
-  messageType: "offer" | "answer";
+  messageType: 'offer' | 'answer';
 }
 
 export interface RTCRenegotiate {
-  type: "renegotiate";
+  type: 'renegotiate';
 }
 
 interface sendMessageProps {
-  messageType: "offer" | "answer" | "candidate" | "renegotiate";
+  messageType: 'offer' | 'answer' | 'candidate' | 'renegotiate';
   payload: RTCIceCandidate | RTCSessionDescriptionInit | RTCRenegotiate;
 }
 
-import errCode from "err-code";
+import errCode from 'err-code';
 
-import { ws } from "../services/ws";
+import { ws } from '../services/ws';
 
 const peerConfig = {
   iceServers: [
     {
       urls: [
-        "stun:stun.l.google.com:19302",
-        "stun:stun.voip.voipfone.co.uk",
-        "stun:stun.ekiga.net",
+        'stun:stun.l.google.com:19302',
+        'stun:stun.voip.voipfone.co.uk',
+        'stun:stun.ekiga.net',
       ],
     },
   ],
@@ -102,16 +102,16 @@ export const Peer = (options: PeerProps) => {
   try {
     state._peerConn = new RTCPeerConnection(peerConfig);
   } catch (err) {
-    destroy(errCode(err, "ERR_PEERCONNECTION_CONSTRUCTOR"));
+    destroy(errCode(err, 'ERR_PEERCONNECTION_CONSTRUCTOR'));
     return;
   }
 
   if (state.isInitiator) {
-    state._peerConn.createDataChannel("stream");
+    state._peerConn.createDataChannel('stream');
   }
 
   if (options.initialTracks) {
-    Object.values(options.initialTracks).forEach((track) => {
+    Object.values(options.initialTracks).forEach(track => {
       if (!track) return;
 
       addTrack({ track });
@@ -122,10 +122,10 @@ export const Peer = (options: PeerProps) => {
     addStream({ stream: state.localStream });
   }
 
-  _logs("initial negotiation");
+  _logs('initial negotiation');
   _needsNegotiation();
 
-  state._peerConn.onicecandidate = (event) => {
+  state._peerConn.onicecandidate = event => {
     _onIceCandidate(event);
   };
 
@@ -133,7 +133,7 @@ export const Peer = (options: PeerProps) => {
     _onSignalingStateChange();
   };
 
-  state._peerConn.ontrack = (event) => {
+  state._peerConn.ontrack = event => {
     _onTrack(event);
   };
 
@@ -141,11 +141,11 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
-        new Error("cannot addStream after peer is destroyed"),
-        "ERR_DESTROYED",
+        new Error('cannot addStream after peer is destroyed'),
+        'ERR_DESTROYED'
       );
 
-    stream.getTracks().forEach((track) => {
+    stream.getTracks().forEach(track => {
       addTrack({ track });
     });
   }
@@ -154,8 +154,8 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
-        new Error("cannot addTrack after peer is destroyed"),
-        "ERR_DESTROYED",
+        new Error('cannot addTrack after peer is destroyed'),
+        'ERR_DESTROYED'
       );
     if (!track) return;
 
@@ -168,12 +168,12 @@ export const Peer = (options: PeerProps) => {
 
       state._localTracks.set(track, sender);
 
-      _logs("add track call needsNegotiation");
+      _logs('add track call needsNegotiation');
       _needsNegotiation();
     } else {
       throw errCode(
-        new Error("Track has already been added to that stream."),
-        "ERR_SENDER_ALREADY_ADDED",
+        new Error('Track has already been added to that stream.'),
+        'ERR_SENDER_ALREADY_ADDED'
       );
     }
   }
@@ -188,16 +188,16 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
-        new Error("cannot replaceTrack after peer is destroyed"),
-        "ERR_DESTROYED",
+        new Error('cannot replaceTrack after peer is destroyed'),
+        'ERR_DESTROYED'
       );
 
     const sender = state._localTracks.get(oldTrack);
 
     if (!sender) {
       throw errCode(
-        new Error("Cannot replace track that was never added."),
-        "ERR_TRACK_NOT_ADDED",
+        new Error('Cannot replace track that was never added.'),
+        'ERR_TRACK_NOT_ADDED'
       );
     }
 
@@ -210,9 +210,9 @@ export const Peer = (options: PeerProps) => {
     } else {
       destroy(
         errCode(
-          new Error("replaceTrack is not supported in this browser"),
-          "ERR_UNSUPPORTED_REPLACETRACK",
-        ),
+          new Error('replaceTrack is not supported in this browser'),
+          'ERR_UNSUPPORTED_REPLACETRACK'
+        )
       );
     }
   }
@@ -221,8 +221,8 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
-        new Error("cannot removeTrack after peer is destroyed"),
-        "ERR_DESTROYED",
+        new Error('cannot removeTrack after peer is destroyed'),
+        'ERR_DESTROYED'
       );
 
     const sender = state._localTracks.get(track);
@@ -230,12 +230,12 @@ export const Peer = (options: PeerProps) => {
     if (sender) {
       state._peerConn?.removeTrack(sender);
       state._localTracks.delete(track);
-      _logs("remove track call needsNegotiation");
+      _logs('remove track call needsNegotiation');
       _needsNegotiation();
     } else {
       throw errCode(
-        new Error("The track does not exist in this stream."),
-        "ERR_SENDER_ALREADY_ADDED",
+        new Error('The track does not exist in this stream.'),
+        'ERR_SENDER_ALREADY_ADDED'
       );
     }
   }
@@ -246,22 +246,22 @@ export const Peer = (options: PeerProps) => {
   }: sendMessageProps) => {
     if (!state._peerConn) return;
     const acceptedMessageType = {
-      ["offer"]: async ({ messageType, payload }: sendMessageProps) => {
-        _logs("_init _processSessionDescription", messageType);
+      ['offer']: async ({ messageType, payload }: sendMessageProps) => {
+        _logs('_init _processSessionDescription', messageType);
         await _processSessionDescription({
           messageType,
           payload,
         });
       },
-      ["answer"]: async ({ messageType, payload }: sendMessageProps) => {
-        _logs("_init _processSessionDescription", messageType);
+      ['answer']: async ({ messageType, payload }: sendMessageProps) => {
+        _logs('_init _processSessionDescription', messageType);
         await _processSessionDescription({
           messageType,
           payload,
         });
       },
-      ["candidate"]: ({ payload }: sendMessageProps) => {
-        _logs("add iceCandidate");
+      ['candidate']: ({ payload }: sendMessageProps) => {
+        _logs('add iceCandidate');
         const iceCandidate = new RTCIceCandidate(payload as RTCIceCandidate);
 
         if (state._peerConn?.remoteDescription) {
@@ -270,10 +270,10 @@ export const Peer = (options: PeerProps) => {
           state._pendingIceCandidates.push(iceCandidate);
         }
       },
-      ["renegotiate"]: ({}: sendMessageProps) => {
-        _logs("need renegotiate");
+      ['renegotiate']: ({}: sendMessageProps) => {
+        _logs('need renegotiate');
         if (state.isInitiator) {
-          _logs("signalCallback call needsNegotiation");
+          _logs('signalCallback call needsNegotiation');
           _needsNegotiation();
         }
       },
@@ -294,7 +294,7 @@ export const Peer = (options: PeerProps) => {
   };
 
   function destroy(cb?: any) {
-    _logs("destroy peer");
+    _logs('destroy peer');
     if (state.isDestroyed || state.isDestroying) return;
     state.isDestroying = true;
 
@@ -320,7 +320,7 @@ export const Peer = (options: PeerProps) => {
       }
       state._peerConn = null;
 
-      _emitEvent("close", state.remotePeerId);
+      _emitEvent('close', state.remotePeerId);
 
       if (!cb) return;
 
@@ -339,22 +339,22 @@ export const Peer = (options: PeerProps) => {
 
   async function _processSessionDescription({ payload }: sendMessageProps) {
     const remoteDescription = new RTCSessionDescription(
-      payload as RTCSessionDescriptionInit,
+      payload as RTCSessionDescriptionInit
     );
 
     await state._peerConn?.setRemoteDescription(remoteDescription);
 
-    if (payload.type === "offer") {
+    if (payload.type === 'offer') {
       _logs(
-        "Got offer. Sending answer to peer. remotePeerId:",
-        state.remotePeerId,
+        'Got offer. Sending answer to peer. remotePeerId:',
+        state.remotePeerId
       );
 
       _createSessionDescription({
-        messageType: "answer",
+        messageType: 'answer',
       });
-    } else if (payload.type === "answer") {
-      _logs("Got answer.");
+    } else if (payload.type === 'answer') {
+      _logs('Got answer.');
     }
   }
 
@@ -367,16 +367,16 @@ export const Peer = (options: PeerProps) => {
     let sessionDescription;
 
     try {
-      if (messageType === "offer") {
+      if (messageType === 'offer') {
         sessionDescription = await state._peerConn.createOffer({
           offerToReceiveAudio: true,
           offerToReceiveVideo: true,
         });
-      } else if (messageType === "answer") {
+      } else if (messageType === 'answer') {
         sessionDescription = await state._peerConn.createAnswer();
       }
     } catch (err) {
-      destroy(errCode(err, "ERR_CREATE_" + messageType));
+      destroy(errCode(err, 'ERR_CREATE_' + messageType));
     }
 
     _logs(`local ${messageType} created:`, sessionDescription);
@@ -384,7 +384,7 @@ export const Peer = (options: PeerProps) => {
     try {
       await state._peerConn.setLocalDescription(sessionDescription);
     } catch (err) {
-      destroy(errCode(err, "ERR_SET_LOCAL_DESCRIPTION"));
+      destroy(errCode(err, 'ERR_SET_LOCAL_DESCRIPTION'));
     }
 
     if (!sessionDescription) return;
@@ -399,23 +399,23 @@ export const Peer = (options: PeerProps) => {
     if (state.isDestroying) return;
     if (state.isDestroyed)
       throw errCode(
-        new Error("cannot negotiate after peer is destroyed"),
-        "ERR_DESTROYED",
+        new Error('cannot negotiate after peer is destroyed'),
+        'ERR_DESTROYED'
       );
     queueMicrotask(() => {
       if (state.isInitiator || !state._isFirstNegotiatio) {
         if (state._isNegotiating) {
           state._queuedNegotiation = true;
-          _logs("already negotiating, queueing");
+          _logs('already negotiating, queueing');
         } else {
           if (state.isInitiator) {
-            _logs("start negotiation");
-            _createSessionDescription({ messageType: "offer" });
+            _logs('start negotiation');
+            _createSessionDescription({ messageType: 'offer' });
           } else {
-            _logs("requesting negotiation from initiator");
+            _logs('requesting negotiation from initiator');
             _sendMessage({
-              messageType: "renegotiate",
-              payload: { type: "renegotiate" },
+              messageType: 'renegotiate',
+              payload: { type: 'renegotiate' },
             });
           }
         }
@@ -426,7 +426,7 @@ export const Peer = (options: PeerProps) => {
   }
 
   function _sendMessage({ messageType, payload }: sendMessageProps) {
-    _logs("Client sending message: ", payload);
+    _logs('Client sending message: ', payload);
     ws.emit(messageType, {
       messageType,
       payload,
@@ -441,29 +441,29 @@ export const Peer = (options: PeerProps) => {
 
   function _onIceCandidate(event: RTCPeerConnectionIceEvent) {
     if (event.candidate) {
-      _logs("send iceCandidate");
+      _logs('send iceCandidate');
       _sendMessage({
-        messageType: "candidate",
+        messageType: 'candidate',
         payload: event.candidate,
       });
     } else {
-      _logs("End of candidates.");
+      _logs('End of candidates.');
     }
   }
 
   function _onSignalingStateChange() {
     if (state.isDestroyed) return;
 
-    if (state._peerConn?.signalingState === "stable") {
+    if (state._peerConn?.signalingState === 'stable') {
       state._isNegotiating = false;
 
       if (state._queuedNegotiation) {
-        _logs("flushing negotiation queue");
+        _logs('flushing negotiation queue');
         state._queuedNegotiation = false;
-        _logs("_onSignal call _needsNegotiation");
+        _logs('_onSignal call _needsNegotiation');
         _needsNegotiation();
       } else {
-        _logs("negotiated");
+        _logs('negotiated');
       }
     }
   }
@@ -471,7 +471,7 @@ export const Peer = (options: PeerProps) => {
   function _onTrack(event: RTCTrackEvent) {
     if (state.isDestroyed) return;
 
-    event.streams.forEach((eventStream) => {
+    event.streams.forEach(eventStream => {
       // if (
       //   state._remoteStreams.some((remoteStream) => {
       //     return remoteStream.id === eventStream.id;
@@ -481,9 +481,9 @@ export const Peer = (options: PeerProps) => {
 
       // state._remoteStreams.push(eventStream);
 
-      _logs("on stream");
+      _logs('on stream');
       queueMicrotask(() => {
-        _emitEvent("stream", {
+        _emitEvent('stream', {
           stream: eventStream,
           remotePeerId: state.remotePeerId,
         });
@@ -502,7 +502,7 @@ export const Peer = (options: PeerProps) => {
 
   function _emitEvent(event: string, data: any) {
     const listeners = eventListeners[event] || [];
-    listeners.forEach((listener) => {
+    listeners.forEach(listener => {
       listener(data);
     });
   }

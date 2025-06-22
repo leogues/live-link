@@ -1,18 +1,18 @@
-import { useContext, useMemo, useReducer } from "react";
+import { useContext, useMemo, useReducer } from 'react';
 
-import { StreamContext } from "../../../context/StreamV2Context";
-import { useMeQuery } from "../../../hooks/useUser";
-import { MaximizeIcon } from "../../../icons/stream/Maximize";
+import { StreamContext } from '../../../context/StreamV2Context';
+import { useMeQuery } from '../../../hooks/useUser';
+import { MaximizeIcon } from '../../../icons/stream/Maximize';
 import {
   MicrophoneOffIcon,
   MicrophoneOnIcon,
-} from "../../../icons/stream/Microphone";
-import { Peer } from "../../../types/peer";
-import { cn } from "../../../utils/cn";
-import { UserMicrophoneVideoToggle } from "../../UserMicrophoneVideoToggle";
-import { Button } from "../../common/Button";
-import { Label } from "./Label";
-import { VideoPlayer } from "./VideoPlayer";
+} from '../../../icons/stream/Microphone';
+import { Peer } from '../../../types/peer';
+import { cn } from '../../../utils/cn';
+import { UserMicrophoneVideoToggle } from '../../UserMicrophoneVideoToggle';
+import { Button } from '../../common/Button';
+import { Label } from './Label';
+import { VideoPlayer } from './VideoPlayer';
 
 export const FocusedVideoDisplay: React.FC<{
   focusedPeer: Peer;
@@ -20,8 +20,8 @@ export const FocusedVideoDisplay: React.FC<{
   const { data: user } = useMeQuery();
   const { localStream } = useContext(StreamContext);
   const [isFullscreen, toggleFullScreen] = useReducer(
-    (isFullscreen) => !isFullscreen,
-    false,
+    isFullscreen => !isFullscreen,
+    false
   );
 
   const audioOn = focusedPeer?.isMicOn;

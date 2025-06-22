@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect } from 'react';
 
 type useClickOutsideOptions = {
   breakpoint?: number;
@@ -7,7 +7,7 @@ type useClickOutsideOptions = {
 export const useClickOutside = <T extends HTMLElement>(
   ref: RefObject<T>,
   fn: () => void,
-  options?: useClickOutsideOptions,
+  options?: useClickOutsideOptions
 ) => {
   useEffect(() => {
     const { breakpoint } = options || {};
@@ -20,15 +20,15 @@ export const useClickOutside = <T extends HTMLElement>(
         fn();
       }
     };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [ref, fn, options]);
 };
 
 export const useMultipleRefsClickOutside = <T extends HTMLElement>(
   refs: RefObject<T>[],
   fn: () => void,
-  options?: useClickOutsideOptions,
+  options?: useClickOutsideOptions
 ) => {
   useEffect(() => {
     const { breakpoint } = options || {};
@@ -36,7 +36,7 @@ export const useMultipleRefsClickOutside = <T extends HTMLElement>(
     const handleClickOutside = (event: Event) => {
       if (breakpoint && window.innerWidth > breakpoint) return;
 
-      const isOutside = refs.every((ref) => {
+      const isOutside = refs.every(ref => {
         const element = ref.current;
         if (!element) return true;
         return element && !element.contains(event.target as Node);
@@ -46,7 +46,7 @@ export const useMultipleRefsClickOutside = <T extends HTMLElement>(
         fn();
       }
     };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [refs, fn, options]);
 };

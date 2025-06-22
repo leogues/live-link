@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { useChatIsOpen, useChatMenuRefs } from "../../hooks/useChatStore";
-import { LeaveIcon } from "../../icons/Leave";
-import { ChatInput } from "../chat/ChatInput";
-import { RoomControlButtons } from "./RoomControlButtons";
+import { useChatIsOpen, useChatMenuRefs } from '../../hooks/useChatStore';
+import { LeaveIcon } from '../../icons/Leave';
+import { ChatInput } from '../chat/ChatInput';
+import { RoomControlButtons } from './RoomControlButtons';
 
 export const RoomFooter: React.FC = () => {
   const isChatOpen = useChatIsOpen();

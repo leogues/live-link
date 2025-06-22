@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import { useThisRoom } from "../../hooks/useRoom";
-import { useRoomActions } from "../../hooks/useRoomStore";
-import { formatDate } from "../../utils/dateUtils";
-import { MeetingButtons } from "../home/MeetingButtons";
-import Layout from "../layout/Layout";
+import { useThisRoom } from '../../hooks/useRoom';
+import { useRoomActions } from '../../hooks/useRoomStore';
+import { formatDate } from '../../utils/dateUtils';
+import { MeetingButtons } from '../home/MeetingButtons';
+import Layout from '../layout/Layout';
 
 export const RoomInfoEntry: React.FC = () => {
   const { data: room } = useThisRoom();
@@ -13,7 +13,7 @@ export const RoomInfoEntry: React.FC = () => {
   const navigate = useNavigate();
 
   const redirectHomeHandle = () => {
-    navigate("../");
+    navigate('../');
   };
 
   const createAtFormated = !!room ? formatDate(room.createdAt) : null;

@@ -1,6 +1,6 @@
-import { Ref } from "react";
+import { Ref } from 'react';
 
-import { Input } from "../common/Input";
+import { Input } from '../common/Input';
 
 type MeetingInputProps = {
   inputRef: Ref<HTMLInputElement> | null;

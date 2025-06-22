@@ -1,13 +1,13 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
-import { useChatIsOpen } from "../../../hooks/useChatStore";
-import { useRoomPeers } from "../../../hooks/useRoomStore";
-import { MinizarIcon } from "../../../icons/Minimizar";
-import { cssVariableHelper } from "../../../utils/cssVariableHelper";
-import { debounce } from "../../../utils/debounce";
-import { ISlider, Slider } from "../../../utils/slider/slider";
-import { Button } from "../../common/Button";
-import { SliderVideo } from "./SliderVideo";
+import { useChatIsOpen } from '../../../hooks/useChatStore';
+import { useRoomPeers } from '../../../hooks/useRoomStore';
+import { MinizarIcon } from '../../../icons/Minimizar';
+import { cssVariableHelper } from '../../../utils/cssVariableHelper';
+import { debounce } from '../../../utils/debounce';
+import { ISlider, Slider } from '../../../utils/slider/slider';
+import { Button } from '../../common/Button';
+import { SliderVideo } from './SliderVideo';
 
 export const SliderVideos: React.FC<{
   focusedPeerId?: string;
@@ -37,10 +37,10 @@ export const SliderVideos: React.FC<{
     slider.current?.updateSlider();
 
     const debounceUpdateSlider = debounce(20, slider.current?.updateSlider);
-    window.addEventListener("resize", debounceUpdateSlider);
+    window.addEventListener('resize', debounceUpdateSlider);
 
     return () => {
-      window.removeEventListener("resize", debounceUpdateSlider);
+      window.removeEventListener('resize', debounceUpdateSlider);
     };
   }, []);
 
@@ -62,7 +62,7 @@ export const SliderVideos: React.FC<{
             />
           </Button>
           <div className="slider-content flex h-full max-h-full transition-transform duration-300">
-            {Object.values(peers).map((peer) => {
+            {Object.values(peers).map(peer => {
               return (
                 <SliderVideo
                   key={peer.user?.id}

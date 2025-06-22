@@ -1,12 +1,12 @@
-import { getProps, setProps } from "../../cssVariableHelper";
+import { getProps, setProps } from '../../cssVariableHelper';
 
 export const variableMock = {
-  ["slider-item-width-aspect"]: "16",
-  ["slider-item-height-aspect"]: "9",
-  ["slider-item-margin"]: "20px",
-  ["slider-index"]: "0",
-  ["slider-height"]: "0px",
-  ["slider-items-per-row"]: "0",
+  ['slider-item-width-aspect']: '16',
+  ['slider-item-height-aspect']: '9',
+  ['slider-item-margin']: '20px',
+  ['slider-index']: '0',
+  ['slider-height']: '0px',
+  ['slider-items-per-row']: '0',
 };
 
 export const variableHelper = () => {

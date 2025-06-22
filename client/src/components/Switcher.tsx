@@ -1,6 +1,6 @@
-import { useDarkMode } from "../hooks/useDarkMode";
-import { SwitcherDarkIcon, SwitcherLightIcon } from "../icons/Switcher";
-import { Button } from "./common/Button";
+import { useDarkMode } from '../hooks/useDarkMode';
+import { SwitcherDarkIcon, SwitcherLightIcon } from '../icons/Switcher';
+import { Button } from './common/Button';
 
 export const Switcher: React.FC = () => {
   const { switchTheme, darkSide } = useDarkMode();

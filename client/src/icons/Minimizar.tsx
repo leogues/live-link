@@ -1,6 +1,6 @@
-import { FC, SVGProps } from "react";
+import { FC, SVGProps } from 'react';
 
-export const MinizarIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const MinizarIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="14"
     height="8"

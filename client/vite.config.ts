@@ -1,6 +1,6 @@
-import { defineConfig } from "vitest/config";
-import react from "@vitejs/plugin-react";
-import { loadEnv } from "vite";
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import { loadEnv } from 'vite';
 
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -13,21 +13,21 @@ import { loadEnv } from "vite";
 // });
 
 export default defineConfig(({ mode }) => {
-  mode = mode === "production" ? "production" : "development";
+  mode = mode === 'production' ? 'production' : 'development';
   const env = loadEnv(mode, `${process.cwd()}`);
 
   return {
     plugins: [react()],
     define: {
-      "process.env": env,
+      'process.env': env,
     },
     build: {
-      outDir: "dist",
+      outDir: 'dist',
     },
     test: {
       globals: true,
-      environment: "jsdom",
-      setupFiles: ["src/setupTests.ts"],
+      environment: 'jsdom',
+      setupFiles: ['src/setupTests.ts'],
     },
   };
 });

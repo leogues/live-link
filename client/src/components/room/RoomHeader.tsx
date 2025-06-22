@@ -1,9 +1,9 @@
-import { useThisRoom } from "../../hooks/useRoom";
-import { useMeQuery } from "../../hooks/useUser";
-import { Switcher } from "../Switcher";
-import { UserProfile } from "../UserProfile";
-import { ParticipantAvatars } from "./ParticipantsAvatars";
-import { RoomInfo } from "./RoomInfo";
+import { useThisRoom } from '../../hooks/useRoom';
+import { useMeQuery } from '../../hooks/useUser';
+import { Switcher } from '../Switcher';
+import { UserProfile } from '../UserProfile';
+import { ParticipantAvatars } from './ParticipantsAvatars';
+import { RoomInfo } from './RoomInfo';
 
 export const RoomHeader: React.FC = () => {
   const { data: room } = useThisRoom();
@@ -17,7 +17,7 @@ export const RoomHeader: React.FC = () => {
         <UserProfile
           className="ml-7"
           user={user}
-          role={user?.id === room?.userId ? "Moderador" : "Participante"}
+          role={user?.id === room?.userId ? 'Moderador' : 'Participante'}
           hiddenBreakpoint="lg"
           fontSize="sm"
           imageSize="sm"

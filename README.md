@@ -40,6 +40,10 @@ npm install npm@latest -g
 
 [Docker](https://www.docker.com/)
 
+3. Configure as variaveis de desenvolvimento:
+
+crie o arquivo .env com base no .env.example do server
+
 ### Instalação
 
 Siga os passos abaixo para configurar o ambiente de desenvolvimento local:

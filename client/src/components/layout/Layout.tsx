@@ -1,18 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import { cn } from "../../utils/cn";
-import { Header } from "../Header";
+import { cn } from '../../utils/cn';
+import { Header } from '../Header';
 
 type LayoutProps = {
   children: React.ReactNode;
   dataTestid?: string;
-  size?: "sm" | "md";
+  size?: 'sm' | 'md';
 };
 
 const Layout: React.FC<LayoutProps> = ({
   children,
   dataTestid,
-  size = "md",
+  size = 'md',
 }) => {
   return (
     <div className="mx-auto my-0 flex h-screen flex-col items-center">
@@ -23,11 +23,11 @@ const Layout: React.FC<LayoutProps> = ({
       >
         <div
           className={cn(
-            "w-full rounded-md bg-white p-4 shadow-md dark:bg-darkBlue-900 sm:px-10 sm:py-8",
+            'w-full rounded-md bg-white p-4 shadow-md dark:bg-darkBlue-900 sm:px-10 sm:py-8',
             {
-              "max-w-xs sm:max-w-sm": size === "sm",
-              "max-w-md": size === "md",
-            },
+              'max-w-xs sm:max-w-sm': size === 'sm',
+              'max-w-md': size === 'md',
+            }
           )}
         >
           {children}

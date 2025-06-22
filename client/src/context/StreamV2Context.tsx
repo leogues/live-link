@@ -6,18 +6,18 @@ import {
   useEffect,
   useMemo,
   useRef,
-} from "react";
+} from 'react';
 import {
   useDisplayMediaControls,
   useUserMediaControls,
-} from "../hooks/useMediaControls";
-import { useThisRoom } from "../hooks/useRoom";
-import { useRoomActions } from "../hooks/useRoomStore";
-import { ws } from "../services/ws";
-import { IMediaTracks } from "../types/media";
-import { IPeer } from "../types/peer";
-import { formatMediaTracks } from "../utils/media";
-import { IPeers, Peers } from "../utils/multiPeerManager";
+} from '../hooks/useMediaControls';
+import { useThisRoom } from '../hooks/useRoom';
+import { useRoomActions } from '../hooks/useRoomStore';
+import { ws } from '../services/ws';
+import { IMediaTracks } from '../types/media';
+import { IPeer } from '../types/peer';
+import { formatMediaTracks } from '../utils/media';
+import { IPeers, Peers } from '../utils/multiPeerManager';
 
 export type StreamContextValue = {
   localStream: MutableRefObject<MediaStream | undefined>;
@@ -109,13 +109,13 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     multiPeersManager.current = Peers();
 
-    multiPeersManager.current?.on("stream", addStream);
-    ws.on("call-new-user", peerJoined);
-    ws.on("end-call", endCall);
+    multiPeersManager.current?.on('stream', addStream);
+    ws.on('call-new-user', peerJoined);
+    ws.on('end-call', endCall);
     return () => {
-      multiPeersManager.current?.off("stream");
-      ws.off("call-new-user");
-      ws.off("end-call");
+      multiPeersManager.current?.off('stream');
+      ws.off('call-new-user');
+      ws.off('end-call');
       multiPeersManager.current?.destroy();
     };
   }, []);
@@ -137,22 +137,22 @@ export const StreamProvider: FC<PropsWithChildren> = ({ children }) => {
     const checkAndEmitStatusUpdate = (
       type: string,
       prevTrack: MediaStreamTrack | undefined,
-      currentTrack: MediaStreamTrack | undefined,
+      currentTrack: MediaStreamTrack | undefined
     ) => {
       const isEnabled = currentTrack !== undefined;
       const wasEnabled = prevTrack !== undefined;
 
       if (isEnabled !== wasEnabled) {
-        ws.emit("mediaDeviceStatusUpdate", {
+        ws.emit('mediaDeviceStatusUpdate', {
           roomId: room?.id,
           type,
           enabled: isEnabled,
         });
       }
     };
-    checkAndEmitStatusUpdate("microphone", prevAudioTrack, audioTrack);
-    checkAndEmitStatusUpdate("web-cam", prevVideoTrack, videoTrack);
-    checkAndEmitStatusUpdate("sharing-screen", prevScreenTrack, screenTrack);
+    checkAndEmitStatusUpdate('microphone', prevAudioTrack, audioTrack);
+    checkAndEmitStatusUpdate('web-cam', prevVideoTrack, videoTrack);
+    checkAndEmitStatusUpdate('sharing-screen', prevScreenTrack, screenTrack);
 
     mediaTracksServeState.current = mediaTracks;
   }, [mediaTracks, room?.id, userMediaIsLoading, displayMediaIsLoading]);

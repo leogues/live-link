@@ -1,6 +1,6 @@
-import { useChatIsOpen } from "../../hooks/useChatStore";
-import { RoomSiderbar } from "./RoomSiderbar";
-import { StreamArea } from "./stream/StreamArea";
+import { useChatIsOpen } from '../../hooks/useChatStore';
+import { RoomSiderbar } from './RoomSiderbar';
+import { StreamArea } from './stream/StreamArea';
 
 export const RoomContent: React.FC = () => {
   const isChatOpen = useChatIsOpen();

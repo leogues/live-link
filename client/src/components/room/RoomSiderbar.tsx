@@ -1,6 +1,6 @@
-import { useChatIsOpen, useChatMenuRefs } from "../../hooks/useChatStore";
-import { ChatSidebar } from "./ChatSidebar";
-import { ParticipantsListSidebar } from "./ParticipantsListSidebar";
+import { useChatIsOpen, useChatMenuRefs } from '../../hooks/useChatStore';
+import { ChatSidebar } from './ChatSidebar';
+import { ParticipantsListSidebar } from './ParticipantsListSidebar';
 
 export const RoomSiderbar: React.FC = () => {
   const isChatOpen = useChatIsOpen();
@@ -9,15 +9,15 @@ export const RoomSiderbar: React.FC = () => {
   const handleMinimizar = (event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
 
-    const divMinimize = button.closest("[aria-expanded]");
+    const divMinimize = button.closest('[aria-expanded]');
 
     if (!divMinimize) return;
 
-    const ariaExpanded = divMinimize.getAttribute("aria-expanded");
+    const ariaExpanded = divMinimize.getAttribute('aria-expanded');
 
-    const isExpanded = ariaExpanded === "true";
+    const isExpanded = ariaExpanded === 'true';
 
-    divMinimize.setAttribute("aria-expanded", String(!isExpanded));
+    divMinimize.setAttribute('aria-expanded', String(!isExpanded));
   };
 
   return (

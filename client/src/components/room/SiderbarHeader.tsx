@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { MinizarIcon } from "../../icons/Minimizar";
-import { cn } from "../../utils/cn";
-import { Button } from "../common/Button";
+import { MinizarIcon } from '../../icons/Minimizar';
+import { cn } from '../../utils/cn';
+import { Button } from '../common/Button';
 
 export const SiderbarHeader: React.FC<{
   children?: ReactNode;
@@ -14,8 +14,8 @@ export const SiderbarHeader: React.FC<{
   return (
     <header
       className={cn(
-        "flex h-14 items-center justify-between bg-white px-6 py-2 text-gray-900 dark:bg-darkBlue-900 dark:text-white",
-        className,
+        'flex h-14 items-center justify-between bg-white px-6 py-2 text-gray-900 dark:bg-darkBlue-900 dark:text-white',
+        className
       )}
     >
       <span>{name}</span>

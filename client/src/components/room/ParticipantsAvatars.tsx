@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { useRoomPeers } from "../../hooks/useRoomStore";
+import { FC } from 'react';
+import { useRoomPeers } from '../../hooks/useRoomStore';
 
 const maxPeersAvatars = 4;
 
@@ -15,10 +15,10 @@ export const ParticipantAvatars: FC = () => {
   return (
     <div data-testid="participants-avatars" className="flex">
       {peers &&
-        renderedPeersImg.map((peer) => {
+        renderedPeersImg.map(peer => {
           return (
             <div
-              key={"avatar-" + peer.user?.id}
+              key={'avatar-' + peer.user?.id}
               className="-m-[0.4rem] h-10 w-10 min-w-max overflow-hidden rounded-full border-[3px] border-white dark:border-darkBlue-900 lg:h-12 lg:w-12"
             >
               <img className="block h-full" src={peer.user?.picture} />

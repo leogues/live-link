@@ -1,7 +1,7 @@
-import { IMediaTracks } from "../types/media";
+import { IMediaTracks } from '../types/media';
 
 export const applyMediaConstraintsTransformations = (
-  constraints: MediaStreamConstraints,
+  constraints: MediaStreamConstraints
 ) => {
   if (constraints.audio) {
     constraints.audio = {
@@ -15,7 +15,7 @@ export const applyMediaConstraintsTransformations = (
 
 export const determineVideoTrack = (
   screenTrack: MediaStreamTrack | undefined,
-  videoTrack: MediaStreamTrack | undefined,
+  videoTrack: MediaStreamTrack | undefined
 ) => {
   if (screenTrack && screenTrack.enabled) {
     return screenTrack;

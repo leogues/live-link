@@ -1,6 +1,6 @@
-import { InviteUserModal } from "./InviteUserModal";
-import { Participants } from "./Participants";
-import { SiderbarHeader } from "./SiderbarHeader";
+import { InviteUserModal } from './InviteUserModal';
+import { Participants } from './Participants';
+import { SiderbarHeader } from './SiderbarHeader';
 
 export const ParticipantsListSidebar: React.FC<{
   handleMinimizar: (event: React.MouseEvent<HTMLButtonElement>) => void;

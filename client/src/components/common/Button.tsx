@@ -1,19 +1,19 @@
-import { tv, VariantProps } from "tailwind-variants";
+import { tv, VariantProps } from 'tailwind-variants';
 
 const button = tv({
   variants: {
     rounded: {
-      default: "rounded-3xl",
-      roundendFull: "rounded-full",
+      default: 'rounded-3xl',
+      roundendFull: 'rounded-full',
     },
     fontWeight: {
-      normal: "font-normal",
-      bold: "font-bold",
+      normal: 'font-normal',
+      bold: 'font-bold',
     },
   },
   defaultVariants: {
-    rounded: "default",
-    fontWeight: "normal",
+    rounded: 'default',
+    fontWeight: 'normal',
   },
 });
 
@@ -22,7 +22,7 @@ export type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   disabled?: boolean;
-  type?: "submit" | "button" | "reset";
+  type?: 'submit' | 'button' | 'reset';
   event?: Event;
   testid?: string;
 } & VariantProps<typeof button>;
@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
   rounded,
   className,
   disabled,
-  type = "button",
+  type = 'button',
   testid,
 }) => {
   return (

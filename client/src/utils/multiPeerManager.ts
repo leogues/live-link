@@ -1,5 +1,5 @@
-import { ws } from "../services/ws";
-import { IPeer, Peer, RTCRenegotiate } from "./peer";
+import { ws } from '../services/ws';
+import { IPeer, Peer, RTCRenegotiate } from './peer';
 
 interface IState {
   localStream: MediaStream;
@@ -12,7 +12,7 @@ interface IState {
 }
 
 interface signalMessagesCallbackProps {
-  messageType: "offer" | "answer" | "candidate" | "renegotiate";
+  messageType: 'offer' | 'answer' | 'candidate' | 'renegotiate';
   payload: RTCIceCandidate | RTCSessionDescriptionInit | RTCRenegotiate;
   remotePeerId: string;
 }
@@ -25,7 +25,7 @@ export interface IPeers {
     mediaTracks,
   }: {
     remotePeerId: string;
-    mediaTracks: IState["_mediaTracks"];
+    mediaTracks: IState['_mediaTracks'];
   }) => void;
   close: (remotePeerId: string) => void;
   destroy: () => void;
@@ -33,7 +33,7 @@ export interface IPeers {
   updateMediaTracks: ({
     mediaTracks,
   }: {
-    mediaTracks: IState["_mediaTracks"];
+    mediaTracks: IState['_mediaTracks'];
   }) => MediaStream;
   off: (event: string) => void;
   on: (event: string, listener?: Function) => void;
@@ -59,7 +59,7 @@ export const Peers = () => {
     stream: MediaStream;
     remotePeerId: string;
   }) => {
-    _emitEvent("stream", { stream, remotePeerId });
+    _emitEvent('stream', { stream, remotePeerId });
   };
 
   const startCall = ({ remotePeerId }: { remotePeerId: string }) => {
@@ -70,7 +70,7 @@ export const Peers = () => {
     });
 
     if (peer) {
-      peer.on("stream", _onStream);
+      peer.on('stream', _onStream);
 
       state.peerConnections[remotePeerId] = peer;
     }
@@ -79,9 +79,9 @@ export const Peers = () => {
   const updateMediaTracks = ({
     mediaTracks,
   }: {
-    mediaTracks: IState["_mediaTracks"];
+    mediaTracks: IState['_mediaTracks'];
   }) => {
-    Object.keys(mediaTracks).forEach((mediaTrackKey) => {
+    Object.keys(mediaTracks).forEach(mediaTrackKey => {
       const _track =
         state._mediaTracks[mediaTrackKey as keyof typeof state._mediaTracks];
       const track =
@@ -90,19 +90,19 @@ export const Peers = () => {
       if (track && !_track) {
         state.localStream.addTrack(track);
 
-        Object.values(state.peerConnections).forEach((peerConn) => {
+        Object.values(state.peerConnections).forEach(peerConn => {
           peerConn.addTrack({ track });
         });
       } else if (!track && _track) {
         state.localStream.removeTrack(_track);
-        Object.values(state.peerConnections).forEach((peerConn) => {
+        Object.values(state.peerConnections).forEach(peerConn => {
           peerConn.removeTrack({ track: _track });
         });
       } else if (track && _track && track !== _track) {
         state.localStream.removeTrack(_track);
         state.localStream.addTrack(track);
 
-        Object.values(state.peerConnections).forEach((peerConn) => {
+        Object.values(state.peerConnections).forEach(peerConn => {
           peerConn.replaceTrack({ oldTrack: _track, newTrack: track });
         });
       }
@@ -117,7 +117,7 @@ export const Peers = () => {
     if (!stream) return;
 
     Object.values(state.peerConnections).forEach(
-      (peerConn) => peerConn?.addStream({ stream }),
+      peerConn => peerConn?.addStream({ stream })
     );
   };
 
@@ -132,7 +132,7 @@ export const Peers = () => {
 
       if (!peer) return;
 
-      peer.on("stream", _onStream);
+      peer.on('stream', _onStream);
 
       state.peerConnections[remotePeerId] = peer;
     }
@@ -152,10 +152,10 @@ export const Peers = () => {
   };
 
   const destroy = () => {
-    ws.off("renegotiate");
-    ws.off("candidate");
-    ws.off("answer");
-    ws.off("offer");
+    ws.off('renegotiate');
+    ws.off('candidate');
+    ws.off('answer');
+    ws.off('offer');
 
     _onStream = undefined;
 
@@ -164,9 +164,9 @@ export const Peers = () => {
     state._mediaTracks.videoTrack = null;
 
     Object.values(state.peerConnections)
-      .filter((peerConn) => peerConn !== undefined)
-      .forEach((peerConn) => {
-        peerConn.off("stream");
+      .filter(peerConn => peerConn !== undefined)
+      .forEach(peerConn => {
+        peerConn.off('stream');
         peerConn?.destroy();
       });
     state.peerConnections = {};
@@ -182,7 +182,7 @@ export const Peers = () => {
 
   function _emitEvent(event: string, data: any) {
     const listeners = eventListeners[event] || [];
-    listeners.forEach((listener) => {
+    listeners.forEach(listener => {
       listener(data);
     });
   }
@@ -191,10 +191,10 @@ export const Peers = () => {
     eventListeners[event] = [];
   }
 
-  ws.on("renegotiate", _signalMessageCallback);
-  ws.on("candidate", _signalMessageCallback);
-  ws.on("answer", _signalMessageCallback);
-  ws.on("offer", _signalMessageCallback);
+  ws.on('renegotiate', _signalMessageCallback);
+  ws.on('candidate', _signalMessageCallback);
+  ws.on('answer', _signalMessageCallback);
+  ws.on('offer', _signalMessageCallback);
   return {
     on,
     off,

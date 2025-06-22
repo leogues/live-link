@@ -1,7 +1,7 @@
 import {
   StreamContext,
   StreamContextValue,
-} from "../../context/StreamV2Context";
+} from '../../context/StreamV2Context';
 
 export type IStreamProviderProps = StreamContextValue;
 

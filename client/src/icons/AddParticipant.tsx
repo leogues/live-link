@@ -1,6 +1,6 @@
-import { FC, SVGProps } from "react";
+import { FC, SVGProps } from 'react';
 
-export const AddParticipantIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const AddParticipantIcon: FC<SVGProps<SVGSVGElement>> = props => (
   <svg
     width="20"
     height="20"

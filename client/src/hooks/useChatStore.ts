@@ -1,21 +1,21 @@
-import { useContext } from "react";
-import { useStore } from "zustand";
-import { ChatStoreContext, ChatStoreState } from "../context/ChatStoreContext";
-import { StateSelector } from "../types/store";
+import { useContext } from 'react';
+import { useStore } from 'zustand';
+import { ChatStoreContext, ChatStoreState } from '../context/ChatStoreContext';
+import { StateSelector } from '../types/store';
 
 const useChatStore = <T>(selector: StateSelector<ChatStoreState, T>) => {
   const store = useContext(ChatStoreContext);
   if (!store) {
-    throw new Error("Missing ChatStoreProvider");
+    throw new Error('Missing ChatStoreProvider');
   }
 
   return useStore(store, selector);
 };
 
-export const useChatIsOpen = () => useChatStore((state) => state.isChatOpen);
+export const useChatIsOpen = () => useChatStore(state => state.isChatOpen);
 
-export const useChatMessages = () => useChatStore((state) => state.messages);
+export const useChatMessages = () => useChatStore(state => state.messages);
 
-export const useChatMenuRefs = () => useChatStore((state) => state.menuRef);
+export const useChatMenuRefs = () => useChatStore(state => state.menuRef);
 
-export const useChatActions = () => useChatStore((state) => state.actions);
+export const useChatActions = () => useChatStore(state => state.actions);
