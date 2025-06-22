@@ -22,13 +22,12 @@ const sessionStore = new MemoryStore();
 
 export const app = express();
 
+configureMiddleware(app, sessionStore);
 app.get("/metrics", metricsEndpoint);
 
 app.get("/healthz", (_req, res) => {
   res.send("ok");
 });
-
-configureMiddleware(app, sessionStore);
 
 export const server = http.createServer(app);
 

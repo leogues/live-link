@@ -1,22 +1,24 @@
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
-import express, { Express } from 'express'
-import session, { MemoryStore } from 'express-session'
-import passport from 'passport'
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express, { Express } from "express";
+import session, { MemoryStore } from "express-session";
+import passport from "passport";
 
-import { frontendUrl, routes } from './routes'
+import { frontendUrl, routes } from "./routes";
+import { metricsMiddleware } from "./middleware/MetricsMiddleware";
 
 export const configureMiddleware = (app: Express, store: MemoryStore) => {
+  app.use(metricsMiddleware);
   app.use(
     cors({
       origin: frontendUrl,
       credentials: true,
     })
-  )
+  );
 
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || '',
+      secret: process.env.SESSION_SECRET || "",
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 1,
       },
@@ -24,12 +26,12 @@ export const configureMiddleware = (app: Express, store: MemoryStore) => {
       saveUninitialized: true,
       store,
     })
-  )
+  );
 
-  app.use(cookieParser())
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.use(express.json())
-  app.use('/api', express.static('public'))
-  app.use('/api', routes)
-}
+  app.use(cookieParser());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(express.json());
+  app.use("/api", express.static("public"));
+  app.use("/api", routes);
+};
