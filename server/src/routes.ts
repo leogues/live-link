@@ -57,9 +57,3 @@ routes.post(
   validateRoomTopic,
   RoomController.Create
 );
-
-routes.get("/metrics", metricsEndpoint);
-
-routes.get("/healthz", (_req, res) => {
-  res.send("ok");
-});
