@@ -14,7 +14,7 @@
 
 ## Sobre o projeto
 
-[![demo][demo-image]](https://live.leogues.com.br/)
+[![demo][demo-image]](https://live.leogues.com/)
 
 [demo-image]: https://raw.githubusercontent.com/leogues/live-link/dev/client/public/demo.png
 
