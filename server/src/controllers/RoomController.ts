@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 import { Request, Response } from "express";
 
 import { RoomRepository } from "../repositories/database/RoomRepository";
@@ -10,12 +11,13 @@ export class RoomController {
   static async Show(req: Request, res: Response) {
     try {
       const { id } = req.params
+      if (typeof id !== "string") { return res.status(400).json({ error: "Invalid room ID" }); }
 
       const room = await roomService.getRoomById(id)
 
       return res.json(room)
     } catch (error) {
-      console.error(error)
+      logger.error("Application operation failed", error)
       return res.status(500).json({ error: 'Internal Server Error' })
     }
   }
@@ -33,7 +35,7 @@ export class RoomController {
 
       return res.json(room)
     } catch (error) {
-      console.error(error)
+      logger.error("Application operation failed", error)
 
       return res.status(500).json({ error: 'Internal Server Error' })
     }

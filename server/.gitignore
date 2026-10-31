@@ -5,3 +5,6 @@ logs
 *.env
 *.scannerwork
 
+
+# Prisma client is generated during build.
+src/generated/

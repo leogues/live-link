@@ -1,20 +1,13 @@
-import cookieParser from "cookie-parser";
-import { MemoryStore } from "express-session";
 import { Server } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { sessionMiddleware } from "./middlewareConfig";
+import passport from "passport";
 
-const passportSocketIo = require('passport.socketio')
-
-export const configureWebSocket = (
-  socket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
-  store: MemoryStore
-) => {
-  socket.use(
-    passportSocketIo.authorize({
-      cookieParser,
-      key: 'connect.sid',
-      secret: process.env.SESSION_SECRET || '',
-      store,
-    })
-  )
-}
+export const configureWebSocket = (socket: Server) => {
+  socket.engine.use(sessionMiddleware);
+  socket.engine.use(passport.initialize());
+  socket.engine.use(passport.session());
+  socket.use((connection, next) => {
+    if (connection.request.user) { next(); }
+    else { next(new Error("Unauthorized")); }
+  });
+};

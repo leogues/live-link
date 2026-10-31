@@ -1,3 +1,4 @@
+import { logger } from "../../logger";
 import prisma from "../../database/client";
 import { IUserRepository } from "../../interfaces/repositories/IUserRepository";
 
@@ -12,7 +13,7 @@ export class UserRepository implements IUserRepository {
 
       return user
     } catch (error) {
-      console.error('Erro ao buscar usuário por ID:', error)
+      logger.error('Erro ao buscar usuário por ID:', error)
 
       throw error
     }
@@ -33,7 +34,7 @@ export class UserRepository implements IUserRepository {
 
       return user
     } catch (error) {
-      console.error('Erro ao criar usuário:', error)
+      logger.error('Erro ao criar usuário:', error)
 
       throw error
     }
@@ -50,7 +51,7 @@ export class UserRepository implements IUserRepository {
 
       return user
     } catch (error) {
-      console.error('Erro ao buscar usuário por providerId:', error)
+      logger.error('Erro ao buscar usuário por providerId:', error)
 
       throw error
     }

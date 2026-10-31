@@ -7,7 +7,15 @@ import passport from "passport";
 import { frontendUrl, routes } from "./routes";
 import { metricsMiddleware } from "./middleware/MetricsMiddleware";
 
-export const configureMiddleware = (app: Express, store: MemoryStore) => {
+export const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET || "",
+  cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  resave: true,
+  saveUninitialized: true,
+  store: new MemoryStore(),
+});
+
+export const configureMiddleware = (app: Express) => {
   app.use(metricsMiddleware);
   app.use(
     cors({
@@ -16,17 +24,7 @@ export const configureMiddleware = (app: Express, store: MemoryStore) => {
     })
   );
 
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "",
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 1,
-      },
-      resave: true,
-      saveUninitialized: true,
-      store,
-    })
-  );
+  app.use(sessionMiddleware);
 
   app.use(cookieParser());
   app.use(passport.initialize());

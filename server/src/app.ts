@@ -1,7 +1,6 @@
-require("dotenv").config();
+import "dotenv/config";
 
 import express from "express";
-import { MemoryStore } from "express-session";
 import http from "http";
 import { Server } from "socket.io";
 
@@ -16,18 +15,17 @@ import { streamHandler } from "./websocket/stream";
 import { webrtcCallHandler } from "./websocket/webrtcCall";
 import { configureWebSocket } from "./websocketConfig";
 import { metricsHandler } from "./websocket/metrics";
-import { metricsEndpoint } from "./metrics";
-
-const sessionStore = new MemoryStore();
+import { errorMiddleware } from "./middleware/MetricsMiddleware";
 
 export const app = express();
 
-configureMiddleware(app, sessionStore);
-app.get("/metrics", metricsEndpoint);
+configureMiddleware(app);
 
 app.get("/healthz", (_req, res) => {
   res.send("ok");
 });
+
+app.use(errorMiddleware);
 
 export const server = http.createServer(app);
 
@@ -40,7 +38,7 @@ export const socket = new Server(server, {
   },
 });
 
-configureWebSocket(socket, sessionStore);
+configureWebSocket(socket);
 
 const activeRoomManagerService = new ActiveRoomManagerService(
   InMemoryPeerRepository,

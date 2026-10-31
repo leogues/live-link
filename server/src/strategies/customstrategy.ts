@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 const CustomStrategy = require('passport-custom').Strategy
 const passport = require('passport')
 
@@ -25,7 +26,7 @@ passport.use(
 
       return done(null, user)
     } catch (error) {
-      console.error(error)
+      logger.error("Application operation failed", error)
 
       return done(error)
     }
@@ -48,7 +49,7 @@ passport.deserializeUser(async (userId: string, done: any) => {
 
       return done(null, user)
     } catch (error) {
-      console.error(error)
+      logger.error("Application operation failed", error)
 
       return done(error, null)
     }

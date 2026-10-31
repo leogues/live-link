@@ -1,3 +1,4 @@
+import { logger } from "../../logger";
 import prisma from "../../database/client";
 import { IRoomRepository } from "../../interfaces/repositories/IRoomRepository";
 
@@ -12,7 +13,7 @@ export class RoomRepository implements IRoomRepository {
 
       return room
     } catch (error) {
-      console.error('Erro ao buscar sala por ID:', error)
+      logger.error('Erro ao buscar sala por ID:', error)
 
       throw error
     }
@@ -30,7 +31,7 @@ export class RoomRepository implements IRoomRepository {
 
       return room
     } catch (error) {
-      console.error('Erro ao criar sala:', error)
+      logger.error('Erro ao criar sala:', error)
 
       throw error
     }

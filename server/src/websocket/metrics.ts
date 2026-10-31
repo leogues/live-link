@@ -1,17 +1,19 @@
-import { Socket } from "socket.io/dist";
+import { Socket } from "socket.io";
 import { SOCKET_MESSAGES } from "../metrics";
 import { SOCKET_ACTIVE } from "../metrics";
 import { SOCKET_CONNECTIONS } from "../metrics";
 
 export const metricsHandler = (socket: Socket) => {
-  SOCKET_CONNECTIONS.inc({ service: "live-link" });
-  SOCKET_ACTIVE.inc({ service: "live-link" });
+  SOCKET_CONNECTIONS.add(1);
+  SOCKET_ACTIVE.add(1);
 
   socket.onAny((event, ..._args) => {
-    SOCKET_MESSAGES.inc({ event, service: "live-link" });
+    const knownEvents = ["join-room", "leave-room", "send-message", "mediaDeviceStatusUpdate",
+      "renegotiate", "candidate", "offer", "answer"];
+    SOCKET_MESSAGES.add(1, { event: knownEvents.includes(event) ? event : "other" });
   });
 
   socket.on("disconnect", () => {
-    SOCKET_ACTIVE.dec({ service: "live-link" });
+    SOCKET_ACTIVE.add(-1);
   });
 };
